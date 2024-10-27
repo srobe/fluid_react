@@ -1,31 +1,57 @@
-{
-    // "image": "mcr.microsoft.com/devcontainers/universal:2",
-    // "hostRequirements": {
-    //   "cpus": 4
-    // },
-    "waitFor": "onCreateCommand",
-    "updateContentCommand": "pip install -r backend/requirements.txt",
-    "postCreateCommand": "",
-    "postAttachCommand": {
-      "server": "python backend/app.py "
-    },
-    "portsAttributes": {
-      "5000": {
-        "label": "Application",
-        "onAutoForward": "openPreview"
-      }
-    },
+// {
+//     // "image": "mcr.microsoft.com/devcontainers/universal:2",
+//     // "hostRequirements": {
+//     //   "cpus": 4
+//     // },
+//     "waitFor": "onCreateCommand",
+//     // "updateContentCommand": "pip install -r backend/requirements.txt",
+//     "postCreateCommand": "",
+//     "postAttachCommand": {
+//       "server": "python backend/app.py "
+//     },
+//     "portsAttributes": {
+//       "5002": {
+//         "label": "Application",
+//         "onAutoForward": "openPreview"
+//       }
+//     },
+//     "customizations": {
+//       "codespaces": {
+//       },
+//       "vscode": {
+//         "extensions": [
+//           "ms-python.python",
+//           "bradlc.vscode-tailwindcss",
+//           "dbaeumer.vscode-eslint"
+//         ]
+//       }
+//     },
+//     "forwardPorts": [5002]
+//   }
+  
+
+
+  {
+    "name": "Flask React Dev Container",
+    "dockerFile": "Dockerfile",
+    "appPort": ["5002:5000", "3000:3000"],
     "customizations": {
       "codespaces": {
       },
       "vscode": {
+        "settings": {
+          "terminal.integrated.shell.linux": "/bin/bash"
+        },
         "extensions": [
           "ms-python.python",
-          "bradlc.vscode-tailwindcss",
+          "ms-azuretools.vscode-docker",
           "dbaeumer.vscode-eslint"
         ]
       }
     },
-    "forwardPorts": [5000]
+    "postCreateCommand": "mamba env update -f backend/environment.yml && npm install --prefix frontend",
+    "forwardPorts": [5002, 3000],
+    "remoteEnv": {
+      "PATH": "/opt/conda/envs/fluid/bin:${containerEnv:PATH}"
+    }
   }
-  

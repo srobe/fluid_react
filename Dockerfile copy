@@ -1,0 +1,26 @@
+# Stage 1: Build React frontend
+FROM node:16 AS frontend
+WORKDIR /frontend
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend .
+RUN npm run build
+
+# Stage 2: Set up Flask with Mamba in the backend
+FROM mambaorg/micromamba:latest AS backend
+WORKDIR /backend
+
+# Copy and install Python environment
+COPY backend/environment.yml .
+RUN micromamba env create -f environment.yml -y -v
+ENV PATH=/opt/conda/envs/myenv/bin:$PATH
+SHELL ["micromamba", "run", "-n", "myenv", "/bin/bash", "-c"]
+
+# Copy backend code
+COPY backend .
+
+# Copy the React build to the backend’s static files
+COPY --from=frontend /frontend/build /backend/static
+
+# Run Flask
+CMD ["python", "app.py"]
