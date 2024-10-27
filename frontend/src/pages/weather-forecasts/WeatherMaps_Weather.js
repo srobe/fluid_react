@@ -17,7 +17,8 @@ function WeatherForecasts() {
   });
 
   useEffect(() => {
-    fetch("/data.json")
+    // fetch("/data.json")
+    fetch("http://localhost:5001/data")
       .then((res) => res.json())
       .then((data) => {
         setDropdownData({

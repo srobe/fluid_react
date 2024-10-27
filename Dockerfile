@@ -6,21 +6,27 @@ RUN npm install
 COPY frontend .
 RUN npm run build
 
-# Stage 2: Set up the Flask backend with Conda
+# Stage 2: Set up Flask backend with Conda
 FROM continuumio/miniconda3 AS backend
 WORKDIR /backend
 
-# Copy environment.yml and install dependencies
+# Copy environment.yml and install dependencies with Conda
 COPY backend/environment.yml .
 RUN conda env create -f environment.yml
 
-# Activate the environment
-ENV PATH=/opt/conda/envs/fluid/bin:$PATH
+# Set the environment path
+ENV PATH /opt/conda/envs/fluid/bin:$PATH
 SHELL ["conda", "run", "-n", "fluid", "/bin/bash", "-c"]
 
-# Copy backend code and React build
+# Copy backend code
 COPY backend .
+
+# Copy the React build to the backend’s static files directory
 COPY --from=frontend /frontend/build /backend/static
 
-# Run the Flask app
-CMD ["python", "app.py"]
+# Expose Flask port
+EXPOSE 5000
+
+# Run Flask
+CMD ["conda", "run", "-n", "fluid", "python", "app.py"]
+
