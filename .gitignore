@@ -24,4 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #devcontainers
-.devcontainer
+.devcontainer/
+devcontainer.json

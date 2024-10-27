@@ -23,6 +23,9 @@ COPY backend .
 
 # Copy the React build to the backend’s static files directory
 COPY --from=frontend /frontend/build /backend/static
+COPY --from=frontend /frontend/build/static/js /backend/static/js
+COPY --from=frontend /frontend/build/static/css /backend/static/css
+COPY --from=frontend /frontend/build/assets /backend/static/assets
 
 # Expose Flask port
 EXPOSE 5000
