@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import DropdownWithSearch from "../../components/DropdownWithSearch";
 import CustomDatePicker from "../../components/DatePicker";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { parse, format } from "date-fns";
+import { parse, addHours, format } from "date-fns";
 
 
 function WeatherForecasts() {
@@ -41,6 +40,31 @@ function WeatherForecasts() {
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
 
+  // Function to calculate lead hours based on selected initial time
+  const updateLeadHours = (initialTime) => {
+      const baseDate = parse(initialTime, "ddMMMyyyy HH'z'", new Date());
+      const hours = [0, 3, 6, 9, 12]; // Sample lead hours  
+      // Find the index of the current selected lead hour in the old options
+      const currentLeadHourIndex = dropdownData.leadHours.all.indexOf(selectedValues.leadHours);
+    
+      const newLeadHours = hours.map(hour => {
+        const date = addHours(baseDate, hour);
+        return `${String(hour).padStart(3, "0")}h ${format(date, "ddMMMyyyy HH'z'")}`;
+      });
+
+      // Set the selected lead hour to the same index in the new list, or the first if out of bounds
+      const newSelectedLeadHour = newLeadHours[currentLeadHourIndex] || newLeadHours[0];
+
+      setDropdownData(prevData => ({
+        ...prevData,
+        leadHours: { ...prevData.leadHours, all: newLeadHours },
+      }));
+
+      setSelectedValues(prev => ({
+        ...prev,
+        leadHours: newSelectedLeadHour
+      }));
+    };
   const handleSelect = (key, value) => {
     setSelectedValues((prev) => ({
       ...prev,
@@ -50,11 +74,14 @@ function WeatherForecasts() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    const displayFormattedDate = format(date, dropdownData.initialTimes.format_display);
     const backendFormattedDate = format(date, dropdownData.initialTimes.format_backend);
     setSelectedValues((prev) => ({
       ...prev,
       initialTimes: backendFormattedDate,
     }));
+
+    updateLeadHours(displayFormattedDate);
   };
 
   const generateGraph = () => {
