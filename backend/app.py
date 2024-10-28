@@ -1,12 +1,15 @@
+import flask
 from flask import Flask, jsonify, send_from_directory
 import json
 import os
 
 app = Flask(__name__, static_folder="static")
 
-@app.route('/data')
+@app.route('/data', methods=['POST'])
 def get_data():
-    with open('data2.json') as f:
+    data = flask.request.json
+    fn = data.get('name')
+    with open(fn) as f:
         data = json.load(f)
     return jsonify(data)
 

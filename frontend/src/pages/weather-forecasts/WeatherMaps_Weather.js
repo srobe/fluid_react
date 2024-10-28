@@ -18,7 +18,11 @@ function WeatherForecasts() {
 
   useEffect(() => {
     // fetch("/data.json")
-    fetch("http://localhost:5001/data")
+    fetch("/data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "data2.json", age: 30 })
+    })
       .then((res) => res.json())
       .then((data) => {
         setDropdownData({
