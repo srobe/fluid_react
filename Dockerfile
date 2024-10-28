@@ -21,11 +21,15 @@ SHELL ["conda", "run", "-n", "fluid", "/bin/bash", "-c"]
 # Copy backend code
 COPY backend .
 
-# Copy the React build to the backend’s static files directory
-COPY --from=frontend /frontend/build /backend/static
-COPY --from=frontend /frontend/build/static/js /backend/static/js
-COPY --from=frontend /frontend/build/static/css /backend/static/css
+# Clean previous conflicting files
+RUN rm -rf /backend/static
+# Copy the React build files explicitly to match the frontend-only structure
+COPY --from=frontend /frontend/build/static /backend/static
 COPY --from=frontend /frontend/build/assets /backend/static/assets
+COPY --from=frontend /frontend/build/manifest.json /backend/static/manifest.json
+COPY --from=frontend /frontend/build/*.html /backend/static
+RUN rm -rf /backend/static/js && mkdir -p /backend/static/js
+COPY --from=frontend /frontend/build/static/js /backend/static/js
 
 # Expose Flask port
 EXPOSE 5000
