@@ -16,8 +16,9 @@ function WeatherForecasts() {
     leadHours: "",
   });
 
+  const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
+
   useEffect(() => {
-    // fetch("/data.json")
     fetch("/data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,6 +50,19 @@ function WeatherForecasts() {
     }));
   };
 
+  const generateGraph = () => {
+    fetch("/generate-graph", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(selectedValues) // Send selected dropdown values
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setImageSrc(data.imagePath);  // Use the path returned by the server
+    })
+    .catch((error) => console.error("Error generating graph:", error));
+  };
+
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
       {/* SIDE BAR */}
@@ -63,7 +77,9 @@ function WeatherForecasts() {
           />
         ))}
 
-        <button className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500">
+        <button 
+          onClick={generateGraph} // Trigger image update
+          className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500">
           Generate graph
         </button>
       </aside>
@@ -98,7 +114,7 @@ function WeatherForecasts() {
 
         {/* graph */}
         <img
-          src={`${process.env.PUBLIC_URL}/assets/graph.png`}
+          src={imageSrc} // Use updated image source
           alt="Weather Graph"
           className="w-full rounded-sm border border-black"
         />
@@ -108,3 +124,4 @@ function WeatherForecasts() {
 }
 
 export default WeatherForecasts;
+
