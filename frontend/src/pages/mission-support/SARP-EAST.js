@@ -1,80 +1,85 @@
-import React, { useState } from 'react';
-import { FaCaretDown, FaSearch } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import DropdownWithSearch from "../../components/DropdownWithSearch"; // Import the component
 
-const DropdownWithSearch = ({ label, options }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+function WeatherForecasts() {
+  const [dropdownData, setDropdownData] = useState({
+    fields: { label: "Fields", all: [], selected: "" },
+    regions: { label: "Regions", all: [], selected: "" },
+    initialTimes: { label: "Forecast Initial Time", all: [], selected: "" },
+    leadHours: { label: "Forecast Lead Hour", all: [], selected: "" },
+  });
 
-  const filteredOptions = options.filter(option =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [selectedValues, setSelectedValues] = useState({
+    fields: "",
+    regions: "",
+    initialTimes: "",
+    leadHours: "",
+  });
 
-  return (
-    <div className="mb-6">
-      <p className="text-base font-bold mb-2">{label}</p>
-      <div className="relative">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
-        >
-          <span>{searchTerm || 'Select...'}</span>
-          <FaCaretDown />
-        </button>
-        {isOpen && (
-          <div className="absolute w-full bg-white border border-gray-300 rounded-sm mt-1 z-10">
-            <div className="relative">
-              <input
-                type="text"
-                className="w-full p-2 border-b border-gray-300 pl-10"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <FaSearch className="absolute left-3 top-3 text-gray-400" />
-            </div>
-            <ul className="max-h-48 overflow-y-auto">
-              {filteredOptions.map((option, index) => (
-                <li
-                  key={index}
-                  onClick={() => {
-                    setSearchTerm(option);
-                    setIsOpen(false);
-                  }}
-                  className="p-2 hover:bg-gray-200 cursor-pointer"
-                >
-                  {option}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+  const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
 
-const WeatherForecasts = () => {
-  
-  const fields = ['Abs EPV', 'Temperature', 'Vert Velocity', 'Humidity', 'T2M', 'Vorticity', 'Wind Speed'];
-  const regions = ['Africa', 'Australia', 'Global', 'Mid Atlantic', 'North America', 'North Polar', 'Pacific', 'South America', 'Seven Seas', 'South Polar'];
-  const initialTimes = ['17Jul2024 00z', '17Jul2024 00z'];
-  const leadHours = ['000h 17Jul2024 00z', '000h 17Jul2024 00z'];
+  useEffect(() => {
+    fetch("/data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: "data2.json", age: 30 })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setDropdownData({
+          fields: data.fields || { label: "Fields", all: [], selected: "" },
+          regions: data.regions || { label: "Regions", all: [], selected: "" },
+          initialTimes: data.initialTimes || { label: "Forecast Initial Time", all: [], selected: "" },
+          leadHours: data.leadHours || { label: "Forecast Lead Hour", all: [], selected: "" },
+        });
 
-  const [selectedField, setSelectedField] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedInitialTime, setSelectedInitialTime] = useState('');
-  const [selectedLeadHour, setSelectedLeadHour] = useState('');
-  const [graphUrl, setGraphUrl] = useState('');
+        setSelectedValues({
+          fields: data.fields?.selected || "",
+          regions: data.regions?.selected || "",
+          initialTimes: data.initialTimes?.selected || "",
+          leadHours: data.leadHours?.selected || "",
+        });
+      })
+      .catch((error) => console.error("Error loading JSON:", error));
+  }, []);
+
+  const handleSelect = (key, value) => {
+    setSelectedValues((prevSelected) => ({
+      ...prevSelected,
+      [key]: value,
+    }));
+  };
+
+  const generateGraph = () => {
+    fetch("/generate-graph", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(selectedValues) // Send selected dropdown values
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setImageSrc(data.imagePath);  // Use the path returned by the server
+    })
+    .catch((error) => console.error("Error generating graph:", error));
+  };
 
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
       {/* SIDE BAR */}
       <aside className="md:w-1/3 lg:w-1/4 bg-gray-100 border border-black p-4 mr-8 rounded-sm mb-6 md:mb-0">
-        <DropdownWithSearch label="Fields" options={fields} />
-        <DropdownWithSearch label="Regions" options={regions} />
-        <DropdownWithSearch label="Forecast Initial Time" options={initialTimes} />
-        <DropdownWithSearch label="Forecast Lead Hour" options={leadHours} />
-        <button className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500">
+        {Object.keys(dropdownData).map((key) => (
+          <DropdownWithSearch
+            key={key}
+            label={dropdownData[key].label}
+            options={dropdownData[key].all}
+            selectedOption={selectedValues[key]}
+            onSelect={(value) => handleSelect(key, value)}
+          />
+        ))}
+
+        <button 
+          onClick={generateGraph} // Trigger image update
+          className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500">
           Generate graph
         </button>
       </aside>
@@ -83,11 +88,15 @@ const WeatherForecasts = () => {
       {/* CONTENT */}
       <main className="md:w-2/3 lg:w-3/4 p-4">
         <nav className="mb-4">
-          <a href="/mission-support" className="text-blue-600 underline">&lt; Mission Support</a>
+          <a href="/weather-forecasts" className="text-blue-600 underline">
+            &lt; Weather Forecasts
+          </a>
         </nav>
-        <h1 className="text-2xl font-bold mb-4">SARP-EAST</h1>
+        <h1 className="text-2xl font-bold mb-4">Weather Maps</h1>
         <p className="text-gray-700 mb-6">
-          The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
+          The Goddard Earth Observing System (GEOS) model is designed to study
+          various Earth Science questions by connecting different model
+          components flexibly.
         </p>
 
         {/* buttons */}
@@ -104,11 +113,14 @@ const WeatherForecasts = () => {
         </div>
 
         {/* graph */}
-        <img src={`${process.env.PUBLIC_URL}/assets/graph.png`} alt="Weather Graph" className="w-full rounded-sm border border-black" />
+        <img
+          src={imageSrc} // Use updated image source
+          alt="Weather Graph"
+          className="w-full rounded-sm border border-black"
+        />
       </main>
-      {/* END CONTENT */}
     </div>
   );
-};
+}
 
 export default WeatherForecasts;

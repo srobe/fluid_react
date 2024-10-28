@@ -10,3 +10,24 @@
 .font-helvetica {
   font-family: 'Helvetica', sans-serif;
 }
+
+.datepicker-container {
+  position: relative;
+  display: inline-block;
+  width: 100%; /* Ensures the input and icon are aligned */
+}
+
+.datepicker-input {
+  padding-right: 30px; /* Add space for the icon */
+  padding-left: 10px; /* Add space for the icon */
+  width: 100%;
+}
+
+.datepicker-icon {
+  position: absolute;
+  right: 8px; /* Align to the right */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  pointer-events: none;
+}

@@ -1,4 +1,5 @@
-{
+{ 
+  "order": ["fields","regions","initialTimes","leadHours"],
   "fields": {
     "label": "Fields",
     "all": [
@@ -11,7 +12,8 @@
       "Wind Speed",
       "New Var"
     ],
-    "selected": "Temperature"
+    "selected": "Temperature",
+    "type": "DropdownWithSearch"
   },
   "regions": {
     "label": "Regions",
@@ -27,16 +29,21 @@
       "Seven Seas",
       "South Polar"
     ],
-    "selected": "North America"
+    "selected": "North America",
+    "type": "DropdownWithSearch"
   },
   "initialTimes": {
     "label": "Forecast Initial Time",
     "all": ["17Jul2024 00z", "17Jul2024 12z"],
-    "selected": "17Jul2024 12z"
+    "selected": "17Jul2024 12z",
+    "format_display":"ddMMMyyyy HH'z'",
+    "format_backend":"yyMMdd'T'HH'0000'",
+    "type": "DatePicker"
   },
   "leadHours": {
     "label": "Forecast Lead Hour",
     "all": ["000h 17Jul2024 00z", "003h 17Jul2024 03z"],
-    "selected": "000h 17Jul2024 00z"
+    "selected": "000h 17Jul2024 00z",
+    "type": "DropdownWithSearch"
   }
 }
