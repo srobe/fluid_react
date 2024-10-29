@@ -1,57 +1,25 @@
-// {
-//     // "image": "mcr.microsoft.com/devcontainers/universal:2",
-//     // "hostRequirements": {
-//     //   "cpus": 4
-//     // },
-//     "waitFor": "onCreateCommand",
-//     // "updateContentCommand": "pip install -r backend/requirements.txt",
-//     "postCreateCommand": "",
-//     "postAttachCommand": {
-//       "server": "python backend/app.py "
-//     },
-//     "portsAttributes": {
-//       "5002": {
-//         "label": "Application",
-//         "onAutoForward": "openPreview"
-//       }
-//     },
-//     "customizations": {
-//       "codespaces": {
-//       },
-//       "vscode": {
-//         "extensions": [
-//           "ms-python.python",
-//           "bradlc.vscode-tailwindcss",
-//           "dbaeumer.vscode-eslint"
-//         ]
-//       }
-//     },
-//     "forwardPorts": [5002]
-//   }
-  
-
-
-  {
-    "name": "Flask React Dev Container",
-    "dockerFile": "Dockerfile",
-    "appPort": ["5001:5000", "3000:3000"],
-    "customizations": {
-      "codespaces": {
-      },
-      "vscode": {
-        "settings": {
-          "terminal.integrated.shell.linux": "/bin/bash"
-        },
-        "extensions": [
-          "ms-python.python",
-          "ms-azuretools.vscode-docker",
-          "dbaeumer.vscode-eslint"
-        ]
-      }
+{
+  "name": "Fluid React Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu", 
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode"
+      ]
     },
-    "postCreateCommand": "mamba env update -f backend/environment.yml && npm install --prefix frontend",
-    "forwardPorts": [5000, 3000],
-    "remoteEnv": {
-      "PATH": "/opt/conda/envs/fluid/bin:${containerEnv:PATH}"
-    }
+    "settings": {
+      "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"
+  },
+  "postCreateCommand": "conda env create -f backend/environment.yml && npm install --prefix frontend",
+  "forwardPorts": [5001, 3000],
+  "service": "backend",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace"
   }
+}
