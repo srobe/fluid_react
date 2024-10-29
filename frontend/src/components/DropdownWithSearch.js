@@ -1,6 +1,6 @@
-// DropdownWithSearch.js
+// src/components/DropdownWithSearch.js
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaCaretDown, FaSearch } from "react-icons/fa";
 
 const DropdownWithSearch = ({
@@ -12,7 +12,7 @@ const DropdownWithSearch = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  // Reset searchTerm each time the dropdown is opened
+  // Toggle dropdown open/close and reset search term
   const handleOpen = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
@@ -20,8 +20,16 @@ const DropdownWithSearch = ({
     }
   };
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
+  // Convert options to uniform format: array of objects with `label` and `value`
+  const processedOptions = options.map((option) =>
+    typeof option === "string"
+      ? { label: option, value: option }
+      : { label: option.label, value: option.value }
+  );
+
+  // Filter options based on search term
+  const filteredOptions = processedOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -32,7 +40,13 @@ const DropdownWithSearch = ({
           onClick={handleOpen}
           className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
         >
-          <span>{selectedOption || "Select..."}</span> {/* Display selectedOption when closed */}
+          <span>
+          {selectedOption
+            ? typeof selectedOption === "string"
+              ? selectedOption
+              : selectedOption.label
+            : "Select..."}
+          </span>
           <FaCaretDown />
         </button>
         {isOpen && (
@@ -52,12 +66,12 @@ const DropdownWithSearch = ({
                 <li
                   key={index}
                   onClick={() => {
-                    onSelect(option); // Update selected option in parent
+                    onSelect(option); // Pass entire option object or string to parent
                     setIsOpen(false); // Close dropdown
                   }}
                   className="p-2 hover:bg-gray-200 cursor-pointer"
                 >
-                  {option}
+                  {option.label}
                 </li>
               ))}
             </ul>
@@ -69,3 +83,5 @@ const DropdownWithSearch = ({
 };
 
 export default DropdownWithSearch;
+
+

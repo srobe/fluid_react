@@ -16,7 +16,7 @@ COPY backend/environment.yml .
 RUN conda env create -f environment.yml
 
 # Set the environment path
-ENV PATH /opt/conda/envs/fluid/bin:$PATH
+ENV PATH=/opt/conda/envs/fluid/bin:$PATH
 SHELL ["conda", "run", "-n", "fluid", "/bin/bash", "-c"]
 
 # Copy backend code
