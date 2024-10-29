@@ -4,19 +4,22 @@ import CustomDatePicker from "../../components/DatePicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { parse, addHours, format } from "date-fns";
 
+const hours = ["00z", "06z", "12z", "18z"];
 
 function WeatherForecasts() {
+  const [selectedDatetime, setSelectedDatetime] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [dropdownData, setDropdownData] = useState({});
   const [selectedValues, setSelectedValues] = useState({});
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
   const [order,setOrder] = useState([]);
+  const [selectedHour, setSelectedHour] = useState(hours[0]);
 
   useEffect(() => {
     fetch("/data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "data2.json", age: 30 }),
+      body: JSON.stringify({ name: "data3.json", age: 30 }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -33,7 +36,8 @@ function WeatherForecasts() {
         // Set initial date from initialTimes in data.json if available
         if (data.initialTimes) {
           const initialDateStr = data.initialTimes.selected;
-          const parsedDate = parse(initialDateStr, data.initialTimes.format_display, new Date());
+          const parsedDate = parse(initialDateStr, data.initialTimes.format_date, new Date());
+          setSelectedDatetime(parsedDate);
           setSelectedDate(parsedDate);
         }
       })
@@ -41,14 +45,13 @@ function WeatherForecasts() {
   }, []);
 
   // Function to calculate lead hours based on selected initial time
-  const updateLeadHours = (initialTime) => {
-      const baseDate = parse(initialTime, "ddMMMyyyy HH'z'", new Date());
+  const updateLeadHours = (datetime) => {
       const hours = [0, 3, 6, 9, 12]; // Sample lead hours  
       // Find the index of the current selected lead hour in the old options
       const currentLeadHourIndex = dropdownData.leadHours.all.indexOf(selectedValues.leadHours);
     
       const newLeadHours = hours.map(hour => {
-        const date = addHours(baseDate, hour);
+        const date = addHours(datetime, hour);
         return `${String(hour).padStart(3, "0")}h ${format(date, "ddMMMyyyy HH'z'")}`;
       });
 
@@ -65,6 +68,7 @@ function WeatherForecasts() {
         leadHours: newSelectedLeadHour
       }));
     };
+
   const handleSelect = (key, value) => {
     setSelectedValues((prev) => ({
       ...prev,
@@ -72,16 +76,34 @@ function WeatherForecasts() {
     }));
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    const displayFormattedDate = format(date, dropdownData.initialTimes.format_display);
-    const backendFormattedDate = format(date, dropdownData.initialTimes.format_backend);
+  const setHourOnDate = (date, hour) => {
+    const newhour = parseInt(hour.substring(0, 2), 10); // Extracts "00" and converts to 0
+    const newDate = new Date(date); // Clone the date to avoid mutation
+    newDate.setHours(newhour, 0, 0, 0); // Set hour and reset minutes, seconds, and milliseconds
+    return newDate;
+  };
+
+  const handleDatetimeChange = (date,hour) => {
+    const datetime = setHourOnDate(date, hour)
+    setSelectedDatetime(datetime)
+    const displayFormattedDate = format(datetime, dropdownData.initialTimes.format_display);
+    const backendFormattedDate = format(datetime, dropdownData.initialTimes.format_backend);
     setSelectedValues((prev) => ({
       ...prev,
       initialTimes: backendFormattedDate,
     }));
 
-    updateLeadHours(displayFormattedDate);
+    updateLeadHours(datetime);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    handleDatetimeChange(date, selectedHour);
+  };
+
+  const handleHourClick = (hour) => {
+    setSelectedHour(hour);
+    handleDatetimeChange(selectedDate, hour);
   };
 
   const generateGraph = () => {
@@ -117,10 +139,21 @@ function WeatherForecasts() {
               <div className="mb-6">
                 <CustomDatePicker
                     label={config.label}
-                    selectedDate={selectedDate}
+                    selectedDate={selectedDatetime}
                     onChange={handleDateChange}
                     dateFormat={config.format_display}
                 />
+                <div className="hour-buttons">
+                  {hours.map((hour) => (
+                    <button
+                      key={hour}
+                      onClick={() => handleHourClick(hour)}
+                      className={`hour-btn ${hour === selectedHour ? "selected" : ""}`}
+                    >
+                      {hour}
+                    </button>
+                  ))}
+                </div>
               </div>
               
             );

@@ -31,3 +31,20 @@
   color: #333;
   pointer-events: none;
 }
+
+.hour-buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.hour-btn {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.hour-btn.selected {
+  background-color: #007bff;
+  color: white;
+}
