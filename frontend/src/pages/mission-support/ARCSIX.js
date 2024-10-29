@@ -16,33 +16,63 @@ function WeatherForecasts() {
   const [selectedHour, setSelectedHour] = useState(hours[0]);
 
   useEffect(() => {
-    fetch("/data", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: "data3.json", age: 30 }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched data:", data);
-        setDropdownData(data);
-
-        // Set initial selected values from data.json
-        setSelectedValues(Object.fromEntries(
-          Object.entries(data).map(([key, value]) => [key, value.selected || ""])
-        ));
-
-        setOrder(data.order || []);
-
-        // Set initial date from initialTimes in data.json if available
-        if (data.initialTimes) {
-          const initialDateStr = data.initialTimes.selected;
-          const parsedDate = parse(initialDateStr, data.initialTimes.format_date, new Date());
-          setSelectedDatetime(parsedDate);
-          setSelectedDate(parsedDate);
+    const fetchData = async () => {
+      let data; // Declare data variable to be used in both primary and fallback fetches
+  
+      try {
+        // Attempt to fetch data from the Flask endpoint
+        const response = await fetch("/data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: "data3.json", age: 30 }),
+        });
+  
+        // If the response is not OK, throw an error to trigger fallback
+        if (!response.ok) throw new Error("Primary fetch failed");
+  
+        data = await response.json();
+        console.log("Fetched data from Flask API:", data);
+  
+      } catch (error) {
+        console.error("Error fetching from Flask API, attempting local file:", error);
+  
+        // Fallback to fetching from the local JSON file if Flask API fetch fails
+        try {
+          const fallbackResponse = await fetch("/data3.json");
+          
+          if (!fallbackResponse.ok) throw new Error("Fallback fetch failed");
+  
+          data = await fallbackResponse.json();
+          console.log("Fetched data from local JSON file:", data);
+  
+        } catch (fallbackError) {
+          console.error("Error fetching from local JSON file:", fallbackError);
+          return; // Exit if both fetches fail
         }
-      })
-      .catch((error) => console.error("Error loading JSON:", error));
+      }
+  
+      // Process data (regardless of whether it was from Flask or local JSON)
+      setDropdownData(data);
+  
+      // Set initial selected values from data
+      setSelectedValues(Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [key, value.selected || ""])
+      ));
+  
+      setOrder(data.order || []);
+  
+      // Set initial date from initialTimes in data if available
+      if (data.initialTimes) {
+        const initialDateStr = data.initialTimes.selected;
+        const parsedDate = parse(initialDateStr, data.initialTimes.format_date, new Date());
+        setSelectedDatetime(parsedDate);
+        setSelectedDate(parsedDate);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
   // Function to calculate lead hours based on selected initial time
   const updateLeadHours = (datetime) => {
@@ -136,7 +166,7 @@ function WeatherForecasts() {
             );
           } else if (config.type === "DatePicker") {
             return (
-              <div className="mb-6">
+              <div className="mb-6" key={key}>
                 <CustomDatePicker
                   label={config.label}
                   selectedDate={selectedDatetime}

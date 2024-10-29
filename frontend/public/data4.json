@@ -1,0 +1,71 @@
+{ 
+  "order": ["fields","regions","initialTimes","leadHours"],
+  "fields": {
+    "label": "Fields",
+    "all": [
+      "Abs EPV",
+      "Temperature",
+      "Vert Velocity",
+      "Humidity",
+      "T2M",
+      "Vorticity",
+      "Wind Speed",
+      "Basemap",
+      "updates",
+      "try2"
+    ],
+    "selected": "Temperature",
+    "type": "DropdownWithSearch"
+  },
+  "regions": {
+    "label": "Regions",
+    "all": [
+      "Africa",
+      "Australia",
+      "Global",
+      "Mid Atlantic",
+      "North America",
+      "North Polar",
+      "Pacific",
+      "South America",
+      "Seven Seas",
+      "South Polar"
+    ],
+    "selected": "North America",
+    "type": "DropdownWithSearch"
+  },
+  "regions2": {
+    "label": "Regions",
+    "all": [
+      "Africa",
+      "Australia",
+      "Global",
+      "Mid Atlantic",
+      "North America",
+      "North Polar",
+      "Pacific",
+      "South America",
+      "Seven Seas",
+      "South Polar"
+    ],
+    "selected": "North America",
+    "type": "DropdownWithSearch"
+  },
+  "initialTimes": {
+    "label": "Forecast Initial Time",
+    "hours": ["00z","12z"],
+    "start": "01Jul2024 00z",
+    "end": "17Aug2024 12z",
+    "selected": "17Aug2024 12z",
+    "format_date":"ddMMMyyyy HH'z'",
+    "format_display":"MMM dd',' yyyy",
+    "format_backend":"yyyyMMdd'T'HH'0000'",
+    "type": "DatePicker"
+  },
+  "leadHours": {
+    "label": "Forecast Lead Hour",
+    "selected": "000h 17Aug2024 12z",
+    "all": ["000h 17Aug2024 12z","003h 17Aug2024 15z","006h 17Aug2024 18z","009h 17Aug2024 21z","012h 18Aug2024 00z"],
+    "type": "DropdownWithSearch"
+  }
+}
