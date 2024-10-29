@@ -16,6 +16,7 @@ function WeatherForecasts() {
     leadHours: "",
   });
 
+  const [order,setOrder] = useState([]);
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
 
   useEffect(() => {
@@ -39,6 +40,8 @@ function WeatherForecasts() {
           initialTimes: data.initialTimes?.selected || "",
           leadHours: data.leadHours?.selected || "",
         });
+
+        setOrder(data.order || []);
       })
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);

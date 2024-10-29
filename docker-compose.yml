@@ -1,0 +1,30 @@
+services:
+  combined:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    environment:
+      - FLASK_ENV=development
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend  # Ensure the correct Dockerfile is used
+    ports:
+      - "5001:5000"  # Expose Flask backend
+    environment:
+      - FLASK_ENV=development
+
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile  # Specify Dockerfile for frontend and backend
+  #   ports:
+  #     - "3000:3000"  # Expose frontend port
+  #   volumes:
+  #     - ./frontend/src:/frontend/src  # Mount frontend source code
+  #     - /frontend/node_modules  # Prevent volume override of node_modules
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true  # For hot-reloading on some systems

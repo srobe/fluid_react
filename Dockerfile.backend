@@ -2,10 +2,10 @@
 FROM continuumio/miniconda3
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /backend
 
 # Copy environment.yml and install dependencies
-COPY environment.yml .
+COPY backend/environment.yml .
 RUN conda env create -f environment.yml
 
 # Set the environment path for Flask to run in the container
@@ -14,10 +14,11 @@ SHELL ["conda", "run", "-n", "fluid", "/bin/bash", "-c"]
 
 # # Copy the backend code into the container
 # COPY backend .
-COPY . .
+COPY backend .
 
 # Expose the port Flask will run on
 EXPOSE 5000
 
 # Command to start the Flask app
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+CMD ["conda", "run", "-n", "fluid", "python", "app.py"]

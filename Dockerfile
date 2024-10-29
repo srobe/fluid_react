@@ -2,7 +2,8 @@
 FROM node:16 AS frontend
 WORKDIR /frontend
 COPY frontend/package*.json ./
-RUN npm install
+# RUN npm install
+RUN [ ! -d "node_modules" ] && npm install || echo "Using existing node_modules"
 COPY frontend .
 RUN npm run build
 
@@ -21,7 +22,7 @@ SHELL ["conda", "run", "-n", "fluid", "/bin/bash", "-c"]
 # Copy backend code
 COPY backend .
 
-# Clean previous conflicting files
+# # Clean previous conflicting files
 RUN rm -rf /backend/static
 # Copy the React build files explicitly to match the frontend-only structure
 COPY --from=frontend /frontend/build/static /backend/static
@@ -36,4 +37,5 @@ EXPOSE 5000
 
 # Run Flask
 CMD ["conda", "run", "-n", "fluid", "python", "app.py"]
+
 

@@ -34,7 +34,7 @@
   {
     "name": "Flask React Dev Container",
     "dockerFile": "Dockerfile",
-    "appPort": ["5002:5000", "3000:3000"],
+    "appPort": ["5001:5000", "3000:3000"],
     "customizations": {
       "codespaces": {
       },
@@ -50,7 +50,7 @@
       }
     },
     "postCreateCommand": "mamba env update -f backend/environment.yml && npm install --prefix frontend",
-    "forwardPorts": [5002, 3000],
+    "forwardPorts": [5000, 3000],
     "remoteEnv": {
       "PATH": "/opt/conda/envs/fluid/bin:${containerEnv:PATH}"
     }

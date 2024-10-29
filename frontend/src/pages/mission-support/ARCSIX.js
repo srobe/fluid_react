@@ -12,7 +12,7 @@ function WeatherForecasts() {
   const [dropdownData, setDropdownData] = useState({});
   const [selectedValues, setSelectedValues] = useState({});
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
-  const [order,setOrder] = useState([]);
+  const [order, setOrder] = useState([]);
   const [selectedHour, setSelectedHour] = useState(hours[0]);
 
   useEffect(() => {
@@ -46,28 +46,28 @@ function WeatherForecasts() {
 
   // Function to calculate lead hours based on selected initial time
   const updateLeadHours = (datetime) => {
-      const hours = [0, 3, 6, 9, 12]; // Sample lead hours  
-      // Find the index of the current selected lead hour in the old options
-      const currentLeadHourIndex = dropdownData.leadHours.all.indexOf(selectedValues.leadHours);
-    
-      const newLeadHours = hours.map(hour => {
-        const date = addHours(datetime, hour);
-        return `${String(hour).padStart(3, "0")}h ${format(date, "ddMMMyyyy HH'z'")}`;
-      });
+    const hours = [0, 3, 6, 9, 12]; // Sample lead hours  
+    // Find the index of the current selected lead hour in the old options
+    const currentLeadHourIndex = dropdownData.leadHours.all.indexOf(selectedValues.leadHours);
 
-      // Set the selected lead hour to the same index in the new list, or the first if out of bounds
-      const newSelectedLeadHour = newLeadHours[currentLeadHourIndex] || newLeadHours[0];
+    const newLeadHours = hours.map(hour => {
+      const date = addHours(datetime, hour);
+      return `${String(hour).padStart(3, "0")}h ${format(date, "ddMMMyyyy HH'z'")}`;
+    });
 
-      setDropdownData(prevData => ({
-        ...prevData,
-        leadHours: { ...prevData.leadHours, all: newLeadHours },
-      }));
+    // Set the selected lead hour to the same index in the new list, or the first if out of bounds
+    const newSelectedLeadHour = newLeadHours[currentLeadHourIndex] || newLeadHours[0];
 
-      setSelectedValues(prev => ({
-        ...prev,
-        leadHours: newSelectedLeadHour
-      }));
-    };
+    setDropdownData(prevData => ({
+      ...prevData,
+      leadHours: { ...prevData.leadHours, all: newLeadHours },
+    }));
+
+    setSelectedValues(prev => ({
+      ...prev,
+      leadHours: newSelectedLeadHour
+    }));
+  };
 
   const handleSelect = (key, value) => {
     setSelectedValues((prev) => ({
@@ -83,7 +83,7 @@ function WeatherForecasts() {
     return newDate;
   };
 
-  const handleDatetimeChange = (date,hour) => {
+  const handleDatetimeChange = (date, hour) => {
     const datetime = setHourOnDate(date, hour)
     setSelectedDatetime(datetime)
     const displayFormattedDate = format(datetime, dropdownData.initialTimes.format_display);
@@ -138,24 +138,26 @@ function WeatherForecasts() {
             return (
               <div className="mb-6">
                 <CustomDatePicker
-                    label={config.label}
-                    selectedDate={selectedDatetime}
-                    onChange={handleDateChange}
-                    dateFormat={config.format_display}
+                  label={config.label}
+                  selectedDate={selectedDatetime}
+                  onChange={handleDateChange}
+                  dateFormat={config.format_display}
                 />
-                <div className="hour-buttons">
-                  {hours.map((hour) => (
-                    <button
-                      key={hour}
-                      onClick={() => handleHourClick(hour)}
-                      className={`hour-btn ${hour === selectedHour ? "selected" : ""}`}
-                    >
-                      {hour}
-                    </button>
-                  ))}
-                </div>
+                {dropdownData.initialTimes.hours.length > 1 && (
+                  <div className="hour-buttons">
+                    {dropdownData.initialTimes.hours.map((hour) => (
+                      <button
+                        key={hour}
+                        onClick={() => handleHourClick(hour)}
+                        className={`hour-btn ${hour === selectedHour ? "selected" : ""}`}
+                      >
+                        {hour}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-              
+
             );
           }
           return null;

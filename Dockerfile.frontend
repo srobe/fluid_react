@@ -2,14 +2,15 @@
 FROM node:16
 
 # Set the working directory
-WORKDIR /app
+FROM node:16 AS frontend
+WORKDIR /frontend
 
 # Copy package.json and install dependencies
-COPY package*.json ./
+COPY frontend/package*.json ./
 RUN npm install
 
 # Copy the app source code
-COPY . .
+COPY frontend .
 
 # Build the app
 RUN npm run build
