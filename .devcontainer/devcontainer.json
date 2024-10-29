@@ -1,8 +1,11 @@
 {
   "name": "Fluid React Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu", 
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "16"
+    } // Add Node.js here
   },
   "customizations": {
     "vscode": {
@@ -11,15 +14,17 @@
         "ms-toolsai.jupyter",
         "ms-azuretools.vscode-docker",
         "esbenp.prettier-vscode"
-      ]
-    },
-    "settings": {
-      "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"
+      }
+    }
   },
   "postCreateCommand": "conda env create -f backend/environment.yml && npm install --prefix frontend",
-  "forwardPorts": [5001, 3000],
-  "service": "backend",
+  "forwardPorts": [
+    5001,
+    3000
+  ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
-  }
 }
