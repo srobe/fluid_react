@@ -1,12 +1,19 @@
 { 
-  "order": ["fields","regions","initialTimes","leadHours"],
+  "order": ["fields","regions","levels","initialTimes","leadHours"],
+  "levels": {
+    "label":"Levels",
+    "all":[10,30,50,100,200,300,500,700,850],
+    "selected":850,
+    "type": "ButtonGroup"
+  },
   "fields": {
     "label": "Fields",
     "all": [
         {"label":"Abs EPV",
             "var":"epv"},
         {"label":"Temperature",
-            "var":"tmpu"},
+            "var":"tmpu",
+            "levels":[10,30,50,100,200,300,500,700,850]},
         {"label":"Vert Velocity",
             "var":"vvel"},
         {"label":"Humidity",

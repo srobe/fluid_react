@@ -1,45 +1,58 @@
 // src/pages/mission-support/WeatherForecasts.js
+
 import React, { useState } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import { setHourOnDate, updateLeadHours } from "../../utils/dateUtils";
 import DropdownWithSearch from "../../components/DropdownWithSearch";
 import CustomDatePicker from "../../components/DatePicker";
+import ButtonGroup from "../../components/ButtonGroup";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 
 const hours = ["00z", "06z", "12z", "18z"];
 
 function WeatherForecasts() {
-  // Use useFetchData with different endpoints by providing custom parameters
-  const { dropdownData, selectedValues, order, selectedDatetime, setSelectedValues, setDropdownData } = useFetchData(
+  const { flaskData, selectedValues, order, selectedDatetime, setSelectedValues, setFlaskData, updateLevels } = useFetchData(
     "/data",             // Primary URL
-    "/data3.json",       // Fallback URL
-    { name: "data3.json", age: 30 } // Request data
+    "/data4.json",       // Fallback URL
+    { name: "data4.json", age: 30 } // Request data
   );
 
-  // The rest of the component's logic stays the same...
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedHour, setSelectedHour] = useState(hours[0]);
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
 
-  // Handle selection for dropdowns and map the `label` to the `var` value
+  // Unified handleSelect function
   const handleSelect = (key, option) => {
+    console.log("handleSelect", option);
     setSelectedValues((prev) => ({
       ...prev,
-      [key]: option, // Store the selected option (either object or string)
+      [key]: option, // Use `var` if it exists, otherwise option directly
     }));
+
+    // Update levels dynamically when a new field is selected
+    if (key === "fields") {
+      updateLevels(option.var);
+    } else if (key === "levels") {
+      setFlaskData((prevData) => ({
+        ...prevData,
+        levels: { ...prevData.levels, selected: option },
+      }));
+    }
+    console.log("Current selected data:", selectedValues);
   };
 
   const handleDatetimeChange = (date, hour) => {
     const datetime = setHourOnDate(date, hour);
-    const backendFormattedDate = format(datetime, dropdownData.initialTimes.format_backend);
+    const displayFormattedDate = format(datetime, flaskData.initialTimes.format_display);
+    const backendFormattedDate = format(datetime, flaskData.initialTimes.format_backend);
 
     setSelectedValues((prev) => ({
       ...prev,
       initialTimes: backendFormattedDate,
     }));
 
-    updateLeadHours(datetime, dropdownData, setDropdownData, selectedValues, setSelectedValues);
+    updateLeadHours(datetime, flaskData, setFlaskData, selectedValues, setSelectedValues);
   };
 
   const handleDateChange = (date) => {
@@ -56,7 +69,7 @@ function WeatherForecasts() {
     fetch("/generate-graph", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(selectedValues),
+      body: JSON.stringify({ ...selectedValues, level: flaskData.levels.selected }), // Include selected level in payload
     })
       .then((res) => res.json())
       .then((data) => {
@@ -69,19 +82,21 @@ function WeatherForecasts() {
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
       <aside className="md:w-1/3 lg:w-1/4 bg-gray-100 border border-black p-4 mr-8 rounded-sm mb-6 md:mb-0">
         {order.map((key) => {
-          const config = dropdownData[key];
+          const config = flaskData[key];
+
           if (config.type === "DropdownWithSearch") {
             return (
               <DropdownWithSearch
                 key={key}
                 label={config.label}
-                options={config.all} // Pass directly without modification
+                options={config.all}
                 selectedOption={selectedValues[key]}
                 onSelect={(value) => handleSelect(key, value)}
               />
             );
           }
-          else if (config?.type === "DatePicker") {
+
+          else if (config.type === "DatePicker") {
             return (
               <div className="mb-6" key={key}>
                 <CustomDatePicker
@@ -90,9 +105,9 @@ function WeatherForecasts() {
                   onChange={handleDateChange}
                   dateFormat={config.format_display}
                 />
-                {dropdownData.initialTimes?.hours.length > 1 && (
+                {flaskData.initialTimes.hours.length > 1 && (
                   <div className="hour-buttons">
-                    {dropdownData.initialTimes.hours.map((hour) => (
+                    {flaskData.initialTimes.hours.map((hour) => (
                       <button
                         key={hour}
                         onClick={() => handleHourClick(hour)}
@@ -106,6 +121,22 @@ function WeatherForecasts() {
               </div>
             );
           }
+          else if (key === "levels" && flaskData.levels.all.length < 2) {
+            // If there is only one or zero levels, skip rendering
+            return null;
+          }
+          else if (config.type === "ButtonGroup") {
+            return (
+              <ButtonGroup
+                key={key}
+                label={config.label}
+                options={config.all}
+                selectedOption={selectedValues[key]}
+                onSelect={(value) => handleSelect(key, value)}
+              />
+            );
+          }
+
           return null;
         })}
 
@@ -116,7 +147,6 @@ function WeatherForecasts() {
           Generate graph
         </button>
       </aside>
-
 
       <main className="md:w-2/3 lg:w-3/4 p-4">
         <nav className="mb-4">

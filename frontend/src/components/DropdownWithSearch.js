@@ -20,11 +20,11 @@ const DropdownWithSearch = ({
     }
   };
 
-  // Convert options to uniform format: array of objects with `label` and `value`
+  // Convert options to uniform format: array of objects with `label` and `var`
   const processedOptions = options.map((option) =>
     typeof option === "string"
-      ? { label: option, value: option }
-      : { label: option.label, value: option.value }
+      ? { label: option, var: option } // Ensure `var` is used instead of `value`
+      : { label: option.label, var: option.var }
   );
 
   // Filter options based on search term
@@ -41,11 +41,11 @@ const DropdownWithSearch = ({
           className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
         >
           <span>
-          {selectedOption
-            ? typeof selectedOption === "string"
-              ? selectedOption
-              : selectedOption.label
-            : "Select..."}
+            {selectedOption
+              ? typeof selectedOption === "string"
+                ? selectedOption
+                : selectedOption.label
+              : "Select..."}
           </span>
           <FaCaretDown />
         </button>
@@ -66,7 +66,7 @@ const DropdownWithSearch = ({
                 <li
                   key={index}
                   onClick={() => {
-                    onSelect(option); // Pass entire option object or string to parent
+                    onSelect(option); // Pass the entire option object with `label` and `var`
                     setIsOpen(false); // Close dropdown
                   }}
                   className="p-2 hover:bg-gray-200 cursor-pointer"
@@ -83,5 +83,6 @@ const DropdownWithSearch = ({
 };
 
 export default DropdownWithSearch;
+
 
 

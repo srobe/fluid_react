@@ -49,3 +49,26 @@
   background-color: #007bff;
   color: white;
 }
+
+.button-item {
+  padding: 8px 12px;
+  margin: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa; /* Light background */
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for buttons */
+.button-item:hover {
+  background-color: #e2e6ea;
+}
+
+/* Styling for the selected button */
+.button-item.selected {
+  background-color: #007bff; /* Blue background for selected */
+  color: white; /* White text for contrast */
+  border-color: #007bff; /* Match border with background */
+}

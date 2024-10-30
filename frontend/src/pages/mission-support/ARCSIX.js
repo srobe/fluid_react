@@ -116,7 +116,6 @@ function WeatherForecasts() {
   const handleDatetimeChange = (date, hour) => {
     const datetime = setHourOnDate(date, hour)
     setSelectedDatetime(datetime)
-    const displayFormattedDate = format(datetime, dropdownData.initialTimes.format_display);
     const backendFormattedDate = format(datetime, dropdownData.initialTimes.format_backend);
     setSelectedValues((prev) => ({
       ...prev,
