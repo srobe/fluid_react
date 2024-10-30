@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import { setHourOnDate, updateLeadHours } from "../../utils/dateUtils";
+import { getMappedValues } from "../../utils/mappedValues";
 import DropdownWithSearch from "../../components/DropdownWithSearch";
 import CustomDatePicker from "../../components/DatePicker";
 import ButtonGroup from "../../components/ButtonGroup";
@@ -65,11 +66,13 @@ function WeatherForecasts() {
     handleDatetimeChange(selectedDate, hour);
   };
 
+
   const generateGraph = () => {
+    console.log("Sent selected data:", JSON.stringify({ ...getMappedValues(selectedValues), mission: "SARP-East" }));
     fetch("/generate-graph", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...selectedValues, level: flaskData.levels.selected }), // Include selected level in payload
+      body: JSON.stringify({ ...selectedValues, mission: "SARP-East" }), // Include selected level in payload
     })
       .then((res) => res.json())
       .then((data) => {
