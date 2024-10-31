@@ -1,8 +1,9 @@
 // src/pages/mission-support/WeatherForecasts.js
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useFetchData from "../../hooks/useFetchData";
-import { setHourOnDate, updateLeadHours } from "../../utils/dateUtils";
+import generateGraph from "../../hooks/generateGraph";
+import { setHourOnDate, updateLeadHours, isPastEnd } from "../../utils/dateUtils";
 import { getMappedValues } from "../../utils/mappedValues";
 import DropdownWithSearch from "../../components/DropdownWithSearch";
 import CustomDatePicker from "../../components/DatePicker";
@@ -13,14 +14,13 @@ import { format } from "date-fns";
 const hours = ["00z", "06z", "12z", "18z"];
 
 function WeatherForecasts() {
-  const { flaskData, selectedValues, order, selectedDatetime, setSelectedValues, setFlaskData, updateLevels } = useFetchData(
+  const { flaskData, selectedValues, order, selectedDatetime, setSelectedDatetime, setSelectedValues, setFlaskData, updateLevels } = useFetchData(
     "/data",             // Primary URL
-    "/data4.json",       // Fallback URL
+    "/data/data4.json",       // Fallback URL
     { name: "data4.json", age: 30 } // Request data
   );
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedHour, setSelectedHour] = useState(hours[0]);
+
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
 
   // Unified handleSelect function
@@ -40,12 +40,19 @@ function WeatherForecasts() {
         levels: { ...prevData.levels, selected: option },
       }));
     }
-    console.log("Current selected data:", selectedValues);
+    console.log("Current selected data:", selectedValues, selectedDatetime, selectedHour);
   };
 
+  const [selectedHour, setSelectedHour] = useState(`${String(selectedDatetime.getUTCHours()).padStart(2, "0")}z`);
+
+  // const hours = ["00z", "06z", "12z", "18z"];
+
+  // Function to update datetime based on new date and hour
   const handleDatetimeChange = (date, hour) => {
     const datetime = setHourOnDate(date, hour);
-    const displayFormattedDate = format(datetime, flaskData.initialTimes.format_display);
+    setSelectedDatetime(datetime);
+
+    // Format and update `selectedValues` based on `datetime`
     const backendFormattedDate = format(datetime, flaskData.initialTimes.format_backend);
 
     setSelectedValues((prev) => ({
@@ -56,30 +63,36 @@ function WeatherForecasts() {
     updateLeadHours(datetime, flaskData, setFlaskData, selectedValues, setSelectedValues);
   };
 
+  // Handle date change by calling `handleDatetimeChange` with new date
   const handleDateChange = (date) => {
-    setSelectedDate(date);
-    handleDatetimeChange(date, selectedHour);
+    // setSelectedDate(date)
+    handleDatetimeChange(date, selectedHour); // Pass current hour
   };
 
+  // Handle hour change by calling `handleDatetimeChange` with new hour
   const handleHourClick = (hour) => {
-    setSelectedHour(hour);
-    handleDatetimeChange(selectedDate, hour);
+    setSelectedHour(hour)
+    handleDatetimeChange(selectedDatetime, hour); // Pass current date
   };
 
-
-  const generateGraph = () => {
-    console.log("Sent selected data:", JSON.stringify({ ...getMappedValues(selectedValues), mission: "SARP-East" }));
-    fetch("/generate-graph", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...selectedValues, mission: "SARP-East" }), // Include selected level in payload
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setImageSrc(data.imagePath);
-      })
-      .catch((error) => console.error("Error generating graph:", error));
+  const handleSubmit = async () => {
+    const img = await generateGraph(selectedValues,flaskData.urlInfo); // Call generateGraph with selected values
+    setImageSrc(img); // Set the returned image URL
   };
+
+  // const generateGraph = () => {
+  //   console.log("Sent selected data:", JSON.stringify({ ...getMappedValues(selectedValues), mission: "SARP-East" }));
+  //   fetch("/generate-graph", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ ...selectedValues, mission: "SARP-East" }), // Include selected level in payload
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setImageSrc(data.imagePath);
+  //     })
+  //     .catch((error) => console.error("Error generating graph:", error));
+  // };
 
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
@@ -106,8 +119,15 @@ function WeatherForecasts() {
                   label={config.label}
                   selectedDate={selectedDatetime}
                   onChange={handleDateChange}
-                  dateFormat={config.format_display}
+                  dateDisplayFormat={config.format_display}
+                  maxDate={config.end}
+                  minDate={config.start}
+                  dateFormat={config.format_backend}
+
                 />
+
+
+
                 {flaskData.initialTimes.hours.length > 1 && (
                   <div className="hour-buttons">
                     {flaskData.initialTimes.hours.map((hour) => (
@@ -115,8 +135,9 @@ function WeatherForecasts() {
                         key={hour}
                         onClick={() => handleHourClick(hour)}
                         className={`hour-btn ${hour === selectedHour ? "selected" : ""}`}
+                        disabled={isPastEnd(selectedDatetime, hour, flaskData)} // Pass data to check for last day condition
                       >
-                        {hour}
+                        {`${String(hour).padStart(2, "0")}z`}
                       </button>
                     ))}
                   </div>
@@ -144,7 +165,7 @@ function WeatherForecasts() {
         })}
 
         <button
-          onClick={generateGraph}
+          onClick={handleSubmit}
           className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500"
         >
           Generate graph
@@ -175,7 +196,13 @@ function WeatherForecasts() {
           </button>
         </div>
 
-        <img src={imageSrc} alt="Weather Graph" className="w-full rounded-sm border border-black" />
+        <div>
+          {imageSrc ? (
+            <img src={imageSrc} alt="Generated Graph" />
+          ) : (
+            <p>Loading image...</p>
+          )}
+        </div>
       </main>
     </div>
   );

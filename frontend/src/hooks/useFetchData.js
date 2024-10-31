@@ -1,6 +1,7 @@
 // src/hooks/useFetchData.js
 import { useState, useEffect } from "react";
 import { parse } from "date-fns";
+import { parseUTCDate } from "../utils/dateUtils";
 
 export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
   const [flaskData, setFlaskData] = useState({
@@ -93,7 +94,7 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
       
       setOrder(data.order || []);
       if (data.initialTimes) {
-        const parsedDate = parse(data.initialTimes.selected, data.initialTimes.format_date, new Date());
+        const parsedDate = parseUTCDate(data.initialTimes.selected, data.initialTimes.format_backend);
         setSelectedDatetime(parsedDate);
       }
 
@@ -128,5 +129,5 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
     }));
   };
 
-  return { flaskData, selectedValues, order, selectedDatetime, setSelectedValues, setFlaskData, updateLevels };
+  return { flaskData, selectedValues, order, selectedDatetime, setSelectedDatetime, setSelectedValues, setFlaskData, updateLevels };
 }

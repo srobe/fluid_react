@@ -1,5 +1,11 @@
 { 
   "order": ["fields","regions","levels","initialTimes","leadHours"],
+  "urlInfo": {
+    "stream":"MERRA2",
+    "instance":"reanalysis",
+    "url_theme":"classic_merra2",
+    "theme":"classic_merra2"
+  },
   "levels": {
     "label":"Levels",
     "all":["10", "30", "50", "100", "200", "300", "500", "700", "850"],
@@ -38,7 +44,7 @@
             "levels":[0]}
     ],
     "selected": "tmpu",
-    "type": "DropdownWithSearch"
+    "type": "ButtonGroup"
   },
   "regions": {
     "label": "Regions",
@@ -69,10 +75,10 @@
   },
   "initialTimes": {
     "label": "Forecast Initial Time",
-    "hours": ["00z","12z"],
-    "start": "01Jul2024 00z",
-    "end": "17Aug2024 12z",
-    "selected": "17Aug2024 12z",
+    "hours": [0,12],
+    "start": "20240610T000000",
+    "end": "20240817T120000",
+    "selected": "20240817T120000",
     "format_date":"ddMMMyyyy HH'z'",
     "format_display":"MMM dd',' yyyy",
     "format_backend":"yyyyMMdd'T'HH'0000'",

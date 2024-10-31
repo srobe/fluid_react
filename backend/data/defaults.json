@@ -1,0 +1,66 @@
+{
+  "order": ["streams", "fields", "regions", "levels", "initialTimes", "leadHours", "tracks"],
+  "urlInfo": {
+    "stream": "MERRA2",
+    "instance": "reanalysis",
+    "url_theme": "classic_merra2",
+    "theme": "classic_merra2",
+    "mission": ""
+  },
+  "levels": {
+    "label": "Levels",
+    "all": ["0"],
+    "selected": "0",
+    "type": "ButtonGroup"
+  },
+  "fields": {
+    "label": "Fields",
+    "all": [],
+    "selected": "",
+    "type": "DropdownWithSearch"
+  },
+  "regions": {
+    "label": "Regions",
+    "all": [],
+    "selected": "",
+    "type": "DropdownWithSearch"
+  },
+  "initialTimes": {
+    "label": "Forecast Initial Time",
+    "hours": [0],
+    "start":"$todayMinus2Weeks",
+    "end":"$today",
+    "selected":"$today",
+    "format":{"display":"MMM dd',' yyyy",
+                "backend":"yyyyMMdd'T'HH'0000'"},
+    "type": "DatePicker"
+  },
+  "leadHours": {
+    "label": "Forecast Lead Hour",
+    "selected": "000",
+    "hours":{
+        "0":[0, 3, 6, 9, 12, 15, 18, 21, 24],
+        "12":[0, 3, 6, 9, 12]
+    },
+    "all": [],
+    "format": {
+        "var":"<03d>h",
+        "date":"ddMMMyyyy HH'z'",
+        "all":"$var+$formattedDate"
+        },
+    "type": "DropdownWithSearch"
+  },
+  "streams":{
+    "label":"Plot Type",
+    "all":[],
+    "selected":"$urlInfo.stream",
+    "type": "ButtonGroup"
+  },
+  "tracks": {
+    "label": "Storm Tracks",
+    "all": [],
+    "selected": "",
+    "type": "Checkbox"
+  }
+}
+

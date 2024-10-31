@@ -24,7 +24,7 @@ regions_dict={
 def get_data():
     data = flask.request.json
     fn = data.get('name','data3.json')
-    with open(fn) as f:
+    with open(f"data/{fn}") as f:
         data = json.load(f)
     return jsonify(data)
 

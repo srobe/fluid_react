@@ -1,0 +1,114 @@
+{ 
+  "order": ["fields","regions","levels","initialTimes","leadHours","tracks"],
+  "urlInfo": {
+    "stream":"MERRA2",
+    "instance":"reanalysis",
+    "url_theme":"classic_merra2",
+    "theme":"classic_merra2"
+  },
+  "levels": {
+    "label":"Levels",
+    "all":["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+    "selected":"850",
+    "type": "ButtonGroup"
+  },
+  "fields": {
+    "label": "Fields",
+    "all": [
+        {"label":"Abs EPV",
+            "var":"epv",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"Temperature",
+            "var":"tmpu",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"Vert Velocity",
+            "var":"vvel",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"Humidity",
+            "var":"humid",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"T2M",
+            "var":"t2m",
+            "levels":[0]},
+        {"label":"Precip & SLP",
+            "var":"precip",
+            "levels":[0]},
+        {"label":"Vorticity",
+            "var":"vort",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"Wind Speed",
+            "var":"wspd",
+            "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
+        {"label":"Basemap",
+            "var":"bmap",
+            "levels":[0]}
+    ],
+    "selected": "tmpu",
+    "type": "DropdownWithSearch"
+  },
+  "regions": {
+    "label": "Regions",
+    "all": [
+        {"label":"Africa",
+            "var":"africa"},
+        {"label":"Australia",
+            "var":"australia"},
+        {"label":"Global",
+            "var":"global"},
+        {"label":"Mid Atlantic",
+            "var":"midatl"},
+        {"label":"North America",
+            "var":"nam"},
+        {"label":"North Polar",
+            "var":"nps"},
+        {"label":"Pacific",
+            "var":"pac"},
+        {"label":"South America",
+            "var":"sam"},
+        {"label":"Seven Seas",
+            "var":"sevenseas"},
+        {"label":"South Polar",
+            "var":"sps"}
+    ],
+    "selected": "nam",
+    "type": "DropdownWithSearch"
+  },
+  "initialTimes": {
+    "label": "Forecast Initial Time",
+    "hours": [0,12],
+    "start": "20240610",
+    "end": "20240817",
+    "selected": "20240817",
+    "format":{"display":"MMM dd',' yyyy",
+                "backend":"yyyyMMdd"},
+    "type": "DatePicker"
+  },
+  "leadHours": {
+    "label": "Forecast Lead Hour",
+    "selected": "00",
+    "all": [
+        {"label":"00h 17Aug2024 12z",
+        "var":"00"},
+        {"label":"03h 17Aug2024 15z",
+        "var":"03"},
+        {"label":"06h 17Aug2024 18z",
+        "var":"06"},
+        {"label":"09h 17Aug2024 21z",
+        "var":"09"},
+        {"label":"12h 18Aug2024 00z",
+        "var":"12"}
+        ],
+    "format": {
+        "var":"<02d>",
+        "date":"ddMMMyyyy HH'z'",
+        "all":"{var}h {formattedDate}"
+        },
+    "type": "DropdownWithSearch"
+  },
+  "tracks": {
+    "label": "Storm Tracks",
+    "all": ["tropical"],
+    "selected": "",
+    "type": "Checkbox"
+  }
+}
