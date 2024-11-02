@@ -32,11 +32,12 @@ This project is a major remodel of the frontend design to improve usability and 
 - **conda**: Conda is an open-source package and environment management system that helps you manage dependencies and environments for Python applications easily. It ensures all necessary libraries are installed in isolated environments.
 
   For more information about installing Conda, you can visit [Miniforge Installation Instructions](https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge).
-- **Flask**: Used to serve the backend application.
+- **Flask**: A Python-based library used to serve the backend application.
 - **React**: For building the interactive user interface.
 
 Production only:
 - **Docker**: Used for containerizing both backend and frontend, ensuring consistency across different environments.
+   For more information about installing Docker, you can visit [Docker Get Started](https://www.docker.com/get-started/)
 
 ## Setup Instructions
 
@@ -72,7 +73,7 @@ To ensure the proper configuration for both frontend and backend during developm
   ```
 - Create a conda virtual environment and install dependencies:
   ```
-  conda env create -f ../environment.yml
+  conda env create -f environment.yml
   conda activate fluid
   ```
 - Start the Flask server:
@@ -106,14 +107,16 @@ To ensure the proper configuration for both frontend and backend during developm
   ```
   docker-compose up
   ```
-  - The combined service runs on port `5002`.
-  - The backend is accessible at `http://localhost:5001`.
+  - The backend runs on port `5001`.
+  - The combined app is accessible at `http://localhost:5002`.
   - Uncomment the frontend section in `docker-compose.yml` if you wish to run the frontend through Docker.
 
 ## Deployment
 
 - **Frontend with Sample JSON**: The frontend can run independently from the backend using the sample JSON files located in `frontend/public/data`.
+  
 - **Frontend with Backend**: For live updates, first follow Step 3 (Setting up Backend), then open a new terminal window and follow Step 4 (Setting up Frontend).
+  
 - **When to Use Docker**: Docker is a container that builds an independent environment based on `frontend/package.json` and `backend/environment.yml`. Before pushing changes to the main branch, make sure the app runs as expected in Docker.
 
 ## Directory Structure
@@ -146,7 +149,7 @@ We welcome contributions from the community. To contribute to the FLUID project,
 
 2. **Clone your forked repository:**
    ```bash
-   git clone https://github.com/your-username/fluid.git
+   git clone https://github.com/your-username/fluid_react.git
    ```
 
 3. **Create a new branch:**
