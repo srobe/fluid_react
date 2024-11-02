@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import useFetchData from "../../hooks/useFetchData2";
 import generateGraph from "../../hooks/generateGraph";
 import { setHourOnDate, updateLeadHours, isPastEnd, formatUTC } from "../../utils/dateUtils";
-import DropdownWithSearch from "../../components/DropdownWithSearch";
-import CustomDatePicker from "../../components/DatePicker";
-import ButtonGroup from "../../components/ButtonGroup";
-import RadioButtonGroup from "../../components/RadioButtonGroup";
-import TrackCheckbox from "../../components/Checkbox";
+import {DropdownWithSearch, CustomDatePicker,
+  ButtonGroup, RadioButtonGroup,TrackCheckbox
+ } from "../../components";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 

@@ -1,71 +1,71 @@
-import flask
-from flask import Flask, jsonify, send_from_directory
-import json
 import os
+import sys
+from dotenv import load_dotenv
+from typing import List
+from flask import Flask, send_from_directory
+from flask_cors import CORS
+from api import api  # Import the blueprint
 
-EXTERNAL_PLOTS_DIR=f'{os.getcwd()}/plots'
-app = Flask(__name__, static_folder="static")
+# Flask app setup
+app: Flask = Flask(__name__, static_folder="static")
+app.register_blueprint(api, url_prefix='/api')
 
-regions_dict={      
-            "Africa":"africa",
-            "Australia":"australia",
-            "Global":"global",
-            "Mid Atlantic":"midatl",
-            "North America":"nam",
-            "North Polar":"nps",
-            "Pacific":"pac",
-            "South America":"sam",
-            "Seven Seas":"sevenseas",
-            "South Polar":"sps"
-        }  
+# Environment variable to determine the mode
+load_dotenv()
+APP_ENV = os.getenv('APP_ENV', 'production')
 
+# Development-only imports and settings
+if APP_ENV == 'development':
+    import watchdog_handler
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    app.add_url_rule('/shutdown', view_func=watchdog_handler.shutdown)
 
-@app.route('/data', methods=['POST'])
-def get_data():
-    data = flask.request.json
-    fn = data.get('name','data3.json')
-    with open(f"data/{fn}") as f:
-        data = json.load(f)
-    return jsonify(data)
+@app.route('/favicon.ico')
+def favicon() -> object:
+    """
+    Route to serve the favicon.
 
-@app.route('/generate-graph', methods=['POST'])
-def generate_graph():
-    data = flask.request.json
-    image= get_filename(data)
-    # image='g5fpfc_precip_0_20241028T000000_sps_00.png'
-    print(image)
-    # return jsonify({"imagePath": image})
-    return jsonify({"imagePath": f"/external-plot/{image}"})
-
-@app.route('/external-plot/<path:filename>')
-def serve_external_plot(filename):
-    return send_from_directory(EXTERNAL_PLOTS_DIR, filename)
+    Returns:
+        The favicon.ico file from the specified directory.
+    """
+    return send_from_directory(
+        os.path.join(app.root_path, 'plots/icons'),
+        'cats.ico', mimetype='image/vnd.microsoft.icon'
+    )
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
-def serve_react(path):
-    print(f"Requested path: {path}") 
-    full_path = os.path.join(app.static_folder, path)
+def serve_react(path: str) -> object:
+    """
+    Catch-all route to serve the React frontend.
+    If the requested path is an existing static file, it serves that file.
+    Otherwise, it serves the React app's index.html to enable client-side routing.
+
+    Args:
+        path (str): The requested path.
+
+    Returns:
+        The requested file if it exists, or index.html if not.
+    """
+    if path.startswith("api"):
+        return "API route not found", 404
+
+    print(f"Catch-all route hit for path: {path}")
+    full_path: str = os.path.join(app.static_folder, path)
     if os.path.exists(full_path) and not os.path.isdir(full_path):
         return send_from_directory(app.static_folder, path)
-    # Serve index.html for all other routes to enable client-side routing
     return send_from_directory(app.static_folder, "index.html")
 
-def get_filename(request):
-    tau=request.get('leadHours1','00')
-    field=request.get('fields1','precip')
-    level=request.get('levels','0')
-    stream=request.get('stream','g5fpfc')
-    time=request.get('initialTimes1','20241028T000000')
-    tau=request.get('leadHours1','00')
-    region=request.get('regions','nam')
-    region=regions_dict[region]
-      
-    filename=f'{stream}_{field}_{level}_{time}_{region}_{tau}.png'
-    
-    return filename
-
 if __name__ == '__main__':
-    app.run(
-        host="0.0.0.0", 
-        debug=True)
+    """
+    Main entry point for the Flask application.
+    Sets up directory monitoring in a separate thread (in development) and starts the Flask app.
+    """
+    # Start watching directories in a separate thread (development only)
+    if APP_ENV == 'development':
+        extra_directories: List[str] = ['plots', 'data']  # This can stay in app.py as it is relevant to app behavior
+        watchdog_handler.start_watch_thread(extra_directories)
+
+    # Start Flask app
+    app.run(host="0.0.0.0", port=5001, debug=(APP_ENV == 'development'))
+

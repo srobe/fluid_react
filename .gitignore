@@ -45,3 +45,5 @@ backend/static/
 # Environment configuration
 backend/.env
 
+# Others
+repo.txt

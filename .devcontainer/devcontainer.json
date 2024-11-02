@@ -14,16 +14,16 @@
         "ms-toolsai.jupyter",
         "ms-azuretools.vscode-docker",
         "esbenp.prettier-vscode",
-        "redhat.vscode-yaml",
-        "donjayamanne.python-extension-pack",
-        "ms-python.debugpy",
-        "ms-python.vscode-pylance",
-        "ms-vscode.live-server",
-        "oderwat.indent-rainbow",
-        "dbaeumer.vscode-eslint",
-        "aeschli.vscode-css-formatter",
-        "bierner.color-info",
-        "ms-toolsai.jupyter-renderers"
+        "redhat.vscode-yaml"
+        // "donjayamanne.python-extension-pack",
+        // "ms-python.debugpy",
+        // "ms-python.vscode-pylance",
+        // "ms-vscode.live-server",
+        // "oderwat.indent-rainbow",
+        // "dbaeumer.vscode-eslint",
+        // "aeschli.vscode-css-formatter",
+        // "bierner.color-info",
+        // "ms-toolsai.jupyter-renderers"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"

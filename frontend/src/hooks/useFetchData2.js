@@ -3,7 +3,9 @@ import { parseUTCDate,formatUTC } from "../utils/dateUtils";
 import { leadHoursFormatter } from "../utils/formatStrings";
 import resolvePlaceholders from "../utils/resolvePlaceholders";
 
-export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
+const apiUrl = process.env.REACT_APP_API_URL;
+
+export default function useFetchData(primaryUrl, fallbackLocalPath, requestData) {
   const [flaskData, setFlaskData] = useState({});
   const [selectedValues, setSelectedValues] = useState({});
   const [order, setOrder] = useState([]);
@@ -30,7 +32,7 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
       let data;
 
       try {
-        const primaryResponse = await fetch(primaryUrl, {
+        const primaryResponse = await fetch(`${apiUrl}${primaryUrl}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestData),
@@ -42,7 +44,7 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
         console.error("Error fetching from primary URL, attempting fallback:", error);
 
         try {
-          const fallbackResponse = await fetch(fallbackUrl);
+          const fallbackResponse = await fetch(fallbackLocalPath);
           if (!fallbackResponse.ok) throw new Error("Fallback fetch failed");
 
           data = await fallbackResponse.json();
@@ -77,7 +79,7 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
           label:leadHoursFormatter(mergedData.leadHours.selected, parsedDate, mergedData.leadHours.format),
         },
         streams: extractLabelVar(mergedData.streams, true),
-        tracks: { var: mergedData.tracks.selected, label: "TC Tracks" },
+        tracks: { var: mergedData.tracks.selected, label: false },
         currentHour: {
           var: parsedDate.getUTCHours(),
           label: `${String(parsedDate.getUTCHours()).padStart(2, "0")}z`,
@@ -92,7 +94,7 @@ export default function useFetchData(primaryUrl, fallbackUrl, requestData) {
     };
 
     fetchData();
-  }, [primaryUrl, fallbackUrl, requestData, fetchCompleted]);
+  }, [primaryUrl, fallbackLocalPath, requestData, fetchCompleted]);
 
   const updateLevels = (fieldVar) => {
     const selectedField = flaskData.fields.all.find((field) => field.var === fieldVar);
