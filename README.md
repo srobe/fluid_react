@@ -1,8 +1,8 @@
 ![Fluid from Figma (1)](https://github.com/user-attachments/assets/4e422bc0-510b-4de4-98ae-317e6ff34979)
 
-# FLUID Project
+# FLUID2.0 Project
 
-Welcome to the FLUID project repository. This project is developed under NASA Goddard's GEOS tool called FLUID.
+Welcome to the FLUID2.0 project repository. This project is developed under NASA Goddard's GEOS tool called FLUID.
 
 ## Table of Contents
 
@@ -10,7 +10,7 @@ Welcome to the FLUID project repository. This project is developed under NASA Go
 - [Features](#features)
 - [Installation](#installation)
 - [Setup](#setup-instructions)
-- [Combined App](#running-combined-app)
+- [Deployment](#deployment)
 - [Project Structure](#directory-structure)
 - [Contributing](#contributing)
   
@@ -29,11 +29,13 @@ This project is a major remodel of the frontend design to improve usability and 
 
 ### Requirements
 
-- **conda**:
+- **conda**: Conda is an open-source package and environment management system that helps you manage dependencies and environments for Python applications easily. It ensures all necessary libraries are installed in isolated environments.
+
+  For more information about installing Conda, you can visit [Miniforge Installation Instructions](https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge).
 - **Flask**: Used to serve the backend application.
 - **React**: For building the interactive user interface.
 
-Production only: 
+Production only:
 - **Docker**: Used for containerizing both backend and frontend, ensuring consistency across different environments.
 
 ## Setup Instructions
@@ -108,8 +110,7 @@ To ensure the proper configuration for both frontend and backend during developm
   - The backend is accessible at `http://localhost:5001`.
   - Uncomment the frontend section in `docker-compose.yml` if you wish to run the frontend through Docker.
 
-
-## Running Combined App
+## Deployment
 
 - **Frontend with Sample JSON**: The frontend can run independently from the backend using the sample JSON files located in `frontend/public/data`.
 - **Frontend with Backend**: For live updates, first follow Step 3 (Setting up Backend), then open a new terminal window and follow Step 4 (Setting up Frontend).
@@ -137,7 +138,6 @@ To ensure the proper configuration for both frontend and backend during developm
 ```
 
 ## Contributing
-
 
 We welcome contributions from the community. To contribute to the FLUID project, follow these steps:
 
