@@ -9,12 +9,16 @@ Welcome to the FLUID project repository. This project is developed under NASA Go
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Setup](#setup-instructions)
+- [Combined App](#running-combined-app)
+- [Project Structure](#directory-structure)
 - [Contributing](#contributing)
   
 ## Introduction
 
-FLUID (Framework for Live User-Invoked Data) is a tool designed to enhance the user experience of NASA Goddard's GEOS system. This project aims to provide an intuitive and user-friendly interface for managing and visualizing geophysical data.
+[FLUID](https://fluid.nccs.nasa.gov/weather/) (Framework for Live User-Invoked Data) is a tool designed to enhance the user experience of NASA Goddard's GEOS system. This project aims to provide an intuitive and user-friendly interface for managing and visualizing geophysical data.
+
+This project is a major remodel of the frontend design to improve usability and efficiency. This updated web-based visualization tool is built using a React frontend and a Flask backend.
 
 ## Features
 
@@ -23,40 +27,117 @@ FLUID (Framework for Live User-Invoked Data) is a tool designed to enhance the u
 - Seamless integration with GEOS system
 - Real-time data updates and notifications
 
-## Installation
+### Requirements
 
-To set up the project locally, follow these steps:
+- **conda**:
+- **Flask**: Used to serve the backend application.
+- **React**: For building the interactive user interface.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/isabelshic/fluid.git
-   ```
-2. **Navigate to the project directory:**
-   ```bash
-   cd fluid
-   ```
-3. **Install the necessary dependencies:**
-   ```bash
-   # For Node.js projects
-   npm install
+Production only: 
+- **Docker**: Used for containerizing both backend and frontend, ensuring consistency across different environments.
 
-## Usage
+## Setup Instructions
 
-To start using the FLUID tool, follow these steps:
+### 1. Clone the Repository
 
-1. **Start the development server:**
-   ```bash
-   # For Node.js projects
-   npm start
+```
+git clone https://github.com/srobe/fluid_react.git
+cd fluid_react
+```
 
-2. **Open your browser and navigate to:**
-   ```
-   http://localhost:3000
-   ```
+### 2. Setting Up the Environment Files
 
-3. **Explore the features and functionalities of the FLUID tool.**
+To ensure the proper configuration for both frontend and backend during development:
+
+- **Backend `.env` File**:
+  In the `backend` directory, create a `.env` file with the following content to enable development mode:
+  ```
+  APP_ENV=development
+  APP_PORT=5001
+  ```
+
+- **Frontend `.env` File**:
+  In the `frontend` directory, create a `.env` file to point to the backend API:
+  ```
+  REACT_APP_API_URL=http://localhost:5001
+  ```
+
+### 3. Setting Up the Backend (Flask)
+
+- Navigate to the `backend` directory:
+  ```
+  cd backend
+  ```
+- Create a conda virtual environment and install dependencies:
+  ```
+  conda env create -f ../environment.yml
+  conda activate fluid
+  ```
+- Start the Flask server:
+  ```
+  python app.py
+  ```
+
+### 4. Setting Up the Frontend (React)
+
+- Navigate to the `frontend` directory:
+  ```
+  cd ../frontend
+  ```
+- Install dependencies:
+  ```
+  npm install
+  ```
+- Start the React development server:
+  ```
+  npm start
+  ```
+  The frontend is configured with a proxy to communicate with the backend at `http://localhost:5001`.
+
+### 5. Using Docker (Optional)
+
+- Build the Docker images for both frontend and backend:
+  ```
+  docker-compose build
+  ```
+- Start the services:
+  ```
+  docker-compose up
+  ```
+  - The combined service runs on port `5002`.
+  - The backend is accessible at `http://localhost:5001`.
+  - Uncomment the frontend section in `docker-compose.yml` if you wish to run the frontend through Docker.
+
+
+## Running Combined App
+
+- **Frontend with Sample JSON**: The frontend can run independently from the backend using the sample JSON files located in `frontend/public/data`.
+- **Frontend with Backend**: For live updates, first follow Step 3 (Setting up Backend), then open a new terminal window and follow Step 4 (Setting up Frontend).
+- **When to Use Docker**: Docker is a container that builds an independent environment based on `frontend/package.json` and `backend/environment.yml`. Before pushing changes to the main branch, make sure the app runs as expected in Docker.
+
+## Directory Structure
+
+```
+.
+├── backend
+│   ├── app.py             # Flask application entry point
+│   ├── data/              # JSON data files used for visualization
+│   ├── plots/             # Generated plots stored here
+│   ├── static/            # Static assets for the backend
+│   └── environment.yml    # Conda environment configuration
+├── frontend
+│   ├── public/            # Public assets including linked plots
+│   ├── src/               # Source files for React components
+│   └── ...
+├── docker-compose.yml     # Docker configuration for deployment
+├── Dockerfile             # Combined Dockerfile
+├── Dockerfile.backend     # Specific Dockerfile for backend service
+├── Dockerfile.frontend    # Specific Dockerfile for frontend service
+└── README.md              # Project documentation
+```
 
 ## Contributing
+
 
 We welcome contributions from the community. To contribute to the FLUID project, follow these steps:
 
@@ -86,3 +167,6 @@ We welcome contributions from the community. To contribute to the FLUID project,
 
 6. **Create a pull request:**
    Go to the original repository and create a pull request from your forked repository
+
+Feel free to suggest new features or report bugs via GitHub Issues.
+
