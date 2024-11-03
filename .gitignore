@@ -33,6 +33,10 @@ yarn-error.log*
 .devcontainer/
 devcontainer.json
 
+# prodcontainers
+.prodcontainer/
+prodcontainer.json
+
 # Data and generated files
 # backend/data/*.json
 # backend/plots/*
