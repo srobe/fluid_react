@@ -33,6 +33,15 @@ yarn-error.log*
 .devcontainer/
 devcontainer.json
 
+# devcontainers
+.prodcontainer/
+prodcontainer.json
+
+
+# Miniforge3
+Miniforge3-Linux-x86_64.sh
+backend/Miniforge3-Linux-x86_64.sh
+
 # Data and generated files
 # backend/data/*.json
 # backend/plots/*

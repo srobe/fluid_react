@@ -2,39 +2,38 @@
   "name": "Fluid React Dev Environment",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:1": {},
+    "ghcr.io/devcontainers/features/conda:1": {
+      "installFrom": "miniforge3",
+      "activateEnvironment": "fluid"
+    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "16"
-    } // Add Node.js here
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
   },
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-toolsai.jupyter",
-        "ms-azuretools.vscode-docker",
         "esbenp.prettier-vscode",
-        "redhat.vscode-yaml"
-        // "donjayamanne.python-extension-pack",
-        // "ms-python.debugpy",
-        // "ms-python.vscode-pylance",
-        // "ms-vscode.live-server",
-        // "oderwat.indent-rainbow",
-        // "dbaeumer.vscode-eslint",
-        // "aeschli.vscode-css-formatter",
-        // "bierner.color-info",
-        // "ms-toolsai.jupyter-renderers"
+        "redhat.vscode-yaml",
+        "donjayamanne.python-extension-pack",
+        "ms-python.debugpy",
+        "ms-python.vscode-pylance",
+        "ms-vscode.live-server",
+        "oderwat.indent-rainbow",
+        "dbaeumer.vscode-eslint",
+        "aeschli.vscode-css-formatter",
+        "bierner.color-info",
+        "ms-toolsai.jupyter-renderers"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"
       }
     }
   },
-  "postCreateCommand": "conda env create -f backend/environment.yml && npm install --prefix frontend",
-  "forwardPorts": [
-    5001,
-    3000
-  ],
+  "postCreateCommand": "./devcontainer-setup.sh",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
 }
