@@ -32,8 +32,9 @@
       }
     }
   },
-  "postCreateCommand": "./devcontainer-setup.sh",
+  "postCreateCommand": "conda init bash && ./devcontainer-setup.sh",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
 }
+
 
