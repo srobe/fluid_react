@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DropdownWithSearch from "../../components/DropdownWithSearch";
-import CustomDatePicker from "../../components/DatePicker";
+import {ButtonGroup, CustomDatePicker, DropdownWithSearch} from "../../components/UserInput";
 import "react-datepicker/dist/react-datepicker.css";
 import { parse, addHours, format } from "date-fns";
 

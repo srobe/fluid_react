@@ -1,5 +1,7 @@
+// src/hooks/useFetchData2.js
+
 import { useState, useEffect } from "react";
-import { parseUTCDate,formatUTC } from "../utils/dateUtils";
+import { parseUTCDate,formatUTC,getLeadHours} from "../utils/dateUtils";
 import { leadHoursFormatter } from "../utils/formatStrings";
 import resolvePlaceholders from "../utils/resolvePlaceholders";
 
@@ -57,12 +59,22 @@ export default function useFetchData(primaryUrl, fallbackLocalPath, requestData)
       // Merge fetched data with default data
       const mergedData = { ...defaultData, ...data };
       console.log("Merged data:", mergedData);
-      // Set flaskData
-      setFlaskData(mergedData);
 
       // Set selectedDatetime based on initialTimes.selected
       const parsedDate = parseUTCDate(mergedData.initialTimes.selected, mergedData.initialTimes.format.backend);
       setSelectedDatetime(parsedDate);
+
+      const newLeadHours = getLeadHours(parsedDate, mergedData);
+
+      // Update flaskData with new lead hours
+      const updatedFlaskData = {
+        ...mergedData,
+        leadHours: {
+          ...mergedData.leadHours,
+          all: newLeadHours,
+        },
+      };
+      setFlaskData(updatedFlaskData);
 
       // Populate selectedValues based on mergedData
       const newSelectedValues = {
@@ -80,10 +92,12 @@ export default function useFetchData(primaryUrl, fallbackLocalPath, requestData)
         },
         streams: extractLabelVar(mergedData.streams, true),
         tracks: { var: mergedData.tracks.selected, label: false },
-        currentHour: {
-          var: parsedDate.getUTCHours(),
-          label: `${String(parsedDate.getUTCHours()).padStart(2, "0")}z`,
-        }
+        // currentHour: {
+        //   var: parsedDate.getUTCHours(),
+        //   label: `${String(parsedDate.getUTCHours()).padStart(2, "0")}z`,
+        // },
+        currentHour: parsedDate.getUTCHours(),
+        datetime: parsedDate
       };
       setSelectedValues(newSelectedValues);
       console.log("Selected values:", newSelectedValues);
@@ -109,7 +123,7 @@ export default function useFetchData(primaryUrl, fallbackLocalPath, requestData)
     }));
   };
 
-  return { flaskData, selectedValues, order, selectedDatetime, setSelectedDatetime, setSelectedValues, setFlaskData, updateLevels };
+  return { flaskData, selectedValues, order, setSelectedValues, setFlaskData, updateLevels };
 }
 
 // Helper function to extract "var" and "label"

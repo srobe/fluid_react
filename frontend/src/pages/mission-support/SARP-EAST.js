@@ -4,10 +4,7 @@ import React, { useState, useEffect } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import generateGraph from "../../hooks/generateGraph";
 import { setHourOnDate, updateLeadHours, isPastEnd } from "../../utils/dateUtils";
-import { getMappedValues } from "../../utils/mappedValues";
-import DropdownWithSearch from "../../components/DropdownWithSearch";
-import CustomDatePicker from "../../components/DatePicker";
-import ButtonGroup from "../../components/ButtonGroup";
+import {ButtonGroup, CustomDatePicker, DropdownWithSearch} from "../../components/UserInput";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 
@@ -15,7 +12,7 @@ const hours = ["00z", "06z", "12z", "18z"];
 
 function WeatherForecasts() {
   const { flaskData, selectedValues, order, selectedDatetime, setSelectedDatetime, setSelectedValues, setFlaskData, updateLevels } = useFetchData(
-    "/data",             // Primary URL
+    "/api/data",             // Primary URL
     "/data/data4.json",       // Fallback URL
     { name: "data4.json", age: 30 } // Request data
   );

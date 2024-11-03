@@ -1,102 +1,37 @@
+// src/pages/mission-support/SARP.js
+
 import React, { useState, useEffect, useCallback } from "react";
 import useFetchData from "../../hooks/useFetchData2";
 import generateGraph from "../../hooks/generateGraph";
-import { setHourOnDate, updateLeadHours, isPastEnd, formatUTC } from "../../utils/dateUtils";
-import {
-  DropdownWithSearch,
-  CustomDatePicker,
-  ButtonGroup,
-  RadioButtonGroup,
-  TrackCheckbox,
-  renderComponent
-} from "../../components";
+import { renderComponent } from "../../components";
+import { Oval } from 'react-loader-spinner';
 import "react-datepicker/dist/react-datepicker.css";
-import { format } from "date-fns";
 
 function WeatherForecasts() {
   const {
     flaskData,
     selectedValues,
     order,
-    selectedDatetime,
-    setSelectedDatetime,
     setSelectedValues,
     setFlaskData,
     updateLevels,
-  } = useFetchData("/api/data", "/data/data5.json", { name: "data/data5.json", age: 30 });
+  } = useFetchData("/api/data", "/data/data5.json", { name: "data5.json", age: 30 });
 
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
   const [selectedHour, setSelectedHour] = useState(null);
-
-  useEffect(() => {
-    if (selectedDatetime) {
-      const utcHour = selectedDatetime.getUTCHours();
-      setSelectedHour(utcHour);
-    }
-  }, [selectedDatetime]);
-
-  // Extracted handlers for specific state updates
-  const handleFieldSelect = useCallback((option) => {
-    setSelectedValues((prev) => ({
-      ...prev,
-      fields: option,
-    }));
-    updateLevels(option.var);
-  }, [setSelectedValues, updateLevels]);
-
-  const handleLevelSelect = useCallback((option) => {
-    setFlaskData((prevData) => ({
-      ...prevData,
-      levels: { ...prevData.levels, selected: option },
-    }));
-  }, [setFlaskData]);
-
-  const handleSelect = useCallback((key, option) => {
-    switch (key) {
-      case "fields":
-        handleFieldSelect(option);
-        break;
-      case "levels":
-        handleLevelSelect(option);
-        break;
-      default:
-        setSelectedValues((prev) => ({
-          ...prev,
-          [key]: option,
-        }));
-    }
-  }, [handleFieldSelect, handleLevelSelect, setSelectedValues]);
-
-  const handleDatetimeChange = useCallback((date, hour) => {
-    const datetime = setHourOnDate(date, hour);
-    setSelectedDatetime(datetime);
-
-    const backendFormattedDate = formatUTC(datetime, flaskData.initialTimes.format.backend);
-    const displayFormattedDate = formatUTC(datetime, flaskData.initialTimes.format.display);
-
-    setSelectedValues((prev) => ({
-      ...prev,
-      initialTimes: {
-        var: backendFormattedDate,
-        label: displayFormattedDate,
-      },
-    }));
-
-    updateLeadHours(datetime, flaskData, setFlaskData, selectedValues, setSelectedValues);
-  }, [flaskData, selectedValues, setFlaskData, setSelectedDatetime, setSelectedValues]);
-
-  const handleDateChange = useCallback((date) => {
-    handleDatetimeChange(date, selectedHour);
-  }, [handleDatetimeChange, selectedHour]);
-
-  const handleHourClick = useCallback((hour) => {
-    setSelectedHour(hour);
-    handleDatetimeChange(selectedDatetime, hour);
-  }, [handleDatetimeChange, selectedDatetime]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback(async () => {
-    const img = await generateGraph(selectedValues, flaskData.urlInfo);
-    setImageSrc(img);
+    setIsLoading(true); // Set loading to true before fetching
+    try {
+      const img = await generateGraph(selectedValues, flaskData.urlInfo);
+      setImageSrc(img);
+    } catch (error) {
+      console.error("Error generating graph:", error);
+      setImageSrc(null); // Optionally set to null or an error image
+    } finally {
+      setIsLoading(false); // Set loading to false after fetching
+    }
   }, [selectedValues, flaskData.urlInfo]);
 
   return (
@@ -106,10 +41,6 @@ function WeatherForecasts() {
           setSelectedValues,
           updateLevels,
           selectedValues,
-          selectedDatetime,
-          selectedHour,
-          setSelectedDatetime,
-          setSelectedHour,
           setFlaskData,
           flaskData,
         }))}
@@ -146,10 +77,25 @@ function WeatherForecasts() {
         </div>
 
         <div>
-          {imageSrc ? (
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Oval
+                height={80}
+                width={80}
+                color="#4fa94d"
+                ariaLabel="oval-loading"
+                secondaryColor="#4fa94d"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            </div>
+            // <div className="flex justify-center items-center h-64">
+              // <p>Loading image...</p>
+            // </div>
+          ) : imageSrc ? (
             <img src={imageSrc} alt="Generated Graph" />
           ) : (
-            <p>Loading image...</p>
+            <p>No image available.</p>
           )}
         </div>
       </main>

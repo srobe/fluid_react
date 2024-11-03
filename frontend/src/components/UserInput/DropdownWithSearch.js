@@ -1,16 +1,16 @@
-// src/components/DropdownWithSearch.js
-
-import React, { useState } from "react";
+// src/components/UserInput/DropdownWithSearch.js
+import React, { useState, useEffect, useRef } from "react";
 import { FaCaretDown, FaSearch } from "react-icons/fa";
 
 const DropdownWithSearch = ({
-  label = "", // Default label
-  options = [], // Default to an empty array if options are not provided
-  selectedOption = "", // Default selected option as an empty string
-  onSelect = () => {}, // Default to a no-op function if onSelect is not provided
+  label = "",
+  options = [],
+  selectedOption = "",
+  onSelect = () => {},
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   // Toggle dropdown open/close and reset search term
   const handleOpen = () => {
@@ -20,10 +20,30 @@ const DropdownWithSearch = ({
     }
   };
 
-  // Convert options to uniform format: array of objects with `label` and `var`
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Convert options to uniform format
   const processedOptions = options.map((option) =>
     typeof option === "string"
-      ? { label: option, var: option } // Ensure `var` is used instead of `value`
+      ? { label: option, var: option }
       : { label: option.label, var: option.var }
   );
 
@@ -33,7 +53,7 @@ const DropdownWithSearch = ({
   );
 
   return (
-    <div className="mb-6">
+    <div className="mb-6" ref={dropdownRef}>
       <p className="text-base font-bold mb-2">{label}</p>
       <div className="relative">
         <button
@@ -66,8 +86,8 @@ const DropdownWithSearch = ({
                 <li
                   key={index}
                   onClick={() => {
-                    onSelect(option); // Pass the entire option object with `label` and `var`
-                    setIsOpen(false); // Close dropdown
+                    onSelect(option);
+                    setIsOpen(false);
                   }}
                   className="p-2 hover:bg-gray-200 cursor-pointer"
                 >
@@ -83,6 +103,3 @@ const DropdownWithSearch = ({
 };
 
 export default DropdownWithSearch;
-
-
-

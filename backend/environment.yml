@@ -17,6 +17,7 @@ dependencies:
   - flask-cors
   - watchdog
   - requests
+  - beautifulsoup4
 
 
 

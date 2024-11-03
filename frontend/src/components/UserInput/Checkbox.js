@@ -1,3 +1,5 @@
+// src/components/UserInput/Checkbox.js
+
 import React, { useState, useEffect } from "react";
 
 const TrackCheckbox = ({ 

@@ -86,18 +86,7 @@
   "leadHours": {
     "label": "Forecast Lead Hour",
     "selected": "00",
-    "all": [
-        {"label":"00h 17Aug2024 12z",
-        "var":"00"},
-        {"label":"03h 17Aug2024 15z",
-        "var":"03"},
-        {"label":"06h 17Aug2024 18z",
-        "var":"06"},
-        {"label":"09h 17Aug2024 21z",
-        "var":"09"},
-        {"label":"12h 18Aug2024 00z",
-        "var":"12"}
-        ],
+    "options": [0,3,6,9,12,15,18,21],
     "format": {
         "var":"<02d>",
         "date":"ddMMMyyyy HH'z'",

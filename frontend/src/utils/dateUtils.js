@@ -17,31 +17,65 @@ export const setUTCDate = (date) => {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
 };
 
-export const updateLeadHours = (datetime, flaskData, setflaskData, selectedValues, setSelectedValues) => {
-  const hours = [0, 3, 6, 9, 12];
-  const currentLeadHourIndex = flaskData.leadHours.all.indexOf(selectedValues.leadHours.label);
+// Corrected getLeadHours function
+export const getLeadHours = (datetime, flaskData) => {
+  const hours = flaskData.leadHours.options || [0, 3, 6, 9, 12];
   const paddingLength = flaskData.leadHours.format.var
-  ? parseInt(flaskData.leadHours.format.var.match(/\d+/)[0], 10) // Extract number from "<03d>" or "<02d>"
-  : 2; // Default padding length
+    ? parseInt(flaskData.leadHours.format.var.match(/\d+/)[0], 10)
+    : 2;
 
-  const newLeadHours = hours.map((hour) => {   
-    return leadHoursFormatter(hour, datetime, flaskData.leadHours.format, paddingLength);
+  // Generate new lead hours as array of objects with `label` and `var`
+  const newLeadHours = hours.map((hour) => {
+    const label = leadHoursFormatter(
+      hour,
+      datetime,
+      flaskData.leadHours.format,
+      paddingLength
+    );
+    return {
+      label: label,
+      var: String(hour).padStart(paddingLength, '0'),
+    };
   });
+  // Return the array directly
+  return newLeadHours;
+};
 
-  const newSelectedLeadHour = newLeadHours[currentLeadHourIndex] || newLeadHours[0];
-  const newSelectedVar = hours[currentLeadHourIndex] || hours[0];
-  setflaskData((prevData) => ({
+// updateLeadHours function remains the same
+export const updateLeadHours = (
+  datetime,
+  flaskData,
+  setFlaskData,
+  prevSelectedValues,
+  newSelectedValues
+) => {
+  const newLeadHours = getLeadHours(datetime, flaskData);
+
+  // Update flaskData with new lead hours
+  setFlaskData((prevData) => ({
     ...prevData,
     leadHours: { ...prevData.leadHours, all: newLeadHours },
   }));
 
-  setSelectedValues((prev) => ({
-    ...prev,
-    leadHours: {
-      var: String(newSelectedVar).padStart(paddingLength, '0'), // Only the padded numeric value
-      label: newSelectedLeadHour, // Full formatted string
-    },
-  }));
+  // Find the index of the previously selected lead hour based on `var`
+  const previousLeadHourVar = prevSelectedValues.leadHours?.var;
+  let currentLeadHourIndex = newLeadHours.findIndex(
+    (leadHour) => leadHour.var === previousLeadHourVar
+  );
+
+  // If the previous selection isn't found, default to the first lead hour
+  if (currentLeadHourIndex === -1) {
+    currentLeadHourIndex = 0;
+  }
+
+  // Get the new selected lead hour
+  const newSelectedLeadHour = newLeadHours[currentLeadHourIndex];
+
+  // Update selectedValues with the new lead hour
+  return {
+    ...newSelectedValues,
+    leadHours: newSelectedLeadHour,
+  };
 };
 
 export const isPastEnd = (selectedDatetime, hour, data) => {

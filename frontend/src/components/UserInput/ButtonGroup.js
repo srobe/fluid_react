@@ -1,4 +1,4 @@
-// src/components/ButtonGroup.js
+// src/components/UserInput/ButtonGroup.js
 
 import React from "react";
 

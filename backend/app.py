@@ -61,11 +61,14 @@ if __name__ == '__main__':
     Main entry point for the Flask application.
     Sets up directory monitoring in a separate thread (in development) and starts the Flask app.
     """
+    app_args=dict(debug=False)
     # Start watching directories in a separate thread (development only)
     if APP_ENV == 'development':
         extra_directories: List[str] = ['plots', 'data']  # This can stay in app.py as it is relevant to app behavior
         watchdog_handler.start_watch_thread(extra_directories)
-
+        port=int(os.getenv('APP_PORT', 5001))
+        app_args.update(dict(host="0.0.0.0",port=port,debug=True))
+        
     # Start Flask app
-    app.run(host="0.0.0.0", port=5001, debug=(APP_ENV == 'development'))
+    app.run(**app_args)
 

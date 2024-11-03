@@ -1,12 +1,12 @@
-// src/components/ButtonGroup.js
+// src/components/UserInput/RadioButtonGroup.js
 
 import React from "react";
 
-const ButtonGroup = ({ 
-  options = [], // Generic list of options
+const RadioButtonGroup = ({
+  options = [], // List of options
   selectedOption, // Currently selected option as an object { label, var }
   onSelect = () => {}, // Function to call when an option is selected
-  label = "" // Optional label for the button group
+  label = "" // Optional label for the radio button group
 }) => {
   // Convert options to a uniform format: array of objects with `label` and `var`
   const processedOptions = options.map((option) =>
@@ -16,23 +16,25 @@ const ButtonGroup = ({
   );
 
   return (
-    <div className="button-group">
+    <div className="radio-button-group">
       {label && <p className="text-base font-bold mb-2">{label}</p>}
       <div className="flex flex-wrap">
         {processedOptions.map((option, index) => (
-          <button
-            key={index}
-            onClick={() => onSelect(option)}
-            className={`button-item ${selectedOption && selectedOption.var === option.var ? "selected" : ""} p-2 m-1 border border-gray-300 rounded`}
-          >
+          <label key={index} className="radio-item p-2 m-1 flex items-center">
+            <input
+              type="radio"
+              name={label} // Use the group label as the radio group name
+              value={option.var}
+              checked={selectedOption && selectedOption.var === option.var}
+              onChange={() => onSelect(option)}
+              className="mr-2"
+            />
             {option.label}
-          </button>
+          </label>
         ))}
       </div>
     </div>
   );
 };
 
-export default ButtonGroup;
-
-
+export default RadioButtonGroup;

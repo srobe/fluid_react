@@ -1,10 +1,11 @@
-// src/components/DatePicker.js
+// src/components/UserInput/DatePicker.js
+
 import React from "react";
 import DatePicker from "react-datepicker";
 import { FaCalendarAlt } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import { addYears } from "date-fns";
-import { setUTCDate, parseUTCDate, formatUTC } from "../utils/dateUtils";
+import { setUTCDate, parseUTCDate, formatUTC } from "../../utils/dateUtils";
 
 const CustomDatePicker = ({ label, selectedDate, onChange, dateDisplayFormat, minDate, maxDate, dateFormat }) => {
 

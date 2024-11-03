@@ -1,36 +1,38 @@
-// src/hooks/fetchImageSrc.js
+const apiUrl = process.env.REACT_APP_API_URL || ''; 
 
 export async function fetchImageSrc(
-  url = "https://fluid.nccs.nasa.gov/wxmaps/"
+  url = "https://fluid.nccs.nasa.gov/wxmaps/",
+  primaryUrl = '/api/generate-graph'
 ) {
+  let data;
+
   try {
-    // Fetch the HTML content of the page
-    const response = await fetch(url, {
-      mode: 'no-cors'
+    const primaryResponse = await fetch(`${apiUrl}${primaryUrl}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: url }),
     });
+    if (!primaryResponse.ok) throw new Error("Primary image fetch failed");
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    // Parse the HTML text
-    const htmlText = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlText, "text/html");
-
-    // Find the first <img> tag and get its src attribute
-    const imgElement = doc.querySelector("img");
-
-    if (imgElement) {
-      return imgElement.src; // Return the src attribute of the <img>
-    } else {
-      console.warn("No <img> tag found in the HTML");
-      return null; // Return null if no image is found
+    data = await primaryResponse.json();
+    if (data.error) {
+      console.error("Error from backend:", data.error);
+      return '/assets/fluid_error.png';
     }
   } catch (error) {
-    console.error("Failed to fetch image src:", error);
-    return null;
-  }
-}
+    console.error("Error fetching image through fluid, sending fallback:", error);
 
+    // Use local error image
+    data = { imagePath: '/assets/fluid_error.png' };
+  }
+  let imageUrl;
+
+  if (data.imagePath.startsWith('/api')) {
+    imageUrl = `${apiUrl}${data.imagePath}`;
+  } else {
+    imageUrl = data.imagePath;
+  }
+
+  return imageUrl;
+}
 

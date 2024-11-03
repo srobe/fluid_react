@@ -1,43 +1,59 @@
 // src/hooks/generateGraph.js
 
-import { fetchImageSrc } from "./fetchImageSrc"; // Adjust path as necessary
 import { getMappedValues } from "../utils/mappedValues";
 
-const grabGraph = async (selectedValues,instance, url_theme, stream, theme) => {
-  // Destructure selected values with the `.var` property where needed
-  const { field, level, initialTime, region, leadHour } = selectedValues;
-  console.log("Selected Values:", selectedValues);
+const apiUrl = process.env.REACT_APP_API_URL || '';
+
+const generateGraph = async (selectedValues, urlInfo) => {
+  // Map selectedValues to get the '.var' properties
+  const mappedValues = getMappedValues(selectedValues);
+  console.log("Selected Values:", mappedValues);
+
+  const { instance, url_theme, stream } = urlInfo;
 
   // Construct the dynamic URL with template literals
-  const dynamicUrl = `https://fluid.nccs.nasa.gov/${instance}/${url_theme}/?stream=${stream}&field=${selectedValues.fields}&level=${selectedValues.levels}&fcst=${selectedValues.initialTimes}&region=${selectedValues.regions}&tau=${selectedValues.leadHours}`;
+  const dynamicUrl = `https://fluid.nccs.nasa.gov/${instance}/${url_theme}/?stream=${stream}&field=${mappedValues.fields}&level=${mappedValues.levels}&fcst=${mappedValues.initialTimes}&region=${mappedValues.regions}&tau=${mappedValues.leadHours}`;
 
   console.log("Generated URL:", dynamicUrl);
 
+  // Prepare the request body
+  const requestBody = {
+    instance: instance,
+    url_theme: url_theme,
+    stream: stream,
+    selected: mappedValues,
+    url: dynamicUrl,
+  };
+  let imageUrl;
+
   try {
-    // Attempt to fetch the image source from the generated URL
-    const imageSrc = await fetchImageSrc(dynamicUrl);
-    if (imageSrc) {
-      return imageSrc; // Return the fetched image source if successful
+    const response = await fetch(`${apiUrl}/api/generate-graph`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) throw new Error("Primary image fetch failed");
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error("Error from backend:", data.error);
+      return '/assets/fluid_error.png';
+    }
+
+    // Construct the full image URL
+    if (data.imagePath.startsWith('/api')) {
+      imageUrl = `${apiUrl}${data.imagePath}`;
     } else {
-      console.warn("Image not found, returning error image.");
-      return "/assets/fluid_error.png"; // Path to error image in the public directory
+      imageUrl = data.imagePath;
     }
   } catch (error) {
     console.error("Error fetching image:", error);
-    return "/assets/fluid_error.png"; // Return error image on failure
+    imageUrl = '/assets/fluid_error.png';
   }
-};
 
-
-const generateGraph = async (selectedValues,urlinfo) => {
-  console.log(
-    "Sent selected data:",
-    JSON.stringify({ ...getMappedValues(selectedValues), mission: "SARP-East" })
-  );
-
-  // Call grabGraph with the required parameters and return the result
-  const img = await grabGraph(getMappedValues(selectedValues), urlinfo.instance,urlinfo.url_theme, urlinfo.stream, urlinfo.theme);
-  return img; // Return image source
+  return imageUrl; // Return the image source
 };
 
 export default generateGraph;

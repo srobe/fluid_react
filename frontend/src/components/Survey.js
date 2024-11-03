@@ -1,3 +1,5 @@
+// src/components/Survey.js
+
 import React from 'react';
 
 const Survey = () => {
