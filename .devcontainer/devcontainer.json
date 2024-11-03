@@ -8,8 +8,7 @@
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "16"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+    }
   },
   "customizations": {
     "vscode": {
