@@ -1,6 +1,6 @@
 {
   "name": "Fluid React Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-16", 
   "features": {
     "ghcr.io/devcontainers/features/conda:1": {
       "installFrom": "miniforge3",
@@ -36,3 +36,4 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
 }
+
