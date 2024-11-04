@@ -2,19 +2,24 @@
 
 # FLUID2.0 Project
 
-Welcome to the FLUID2.0 project repository. 
-
-This project is developed under NASA Goddard's GEOS tool called FLUID.
+Welcome to the FLUID2.0 project repository. This project is developed under NASA Goddard's GEOS tool called FLUID.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Setup](#setup-instructions)
-- [Deployment](#deployment)
-- [Project Structure](#directory-structure)
-- [Contributing](#contributing)
+- [FLUID2.0 Project](#fluid20-project)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+    - [Requirements](#requirements)
+  - [Setup Instructions](#setup-instructions)
+    - [1. Clone the Repository](#1-clone-the-repository)
+    - [2. Setting Up the Environment](#2-setting-up-the-environment)
+    - [3. Starting Up the Backend (Flask)](#3-starting-up-the-backend-flask)
+    - [4. Starting Up the Frontend (React)](#4-starting-up-the-frontend-react)
+    - [5. Using Docker (Optional)](#5-using-docker-optional)
+  - [Deployment](#deployment)
+  - [Directory Structure](#directory-structure)
+  - [Contributing](#contributing)
   
 ## Introduction
 
@@ -45,58 +50,54 @@ Production only:
 
 ### 1. Clone the Repository
 
+In the location you'd like to place this app run:
 ```
-git clone https://github.com/srobe/fluid_react.git
+mkdir fluid_react
 cd fluid_react
+git clone https://github.com/srobe/fluid_react.git
 ```
 
-### 2. Setting Up the Environment Files
+### 2. Setting Up the Environment 
+
+The environment can be initialized by running:
+```
+./dev_init.sh
+```
+This will create the proper `.env` files in the frontend and backend directories and create the conda environment for the backend.
 
 To ensure the proper configuration for both frontend and backend during development:
 
 - **Backend `.env` File**:
-  In the `backend` directory, create a `.env` file with the following content to enable development mode:
+  In the `backend` directory, a `.env` file with the following content is needed to enable development mode:
   ```
   APP_ENV=development
   APP_PORT=5001
   ```
 
 - **Frontend `.env` File**:
-  In the `frontend` directory, create a `.env` file to point to the backend API:
+  In the `frontend` directory, a `.env` file is needed to point to the backend API:
   ```
   REACT_APP_API_URL=http://localhost:5001
   ```
+These files will be created with the `./dev_init.sh` command. By default, the port is set to 5001. This can be updated as long as the number matches in both `.env` files.
 
-### 3. Setting Up the Backend (Flask)
+### 3. Starting Up the Backend (Flask)
 
-- Navigate to the `backend` directory:
+- From the root directory, run:
   ```
-  cd backend
+  source startapp.sh backend
   ```
-- Create a conda virtual environment and install dependencies:
-  ```
-  conda env create -f environment.yml
-  conda activate fluid
-  ```
-- Start the Flask server:
-  ```
-  python app.py
-  ```
+  This script will change directory to the backend, initiate the conda environment, and start the backend
 
-### 4. Setting Up the Frontend (React)
+### 4. Starting Up the Frontend (React)
 
-- Navigate to the `frontend` directory:
+- Open a new terminal 
+- From the root directory, run:
   ```
-  cd ../frontend
+  source startapp.sh frontend
   ```
-- Install dependencies:
-  ```
-  npm install
-  ```
-- Start the React development server:
-  ```
-  npm start
-  ```
+  This script will change directory to the frontend and run `npm start`
+
   The frontend is configured with a proxy to communicate with the backend at `http://localhost:5001`.
 
 ### 5. Using Docker (Optional)
@@ -111,16 +112,15 @@ To ensure the proper configuration for both frontend and backend during developm
   ```
   - The backend runs on port `5001`.
   - The combined app is accessible at `http://localhost:5002`.
-  - Uncomment the frontend section in `docker-compose.yml` if you wish to run the frontend through Docker.
 
 ## Deployment
 
-- **Frontend with Sample JSON**: The frontend can run independently from the backend using the sample JSON files located in `frontend/public/data`.
+- **Frontend with Sample JSON**: The frontend can run independently from the backend using the sample JSON files located in `frontend/public/data`. Follow [Step 4](#4-starting-up-the-frontend-react) to initiate the frontend.
   
-- **Frontend with Backend**: For live updates, first follow Step 3 (Setting up Backend), then open a new terminal window and follow Step 4 (Setting up Frontend).
+- **Frontend with Backend**: For live updates, first follow [Step 3](#3-starting-up-the-backend-flask) (Startting up the Backend), then open a new terminal window and follow [Step 4](#4-starting-up-the-frontend-react) (Starting up the Frontend). Updates should occur when a file is changed. The current browser page may need to be reloaded for the change to be reflected. 
   
-- **When to Use Docker**: Docker is a container that builds an independent environment based on `frontend/package.json` and `backend/environment.yml`. Before pushing changes to the main branch, make sure the app runs as expected in Docker.
-
+- **When to Use Docker**: Docker is a container that builds an independent environment based on `frontend/package.json` and `backend/environment.yml`. Before pushing changes to the main branch, make sure the app runs as expected in Docker. Follow [Step 5](#5-using-docker-optional) to run the combined app in Docker. 
+ 
 ## Directory Structure
 
 ```
