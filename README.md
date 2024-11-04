@@ -2,7 +2,9 @@
 
 # FLUID2.0 Project
 
-Welcome to the FLUID2.0 project repository. This project is developed under NASA Goddard's GEOS tool called FLUID.
+Welcome to the FLUID2.0 project repository. 
+
+This project is developed under NASA Goddard's GEOS tool called FLUID.
 
 ## Table of Contents
 
