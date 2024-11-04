@@ -1,0 +1,101 @@
+{ 
+  "order": ["fields","regions","levels","initialTimes","leadHours"],
+  "urlInfo": {
+    "stream":"GEOSCFFC",
+    "instance":"cf",
+    "url_theme":"classic_geos_cf",
+    "theme":"classic_geos_cf"
+  },
+  "levels": {
+    "label":"Levels",
+    "all":["0"],
+    "selected":"0",
+    "type": "ButtonGroup"
+  },
+  "fields": {
+    "label": "Fields",
+    "all": [
+        {"label":"24hr O3 Anom",
+            "var":"o3sfc_anom",
+            "levels":["0"]},
+        {"label":"Surface CO",
+            "var":"cosfc",
+            "levels":["0"]},
+        {"label":"Surface NO2",
+            "var":"no2sfc",
+            "levels":["0"]},
+        {"label":"Surface O3",
+            "var":"o3sfc",
+            "levels":["0"]},
+        {"label":"Surface SO2",
+            "var":"so2sfc",
+            "levels":["0"]},
+        {"label":"Surface PM2.5",
+            "var":"pm25sfc",
+            "levels":["0"]}
+    ],
+    "selected": "no2sfc",
+    "type": "DropdownWithSearch"
+  },
+  "regions": {
+    "label": "Regions",
+    "all": [
+        {"label":"Africa",
+            "var":"africa"},
+        {"label":"Australia",
+            "var":"australia"},
+        {"label":"Global",
+            "var":"global"},
+        {"label":"Mid Atlantic",
+            "var":"midatl"},
+        {"label":"North America",
+            "var":"nam"},
+        {"label":"North Polar",
+            "var":"nps"},
+        {"label":"Pacific",
+            "var":"pac"},
+        {"label":"South America",
+            "var":"sam"},
+        {"label":"Seven Seas",
+            "var":"sevenseas"},
+        {"label":"South Polar",
+            "var":"sps"}
+    ],
+    "selected": "nam",
+    "type": "DropdownWithSearch"
+  },
+  "initialTimes": {
+    "label": "Forecast Initial Time",
+    "hours": [12],
+    "start": "20241023T120000",
+    "end": "20241103T120000",
+    "selected": "20241103T120000",
+    "format":{"display":"MMM dd',' yyyy",
+                "backend":"yyyyMMdd'T'HH'0000'"},
+    "type": "DatePicker"
+  },
+  "leadHours": {
+    "label": "Forecast Lead Hour",
+    "selected": "00",
+    "options": [
+        0,3,6,9,12,15,18,21,
+        24,27,30,33,36,39,42,45,
+        48,51,54,57,60,63,66,69,
+        72,75,78,81,84,87,90,93,
+        96,99,102,105,108,111,114,117,
+        120
+    ],
+    "format": {
+        "var":"<03d>",
+        "date":"ddMMMyyyy HH'z'",
+        "all":"{var}h {formattedDate}"
+        },
+    "type": "DropdownWithSearch"
+  },
+  "streams":{
+    "label":"Plot Type",
+    "all":[],
+    "selected":"$urlInfo.stream",
+    "type": "ButtonGroup"
+  }
+}

@@ -24,6 +24,7 @@ const generateGraph = async (selectedValues, urlInfo) => {
     selected: mappedValues,
     url: dynamicUrl,
   };
+  
   let imageUrl;
 
   try {

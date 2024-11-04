@@ -1,3 +1,5 @@
+// src/pages/weather-forecasts/WeatherForecasts.js
+
 import React from 'react';
 import GraphCard from '../../components/GraphCard';
 

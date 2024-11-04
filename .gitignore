@@ -37,6 +37,8 @@ devcontainer.json
 .prodcontainer/
 prodcontainer.json
 
+# Vs Env
+.vscode
 
 # Miniforge3
 Miniforge3-Linux-x86_64.sh
@@ -59,3 +61,10 @@ repo.txt
 
 #Saved plots from fluid website
 plots/
+Miniforge3-Linux-aarch64.sh
+.devcontainer/devcontainer.json
+
+
+# Jupyter 
+jupyter/
+*.ipynb

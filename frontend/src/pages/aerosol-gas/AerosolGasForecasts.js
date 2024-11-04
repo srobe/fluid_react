@@ -1,3 +1,5 @@
+// src/pages/aerosol-gas/AerosolGasForecasts.js
+
 import React from 'react';
 import GraphCard from '../../components/GraphCard';
 

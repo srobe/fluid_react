@@ -1,198 +1,51 @@
-import React, { useState, useEffect } from "react";
-import {ButtonGroup, CustomDatePicker, DropdownWithSearch} from "../../components/UserInput";
-import "react-datepicker/dist/react-datepicker.css";
-import { parse, addHours, format } from "date-fns";
+// src/pages/mission-support/ARCSIX.js
 
-const hours = ["00z", "06z", "12z", "18z"];
+import React, { useState, useCallback } from "react";
+import useFetchData from "../../hooks/useFetchData2";
+import generateGraph from "../../hooks/generateGraph";
+import { renderComponent } from "../../components";
+import { Oval } from 'react-loader-spinner';
+import "react-datepicker/dist/react-datepicker.css";
 
 function WeatherForecasts() {
-  const [selectedDatetime, setSelectedDatetime] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dropdownData, setDropdownData] = useState({});
-  const [selectedValues, setSelectedValues] = useState({});
+  const {
+    flaskData,
+    selectedValues,
+    order,
+    setSelectedValues,
+    setFlaskData,
+    updateLevels,
+  } = useFetchData("/api/data", "/data/data5.json", { name: "data5.json", age: 30 });
+
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
-  const [order, setOrder] = useState([]);
-  const [selectedHour, setSelectedHour] = useState(hours[0]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      let data; // Declare data variable to be used in both primary and fallback fetches
-  
-      try {
-        // Attempt to fetch data from the Flask endpoint
-        const response = await fetch("/data", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: "data3.json", age: 30 }),
-        });
-  
-        // If the response is not OK, throw an error to trigger fallback
-        if (!response.ok) throw new Error("Primary fetch failed");
-  
-        data = await response.json();
-        console.log("Fetched data from Flask API:", data);
-  
-      } catch (error) {
-        console.error("Error fetching from Flask API, attempting local file:", error);
-  
-        // Fallback to fetching from the local JSON file if Flask API fetch fails
-        try {
-          const fallbackResponse = await fetch("/data3.json");
-          
-          if (!fallbackResponse.ok) throw new Error("Fallback fetch failed");
-  
-          data = await fallbackResponse.json();
-          console.log("Fetched data from local JSON file:", data);
-  
-        } catch (fallbackError) {
-          console.error("Error fetching from local JSON file:", fallbackError);
-          return; // Exit if both fetches fail
-        }
-      }
-  
-      // Process data (regardless of whether it was from Flask or local JSON)
-      setDropdownData(data);
-  
-      // Set initial selected values from data
-      setSelectedValues(Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [key, value.selected || ""])
-      ));
-  
-      setOrder(data.order || []);
-  
-      // Set initial date from initialTimes in data if available
-      if (data.initialTimes) {
-        const initialDateStr = data.initialTimes.selected;
-        const parsedDate = parse(initialDateStr, data.initialTimes.format_date, new Date());
-        setSelectedDatetime(parsedDate);
-        setSelectedDate(parsedDate);
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
-
-  // Function to calculate lead hours based on selected initial time
-  const updateLeadHours = (datetime) => {
-    const hours = [0, 3, 6, 9, 12]; // Sample lead hours  
-    // Find the index of the current selected lead hour in the old options
-    const currentLeadHourIndex = dropdownData.leadHours.all.indexOf(selectedValues.leadHours);
-
-    const newLeadHours = hours.map(hour => {
-      const date = addHours(datetime, hour);
-      return `${String(hour).padStart(3, "0")}h ${format(date, "ddMMMyyyy HH'z'")}`;
-    });
-
-    // Set the selected lead hour to the same index in the new list, or the first if out of bounds
-    const newSelectedLeadHour = newLeadHours[currentLeadHourIndex] || newLeadHours[0];
-
-    setDropdownData(prevData => ({
-      ...prevData,
-      leadHours: { ...prevData.leadHours, all: newLeadHours },
-    }));
-
-    setSelectedValues(prev => ({
-      ...prev,
-      leadHours: newSelectedLeadHour
-    }));
-  };
-
-  const handleSelect = (key, value) => {
-    setSelectedValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const setHourOnDate = (date, hour) => {
-    const newhour = parseInt(hour.substring(0, 2), 10); // Extracts "00" and converts to 0
-    const newDate = new Date(date); // Clone the date to avoid mutation
-    newDate.setHours(newhour, 0, 0, 0); // Set hour and reset minutes, seconds, and milliseconds
-    return newDate;
-  };
-
-  const handleDatetimeChange = (date, hour) => {
-    const datetime = setHourOnDate(date, hour)
-    setSelectedDatetime(datetime)
-    const backendFormattedDate = format(datetime, dropdownData.initialTimes.format_backend);
-    setSelectedValues((prev) => ({
-      ...prev,
-      initialTimes: backendFormattedDate,
-    }));
-
-    updateLeadHours(datetime);
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    handleDatetimeChange(date, selectedHour);
-  };
-
-  const handleHourClick = (hour) => {
-    setSelectedHour(hour);
-    handleDatetimeChange(selectedDate, hour);
-  };
-
-  const generateGraph = () => {
-    fetch("/generate-graph", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(selectedValues),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setImageSrc(data.imagePath);
-      })
-      .catch((error) => console.error("Error generating graph:", error));
-  };
+  const handleSubmit = useCallback(async () => {
+    setIsLoading(true); // Set loading to true before fetching
+    try {
+      const img = await generateGraph(selectedValues, flaskData.urlInfo);
+      setImageSrc(img);
+    } catch (error) {
+      console.error("Error generating graph:", error);
+      setImageSrc(null); // Optionally set to null or an error image
+    } finally {
+      setIsLoading(false); // Set loading to false after fetching
+    }
+  }, [selectedValues, flaskData.urlInfo]);
 
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
       <aside className="md:w-1/3 lg:w-1/4 bg-gray-100 border border-black p-4 mr-8 rounded-sm mb-6 md:mb-0">
-        {order.map((key) => {
-          const config = dropdownData[key];
-          if (config.type === "DropdownWithSearch") {
-            return (
-              <DropdownWithSearch
-                key={key}
-                label={config.label}
-                options={config.all}
-                selectedOption={selectedValues[key]}
-                onSelect={(value) => handleSelect(key, value)}
-              />
-            );
-          } else if (config.type === "DatePicker") {
-            return (
-              <div className="mb-6" key={key}>
-                <CustomDatePicker
-                  label={config.label}
-                  selectedDate={selectedDatetime}
-                  onChange={handleDateChange}
-                  dateFormat={config.format_display}
-                />
-                {dropdownData.initialTimes.hours.length > 1 && (
-                  <div className="hour-buttons">
-                    {dropdownData.initialTimes.hours.map((hour) => (
-                      <button
-                        key={hour}
-                        onClick={() => handleHourClick(hour)}
-                        className={`hour-btn ${hour === selectedHour ? "selected" : ""}`}
-                      >
-                        {hour}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-            );
-          }
-          return null;
-        })}
+        {order.map((key) => renderComponent(key, flaskData[key], {
+          setSelectedValues,
+          updateLevels,
+          selectedValues,
+          setFlaskData,
+          flaskData,
+        }))}
 
         <button
-          onClick={generateGraph}
+          onClick={handleSubmit}
           className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500"
         >
           Generate graph
@@ -208,8 +61,7 @@ function WeatherForecasts() {
         <h1 className="text-2xl font-bold mb-4">Weather Maps</h1>
         <p className="text-gray-700 mb-6">
           The Goddard Earth Observing System (GEOS) model is designed to study
-          various Earth Science questions by connecting different model
-          components flexibly.
+          various Earth Science questions by connecting different model components flexibly.
         </p>
 
         <div className="flex mb-8">
@@ -223,12 +75,34 @@ function WeatherForecasts() {
           </button>
         </div>
 
-        <img src={imageSrc} alt="Weather Graph" className="w-full rounded-sm border border-black" />
+        <div>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Oval
+                height={80}
+                width={80}
+                color="#4fa94d"
+                ariaLabel="oval-loading"
+                secondaryColor="#4fa94d"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
+              />
+            </div>
+            // <div className="flex justify-center items-center h-64">
+              // <p>Loading image...</p>
+            // </div>
+          ) : imageSrc ? (
+            <img src={imageSrc} alt="Generated Graph" />
+          ) : (
+            <p>No image available.</p>
+          )}
+        </div>
       </main>
     </div>
   );
 }
 
 export default WeatherForecasts;
+
 
 

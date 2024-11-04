@@ -1,3 +1,5 @@
+// src/pages/seasonal-prediction/SeasonalPrediction.js
+
 import React from 'react';
 import GraphCard from '../../components/GraphCard';
 

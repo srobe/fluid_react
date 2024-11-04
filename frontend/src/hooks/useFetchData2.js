@@ -55,7 +55,7 @@ export default function useFetchData(primaryUrl, fallbackLocalPath, requestData)
           return;
         }
       }
-
+      data = resolvePlaceholders(data);
       // Merge fetched data with default data
       const mergedData = { ...defaultData, ...data };
       console.log("Merged data:", mergedData);

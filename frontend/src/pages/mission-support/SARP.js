@@ -1,6 +1,6 @@
 // src/pages/mission-support/SARP.js
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import useFetchData from "../../hooks/useFetchData2";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
@@ -18,7 +18,6 @@ function WeatherForecasts() {
   } = useFetchData("/api/data", "/data/data5.json", { name: "data5.json", age: 30 });
 
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
-  const [selectedHour, setSelectedHour] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback(async () => {

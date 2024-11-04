@@ -1,12 +1,17 @@
-#!/bin/bash
+#!/bin/bash devcontainer-setup.sh
 
 # Create .env in backend if it doesn't exist
 if [ ! -f backend/.env ]; then
   echo -e "APP_ENV=development\nAPP_PORT=5001" > backend/.env
 fi
 
-# Create the Conda environment
-conda env create -f backend/environment.yml
+# 2. Create the Conda environment if not already created
+if conda env list | grep -q "fluid"; then
+    echo "Conda environment 'fluid' already exists."
+else
+    echo "Creating Conda environment 'fluid' from backend/environment.yml..."
+    conda env create -f backend/environment.yml
+fi
 
 # Create .env in frontend if it doesn't exist
 if [ ! -f frontend/.env ]; then

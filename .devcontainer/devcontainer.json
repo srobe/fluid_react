@@ -1,40 +1,7 @@
 {
   "name": "Fluid React Dev Environment",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-16", 
-  "features": {
-    "ghcr.io/devcontainers/features/conda:1": {
-      "installFrom": "miniforge3",
-      "activateEnvironment": "fluid"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "16"
-    }
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-python.python",
-        "ms-toolsai.jupyter",
-        "esbenp.prettier-vscode",
-        "redhat.vscode-yaml",
-        "donjayamanne.python-extension-pack",
-        "ms-python.debugpy",
-        "ms-python.vscode-pylance",
-        "ms-vscode.live-server",
-        "oderwat.indent-rainbow",
-        "dbaeumer.vscode-eslint",
-        "aeschli.vscode-css-formatter",
-        "bierner.color-info",
-        "ms-toolsai.jupyter-renderers"
-      ],
-      "settings": {
-        "python.defaultInterpreterPath": "/opt/conda/envs/fluid/bin/python"
-      }
-    }
-  },
-  "postCreateCommand": "conda init bash && ./devcontainer-setup.sh",
+  "image": "continuumio/miniconda3",
+  "postCreateCommand": "./.devcontainer/VScontainer-setup.sh && conda init bash && source ~/.bashrc && ./devcontainer-setup.sh",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace"
 }
-
-

@@ -90,16 +90,6 @@ def generate_graph() -> Response:
         if not data:
             return jsonify({"error": "No data provided"}), 400
 
-        # Extract required parameters
-        instance = data.get('instance')
-        url_theme = data.get('url_theme')
-        stream = data.get('stream')
-        selected = data.get('selected')
-
-        # Validate required parameters
-        if not all([instance, url_theme, stream, selected]):
-            return jsonify({"error": "Missing required parameters"}), 400
-
         # Generate the URL dynamically
         url = generate_url(data)
 
@@ -171,7 +161,7 @@ def generate_url(data: dict) -> str:
 
     # Remove None or empty values from params
     params = {k: v for k, v in params.items() if v}
-    
+    print(params)
     # Encode the query parameters to handle special characters
     query_string = urllib.parse.urlencode(params)
 
