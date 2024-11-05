@@ -44,7 +44,7 @@
             "levels":[0]}
     ],
     "selected": "tmpu",
-    "type": "DropdownWithSearch"
+    "type": "ButtonGroup"
   },
   "regions": {
     "label": "Regions",
@@ -77,8 +77,8 @@
     "label": "Forecast Initial Time",
     "hours": [0,12],
     "start": "20241023T120000",
-    "end": "20241103T120000",
-    "selected": "20241103T120000",
+    "end": "20241104T000000",
+    "selected": "20241104T000000",
     "format":{"display":"MMM dd',' yyyy",
                 "backend":"yyyyMMdd'T'HH'0000'"},
     "type": "DatePicker"

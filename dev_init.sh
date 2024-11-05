@@ -1,4 +1,4 @@
-#!/bin/bash devcontainer-setup.sh
+#!/bin/bash dev_init.sh
 
 # Create .env in backend if it doesn't exist
 if [ ! -f backend/.env ]; then
