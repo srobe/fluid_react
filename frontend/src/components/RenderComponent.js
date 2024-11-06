@@ -4,6 +4,7 @@ import React from "react";
 import {
   DropdownWithSearch,
   CustomDatePicker,
+  CalendarSelect,
   ButtonGroup,
   RadioButtonGroup,
   TrackCheckbox,
@@ -117,7 +118,7 @@ const renderComponent = (key, config, handlers) => {
     case "DatePicker":
       return (
         <div className="mb-6" key={key}>
-          <CustomDatePicker
+          <CalendarSelect
             label={config.label}
             selectedDate={selectedValues.datetime}
             onChange={handleDateChangeHandler}

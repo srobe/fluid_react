@@ -6,7 +6,9 @@ export { ButtonGroup,
         DropdownWithSearch,
         TrackCheckbox,
         RadioButtonGroup,
-        Toggle
+        Toggle,
+        CalendarSelect,
+        Dropdown
  } from './UserInput';
 export { default as Footer } from './Footer';
 export { default as GraphCard } from './GraphCard';
