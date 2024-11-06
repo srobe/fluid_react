@@ -50,7 +50,7 @@ def serve_react(path: str) -> object:
     if path.startswith("api"):
         return "API route not found", 404
 
-    print(f"Catch-all route hit for path: {path}")
+    # print(f"Catch-all route hit for path: {path}")
     full_path: str = os.path.join(app.static_folder, path)
     if os.path.exists(full_path) and not os.path.isdir(full_path):
         return send_from_directory(app.static_folder, path)

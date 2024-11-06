@@ -7,6 +7,7 @@ import {
   ButtonGroup,
   RadioButtonGroup,
   TrackCheckbox,
+  Toggle
 } from "."; 
 import { updateLeadHours, setHourOnDate, isPastEnd, formatUTC } from "../utils/dateUtils";
 
@@ -179,6 +180,16 @@ const renderComponent = (key, config, handlers) => {
           onSelect={(value) => handleSelect(value)}
         />
       );
+      case "Toggle":
+        return (
+          <Toggle
+            key={key}
+            label={config.label}
+            options={config.all}
+            selectedOption={selectedValues[key]}
+            onSelect={(value) => handleSelect(value)}
+          />
+        );
     default:
       return null;
   }

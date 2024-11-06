@@ -98,6 +98,6 @@
     "label": "Storm Tracks",
     "all": ["tropical"],
     "selected": "",
-    "type": "Checkbox"
+    "type": "Toggle"
   }
 }

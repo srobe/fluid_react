@@ -6,5 +6,7 @@ export { default as CustomDatePicker } from './DatePicker';
 export { default as DropdownWithSearch } from './DropdownWithSearch';
 export { default as TrackCheckbox } from './Checkbox';
 export { default as RadioButtonGroup } from './RadioButtonGroup';
+export { default as Toggle } from './Toggle';
+
 
 
