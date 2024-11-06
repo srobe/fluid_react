@@ -1,13 +1,13 @@
+
 // src/components/UserInput/CalendarSelect.js
-import React, { useState } from 'react';
-import { FaCaretDown, FaSearch } from "react-icons/fa";
-import { FaCalendarAlt } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaCaretDown, FaSearch, FaCalendarAlt } from "react-icons/fa";
 import { addYears, format } from "date-fns";
 import { parseUTCDate, toCurrentOffset, toDateOffset } from "../../utils/dateUtils";
 
 const CalendarSelect = ({ 
   label, 
-  selectedDay, 
+  selectedDate, 
   onChange, 
   dateDisplayFormat, 
   minDate, 
@@ -19,8 +19,14 @@ const CalendarSelect = ({
   const parsedMaxDate = maxDate ? parseUTCDate(maxDate, dateFormat) : addYears(new Date(Date.UTC(2024, 0, 1)), 1);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(selectedDay ? toCurrentOffset(selectedDay) : new Date());
-  const [selectedDate, setSelectedDate] = useState(selectedDay ? toCurrentOffset(selectedDay) : null);
+  const [currentDate, setCurrentDate] = useState(selectedDate ? toCurrentOffset(selectedDate) : new Date());
+  const [internalSelectedDate, setInternalSelectedDate] = useState(selectedDate ? toCurrentOffset(selectedDate) : null);
+
+  // Update internalSelectedDate if selectedDate prop changes
+  useEffect(() => {
+    setInternalSelectedDate(selectedDate ? toCurrentOffset(selectedDate) : null);
+    setCurrentDate(selectedDate ? toCurrentOffset(selectedDate) : new Date());
+  }, [selectedDate]);
 
   const daysInMonth = new Date(
     currentDate.getFullYear(),
@@ -41,22 +47,24 @@ const CalendarSelect = ({
 
   const generateDays = () => {
     const days = [];
+    // Empty slots for days before the first of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<div key={`empty-${i}`} className="h-8" />);
     }
-    
+
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+      const dateOffset = toDateOffset(date);
       const isToday = new Date().toDateString() === date.toDateString();
-      const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
-      const isWithinRange = date >= toCurrentOffset(parsedMinDate) && date <= toCurrentOffset(parsedMaxDate);
-      
+      const isSelected = internalSelectedDate && internalSelectedDate.toDateString() === date.toDateString();
+      const isWithinRange = dateOffset >= parsedMinDate && dateOffset <= parsedMaxDate;
+
       days.push(
         <button
           key={day}
           onClick={() => {
             if (isWithinRange) {
-              setSelectedDate(date);
+              setInternalSelectedDate(date);
               onChange(toDateOffset(date));
               setIsOpen(false);
             }
@@ -91,7 +99,7 @@ const CalendarSelect = ({
           onClick={() => setIsOpen(!isOpen)}
           className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
         >
-          <span>{selectedDate ? format(selectedDate, dateDisplayFormat) : 'Select date...'}</span>
+          <span>{internalSelectedDate ? format(internalSelectedDate, dateDisplayFormat) : 'Select date...'}</span>
           <span className="text-gray-500">
             <FaCalendarAlt className="datepicker-icon" />
           </span>
@@ -130,5 +138,3 @@ const CalendarSelect = ({
 };
 
 export default CalendarSelect;
-
-
