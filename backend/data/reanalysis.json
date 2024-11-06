@@ -81,7 +81,7 @@
     "selected": "20240930",
     "format":{"display":"MMM dd',' yyyy",
                 "backend":"yyyyMMdd"},
-    "type": "DatePicker"
+    "type": "CalendarSelect"
   },
   "leadHours": {
     "label": "Analysis Time",
@@ -92,7 +92,7 @@
         "date":"ddMMMyyyy HH'z'",
         "all":"{var}z"
         },
-    "type": "DropdownWithSearch"
+    "type": "Dropdown"
   },
   "tracks": {
     "label": "Storm Tracks",

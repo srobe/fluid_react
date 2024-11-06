@@ -3,14 +3,20 @@
 import React from "react";
 import {
   DropdownWithSearch,
+  Dropdown,
   CustomDatePicker,
   CalendarSelect,
   ButtonGroup,
   RadioButtonGroup,
   TrackCheckbox,
-  Toggle
-} from "."; 
-import { updateLeadHours, setHourOnDate, isPastEnd, formatUTC } from "../utils/dateUtils";
+  Toggle,
+} from ".";
+import { 
+  updateLeadHours, 
+  setHourOnDate, 
+  isPastEnd, 
+  formatUTC 
+} from "../utils";
 
 const renderComponent = (key, config, handlers) => {
   const {
@@ -29,7 +35,7 @@ const renderComponent = (key, config, handlers) => {
       const newDate = date !== undefined ? date : prev.datetime;
       const newHour = hour !== undefined ? hour : prev.currentHour;
       const datetime = setHourOnDate(newDate, newHour);
-  
+
       const backendFormattedDate = formatUTC(
         datetime,
         flaskData.initialTimes.format.backend
@@ -38,7 +44,7 @@ const renderComponent = (key, config, handlers) => {
         datetime,
         flaskData.initialTimes.format.display
       );
-  
+
       let newSelectedValues = {
         ...prev,
         datetime: datetime,
@@ -48,7 +54,7 @@ const renderComponent = (key, config, handlers) => {
           label: displayFormattedDate,
         },
       };
-  
+
       // Update lead hours and get updated selectedValues
       newSelectedValues = updateLeadHours(
         datetime,
@@ -57,7 +63,7 @@ const renderComponent = (key, config, handlers) => {
         prev,
         newSelectedValues
       );
-  
+
       return newSelectedValues;
     });
   };
@@ -98,11 +104,44 @@ const renderComponent = (key, config, handlers) => {
 
   // Use custom handlers if provided, otherwise use the defaults
   const handleSelect = customHandleSelect || defaultHandleSelect;
-  const handleDateChangeHandler = customHandleDateChange || defaultHandleDateChange;
+  const handleDateChangeHandler =
+    customHandleDateChange || defaultHandleDateChange;
   const handleHourClickHandler = customHandleHourClick || defaultHandleHourClick;
 
-  if ((key === "levels" || key === "streams") && config.all.length <= 1) return null;
+  if ((key === "levels" || key === "streams") && config.all.length <= 1)
+    return null;
   if (key === "tracks" && config.all.length === 0) return null;
+
+  const renderDateWithHourButton = (DateComponent) => (
+    <div className="mb-6" key={key}>
+      <DateComponent
+        label={config.label}
+        selectedDate={selectedValues.datetime}
+        onChange={handleDateChangeHandler}
+        dateDisplayFormat={config.format.display}
+        maxDate={config.end}
+        minDate={config.start}
+        dateFormat={config.format.backend}
+      />
+      {flaskData.initialTimes.hours.length > 1 && (
+        <ButtonGroup
+          label="Select Hour"
+          options={flaskData.initialTimes.hours.map((hour) => ({
+            label: `${String(hour).padStart(2, "0")}z`,
+            var: hour,
+          }))}
+          selectedOption={{
+            label: `${String(selectedValues.currentHour).padStart(2, "0")}z`,
+            var: selectedValues.currentHour,
+          }}
+          onSelect={(option) => handleHourClickHandler(option.var)}
+          disabledOptions={flaskData.initialTimes.hours.filter((hour) =>
+            isPastEnd(selectedValues.datetime, hour, flaskData)
+          )}
+        />
+      )}
+    </div>
+  );
 
   switch (config.type) {
     case "DropdownWithSearch":
@@ -115,37 +154,20 @@ const renderComponent = (key, config, handlers) => {
           onSelect={(value) => handleSelect(value)}
         />
       );
-    case "DatePicker":
+    case "Dropdown":
       return (
-        <div className="mb-6" key={key}>
-          <CalendarSelect
-            label={config.label}
-            selectedDate={selectedValues.datetime}
-            onChange={handleDateChangeHandler}
-            dateDisplayFormat={config.format.display}
-            maxDate={config.end}
-            minDate={config.start}
-            dateFormat={config.format.backend}
-          />
-          {flaskData.initialTimes.hours.length > 1 && (
-            <ButtonGroup
-              label="Select Hour"
-              options={flaskData.initialTimes.hours.map((hour) => ({
-                label: `${String(hour).padStart(2, "0")}z`,
-                var: hour,
-              }))}
-              selectedOption={{
-                label: `${String(selectedValues.currentHour).padStart(2, "0")}z`,
-                var: selectedValues.currentHour,
-              }}
-              onSelect={(option) => handleHourClickHandler(option.var)}
-              disabledOptions={flaskData.initialTimes.hours.filter((hour) =>
-                isPastEnd(selectedValues.datetime, hour, flaskData)
-              )}
-            />
-          )}
-        </div>
+        <Dropdown
+          key={key}
+          label={config.label}
+          options={config.all}
+          selectedOption={selectedValues[key]}
+          onSelect={(value) => handleSelect(value)}
+        />
       );
+    case "DatePicker":
+      return renderDateWithHourButton(CustomDatePicker);
+    case "CalendarSelect":
+      return renderDateWithHourButton(CalendarSelect);
     case "ButtonGroup":
       // Ensure options are in the correct format
       const options =
@@ -181,16 +203,16 @@ const renderComponent = (key, config, handlers) => {
           onSelect={(value) => handleSelect(value)}
         />
       );
-      case "Toggle":
-        return (
-          <Toggle
-            key={key}
-            label={config.label}
-            options={config.all}
-            selectedOption={selectedValues[key]}
-            onSelect={(value) => handleSelect(value)}
-          />
-        );
+    case "Toggle":
+      return (
+        <Toggle
+          key={key}
+          label={config.label}
+          options={config.all}
+          selectedOption={selectedValues[key]}
+          onSelect={(value) => handleSelect(value)}
+        />
+      );
     default:
       return null;
   }

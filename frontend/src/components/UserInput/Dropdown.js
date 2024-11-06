@@ -1,40 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
+import { useKeyboardNavigation, useOutsideClick } from "../../hooks"
 
 const Dropdown = ({
+  label = "",
   options = [],
   selectedOption = "",
   onSelect = () => {},
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+  const optionsRef = useRef([]);
+
+  const processedOptions = options.map((option) =>
+    typeof option === "string"
+      ? { label: option, var: option }
+      : { label: option.label, var: option.var }
+  );
+
+  // Use the keyboard navigation from utility function
+  useKeyboardNavigation({
+    isOpen,
+    options,
+    highlightedIndex,
+    setHighlightedIndex,
+    onSelect,
+    processedOptions,
+    setIsOpen,
+    optionsRef,
+  });
+
+  useOutsideClick({
+    isOpen,
+    componentRef: dropdownRef,
+    setHighlightedIndex,
+    setIsOpen,
+  });
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between min-w-[80px]"
-      >
-        <span>{selectedOption || "Select..."}</span>
-        <span className="text-gray-500 ml-2"><FaCaretDown /></span>
-      </button>
-      {isOpen && (
-        <div className="absolute w-full bg-white border border-gray-300 rounded-sm mt-1 z-10">
-          <ul className="max-h-48 overflow-y-auto">
-            {options.map((option, index) => (
-              <li
-                key={index}
-                onClick={() => {
-                  onSelect(option);
-                  setIsOpen(false);
-                }}
-                className="p-2 hover:bg-gray-200 cursor-pointer"
-              >
-                {option}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="mb-6" ref={dropdownRef}>
+      <p className="text-base font-bold mb-2">{label}</p>
+      <div className="relative">
+        <button
+          ref={buttonRef}
+          tabIndex={0}
+          onClick={() => {
+            setIsOpen((prev) => !prev);
+            setHighlightedIndex(-1);
+          }}
+          className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
+        >
+          <span>
+            {selectedOption
+              ? typeof selectedOption === "string"
+                ? selectedOption
+                : selectedOption.label
+              : "Select..."}
+          </span>
+          <span className="text-gray-500 ml-2">
+            <FaCaretDown />
+          </span>
+        </button>
+        {isOpen && (
+          <div className="absolute w-full bg-white border border-gray-300 rounded-sm mt-1 z-10">
+            <ul className="max-h-48 overflow-y-auto">
+              {processedOptions.map((option, index) => (
+                <li
+                  ref={(el) => (optionsRef.current[index] = el)}
+                  key={index}
+                  onClick={() => {
+                    onSelect(option);
+                    setIsOpen(false);
+                    setHighlightedIndex(-1);
+                  }}
+                  onMouseEnter={() => setHighlightedIndex(index)}
+                  className={`p-2 cursor-pointer ${
+                    highlightedIndex === index ? "bg-gray-200" : "hover:bg-gray-200"
+                  }`}
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

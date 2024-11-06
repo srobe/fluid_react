@@ -1,7 +1,7 @@
 // src/pages/mission-support/SARP.js
 
 import React, { useState, useCallback } from "react";
-import useFetchData from "../../hooks/useFetchData2";
+import useFetchData from "../../hooks/useFetchData";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
