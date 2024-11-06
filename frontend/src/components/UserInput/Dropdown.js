@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { useKeyboardNavigation, useOutsideClick } from "../../hooks"
+import { processOptions } from "../../utils";
 
 const Dropdown = ({
   label = "",
@@ -8,17 +9,15 @@ const Dropdown = ({
   selectedOption = "",
   onSelect = () => {},
 }) => {
+
+// Use the utility function to process options
+  const processedOptions = processOptions(options);
+
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const optionsRef = useRef([]);
-
-  const processedOptions = options.map((option) =>
-    typeof option === "string"
-      ? { label: option, var: option }
-      : { label: option.label, var: option.var }
-  );
 
   // Use the keyboard navigation from utility function
   useKeyboardNavigation({
