@@ -11,5 +11,8 @@ export { setHourOnDate,
         parseUTCDate,
         formatUTC,
         toCurrentOffset,
-        toDateOffset
+        toDateOffset,
+        generateYearsArray,
+        getMonthsArray,
+        getFilteredMonths,
         } from './dateUtils';

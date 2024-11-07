@@ -1,17 +1,19 @@
-import { format, subWeeks } from "date-fns";
-import { parse } from "date-fns";
+import { subWeeks,subHours } from "date-fns";
+import { setHourOnDate,setUTCDate,formatUTC} from "./dateUtils";
 
 // Function to dynamically resolve placeholders in the data object
 function resolvePlaceholders(data) {
-  const today = new Date();
-  
+  const now = new Date();
+  const twelveHoursAgo = subHours(now, 12); // setting time 12 hours back to allow for new release
+  const hour = data.initialTimes.hours[0] || 0
+  const today = setHourOnDate(setUTCDate(twelveHoursAgo),hour);
   // Use the backend format if available; otherwise, default to "yyyyMMdd"
   const dateFormat = data.initialTimes?.format?.backend || "yyyyMMdd";
   
   // Define some dynamic placeholder values
   const placeholders = {
-    $today: format(today, dateFormat),
-    $todayMinus2Weeks: format(subWeeks(today, 2), dateFormat),
+    $today: formatUTC(today, dateFormat),
+    $todayMinus2Weeks: formatUTC(subWeeks(today, 2), dateFormat),
   };
 
   // Helper function to get a nested property by path

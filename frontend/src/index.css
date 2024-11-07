@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font settings */
 @font-face {
   font-family: 'Helvetica';
   src: local('Helvetica'), local('Helvetica Neue');
@@ -11,6 +12,7 @@
   font-family: 'Helvetica', sans-serif;
 }
 
+/* Datepicker styles */
 .datepicker-container {
   position: relative;
   display: inline-block;
@@ -18,8 +20,7 @@
 }
 
 .datepicker-input {
-  padding-right: 30px; /* Add space for the icon */
-  padding-left: 10px; /* Add space for the icon */
+  padding: 0 30px 0 10px; /* Space for icon on both sides */
   width: 100%;
 }
 
@@ -32,6 +33,7 @@
   pointer-events: none;
 }
 
+/* Hour button styles */
 .hour-buttons {
   display: flex;
   gap: 0.25rem;
@@ -59,28 +61,27 @@
   border-color: #007bff; /* Match border with background */
 }
 
-/* Inactive/Disabled State */
 .hour-btn.disabled {
   background-color: #ddd; /* Gray background for inactive */
-  color: #888; /* Lighter gray text for disabled appearance */
-  border-color: #ddd; /* Match border with background */
-  cursor: not-allowed; /* Show not-allowed cursor */
-  pointer-events: none; /* Prevent clicks */
-  opacity: 0.6; /* Slightly transparent for a disabled look */
+  color: #888;
+  border-color: #ddd;
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
+/* General button item styles */
 .button-item {
   padding: 0.5rem;
   margin: 0.25rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  transition: background-color 0.3s;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .button-item:hover {
   background-color: #208cff8f;
-  transition: background-color 0.5s;
 }
 
 .button-item.selected {
@@ -96,7 +97,7 @@
   cursor: not-allowed;
 }
 
-
+/* Radio button group styles */
 .radio-button-group {
   margin-bottom: 1.5rem;
 }
@@ -130,22 +131,20 @@
 
 .radio-item input[type="radio"] {
   margin-right: 0.5rem;
-  accent-color: #007bff; /* For modern browsers */
+  accent-color: #007bff;
 }
 
-/* CSS Code for TrackCheckbox */
+/* Track checkbox styles */
 .track-checkbox {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   margin-bottom: 1rem;
 }
 
 .track-checkbox label {
   display: flex;
   align-items: center;
-  margin: 0 auto;
 }
 
 .track-checkbox input[type="checkbox"] {
@@ -170,6 +169,7 @@
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
+/* Loader styles */
 .loader {
   border: 16px solid #f3f3f3; /* Light gray */
   border-top: 16px solid #3498db; /* Blue */
@@ -182,4 +182,93 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Custom DatePicker styles */
+
+.react-datepicker__day--selected[aria-selected="true"],
+.react-datepicker__day--selected[aria-selected="true"]:hover {
+  background-color: #007bff !important;
+  border-radius: 50% !important;
+  color: white !important;
+  border: 2px solid #007bff !important;
+  box-sizing: border-box;
+}
+
+.react-datepicker__day--today.highlight-today[aria-selected="false"],
+.highlight-today[aria-selected="false"] {
+  font-weight: bold !important;
+  border: 2px solid #004996;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+  background-color: transparent !important;
+}
+
+.highlight-today.react-datepicker__day--selected[aria-selected="true"],
+.highlight-today.react-datepicker__day--selected[aria-selected="true"]:hover {
+  font-weight: bold !important;
+  background-color: #007bff !important;
+  border-color: #004996 !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today[aria-selected="false"],
+.react-datepicker__day--keyboard-selected[aria-selected="false"] {
+  background-color: transparent !important;
+  font-weight: normal !important;
+}
+
+.highlight-today:hover,
+.highlight-today.highlight-today:hover,
+.react-datepicker__day:hover {
+  border-radius: 50% !important;
+  background-color: #208cff8f !important;
+  transition: background-color 0.3s;
+}
+
+.react-datepicker__day--disabled,
+.react-datepicker__day--disabled:hover {
+  background-color: white !important;
+  color: #ccc;
+  cursor: default;
+}
+
+.react-datepicker__day--disabled.highlight-today,
+.react-datepicker__day--disabled.highlight-today:hover {
+  border: 1.5px solid #ccc;
+  border-radius: 50% !important;
+  background-color: transparent !important; 
+  color: #ccc;
+}
+
+/* Dropdown container styles */
+.datepicker-dropdown {
+  position: relative;
+  top: 100%;
+  margin-top: 4px;
+  z-index: 10;
+}
+
+/* Styles for the select element (visible when closed) */
+.custom-select {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Color for selected item */
+}
+
+/* Styles for the dropdown options */
+.custom-select option {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  color: #666; /* Color for dropdown options */
+  background-color: #f9f9f9; /* Background color for dropdown */
+}
+
+.year-display {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* Color for selected item */
 }

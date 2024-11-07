@@ -122,6 +122,7 @@ const renderComponent = (key, config, handlers) => {
         maxDate={config.end}
         minDate={config.start}
         dateFormat={config.format.backend}
+        pickerName = "AnotherStyledDatePicker"
       />
       {flaskData.initialTimes.hours.length > 1 && (
         <ButtonGroup

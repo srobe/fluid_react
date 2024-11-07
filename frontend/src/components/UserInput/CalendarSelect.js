@@ -1,8 +1,9 @@
 
 // src/components/UserInput/CalendarSelect.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaCaretDown, FaSearch, FaCalendarAlt } from "react-icons/fa";
 import { addYears, format } from "date-fns";
+import { useOutsideClick } from "../../hooks";
 import { parseUTCDate, toCurrentOffset, toDateOffset } from "../../utils/dateUtils";
 
 const CalendarSelect = ({ 
@@ -12,13 +13,23 @@ const CalendarSelect = ({
   dateDisplayFormat, 
   minDate, 
   maxDate, 
-  dateFormat 
+  dateFormat,
+  pickerName = "StyledDatePicker",
 }) => {
   // Parse minDate and maxDate as UTC dates
   const parsedMinDate = minDate ? parseUTCDate(minDate, dateFormat) : new Date(Date.UTC(1980, 0, 1));
   const parsedMaxDate = maxDate ? parseUTCDate(maxDate, dateFormat) : addYears(new Date(Date.UTC(2024, 0, 1)), 1);
 
   const [isOpen, setIsOpen] = useState(false);
+  const calRef = useRef(null); // Reference for the calendar container
+
+  // Use outside click hook to close the date picker when clicking outside
+  useOutsideClick({
+    isOpen,
+    componentRef: calRef,
+    setIsOpen,
+  });
+
   const [currentDate, setCurrentDate] = useState(selectedDate ? toCurrentOffset(selectedDate) : new Date());
   const [internalSelectedDate, setInternalSelectedDate] = useState(selectedDate ? toCurrentOffset(selectedDate) : null);
 
@@ -92,11 +103,11 @@ const CalendarSelect = ({
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-6" ref={calRef}>
       <p className="text-base font-bold mb-2">{label}</p>
       <div className="relative">
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen((prev) => !prev)}
           className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
         >
           <span>{internalSelectedDate ? format(internalSelectedDate, dateDisplayFormat) : 'Select date...'}</span>

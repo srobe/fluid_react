@@ -76,9 +76,9 @@
   "initialTimes": {
     "label": "Forecast Initial Time",
     "hours": [0,12],
-    "start": "20241023T120000",
-    "end": "20241104T000000",
-    "selected": "20241104T000000",
+    "start": "$todayMinus2Weeks",
+    "end":"$today",
+    "selected":"$initialTimes.end",
     "format":{"display":"MMM dd',' yyyy",
                 "backend":"yyyyMMdd'T'HH'0000'"},
     "type": "DatePicker"

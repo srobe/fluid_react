@@ -1,5 +1,5 @@
 // src/utils/dateUtils.js
-import { addHours, parse } from "date-fns";
+import { getYear, getMonth, parse } from "date-fns";
 import { toZonedTime,formatInTimeZone } from "date-fns-tz";
 import {leadHoursFormatter} from "./formatStrings"
 
@@ -159,3 +159,68 @@ export function toDateOffset(date) {
 
   return result.toDate()
 }
+
+
+/**
+ * Generates an array of years between minDate and maxDate.
+ * 
+ * @param {Date} minDate - The minimum date.
+ * @param {Date} maxDate - The maximum date.
+ * @returns {number[]} Array of years between minDate and maxDate.
+ */
+export const generateYearsArray = (minDate, maxDate) => {
+  return Array.from(
+    { length: getYear(maxDate) - getYear(minDate) + 1 },
+    (_, i) => getYear(minDate) + i
+  );
+};
+
+/**
+ * Returns a static array of months.
+ * 
+ * @returns {string[]} Array of month names.
+ */
+export const getMonthsArray = () => {
+  return [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+};
+
+/**
+ * Filters months based on minDate, maxDate, and the selected date.
+ * 
+ * @param {Date} date - The currently selected date.
+ * @param {Date} minDate - The minimum allowed date.
+ * @param {Date} maxDate - The maximum allowed date.
+ * @returns {{month: string, index: number}[]} Array of filtered month objects with original indices.
+ */
+export const getFilteredMonths = (date, minDate, maxDate) => {
+  const months = getMonthsArray();
+  
+  return months
+    .map((month, index) => ({ month, index })) // Create an array of objects with month names and their original indices
+    .filter(({ index }) => {
+      // Remove options based on minDate and maxDate
+      const currentYear = getYear(date);
+      if (currentYear === getYear(minDate) && index < getMonth(minDate)) {
+        // If it's the min year, remove months before minDate's month
+        return false;
+      }
+      if (currentYear === getYear(maxDate) && index > getMonth(maxDate)) {
+        // If it's the max year, remove months after maxDate's month
+        return false;
+      }
+      return true;
+    });
+};
