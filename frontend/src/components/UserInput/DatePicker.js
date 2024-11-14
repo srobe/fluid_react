@@ -1,110 +1,239 @@
 import React, { useState, useRef } from "react";
 import DatePicker from "react-datepicker";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
-import { addYears, format } from "date-fns";
-import styled from "styled-components";
-import { useOutsideClick } from "../../hooks";
-import { parseUTCDate, toCurrentOffset, toDateOffset } from "../../utils";
-import CustomHeader from './CustomHeader'; 
+import { format, getYear, getMonth } from "date-fns";
+import Dropdown from "./Dropdown";
 
-// Styled component to make DatePicker occupy 100% of its container
-const StyledDatePicker = styled(DatePicker)`
-  width: 20px; // Make the datepicker take up 100% of its container
-`;
-
-// Another example styled date picker (or replace with another version or library)
-const AnotherStyledDatePicker = styled(DatePicker)`
+const customStyles = `
+.react-datepicker {
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.375rem;
+  padding: 1rem;
   width: 100%;
-  border: 2px solid #4a90e2; // Different styling to show the example difference
+  background: white;
+}
+
+.react-datepicker__month-container {
+  width: 100%;
+}
+
+.react-datepicker__month {
+  margin: 0;
+}
+
+.react-datepicker__header {
+  background: white;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.react-datepicker__day-names, 
+.react-datepicker__week {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.react-datepicker__day {
+  margin: 0.125rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  border-radius: 0;
+  flex: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-datepicker__day:hover {
+  background-color: rgb(229 231 235);
+  border-radius: 0;
+}
+
+.react-datepicker__day--selected {
+  background-color: rgb(37 99 235) !important;
+  color: white !important;
+  border-radius: 0 !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: rgb(219 234 254);
+  color: rgb(37 99 235);
+  border-radius: 0;
+}
+
+.react-datepicker__day--today {
+  font-weight: 500;
+  color: rgb(37 99 235);
+}
+
+.react-datepicker__day-names {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.react-datepicker__day-name {
+  margin: 0.125rem;
+  width: 2.25rem;
+  color: rgb(107 114 128);
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+}
+
+.react-datepicker__day--outside-month {
+  color: rgb(209 213 219);
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
 `;
+
+const CustomHeader = ({
+  date,
+  changeYear,
+  changeMonth,
+  decreaseMonth,
+  increaseMonth,
+  prevMonthButtonDisabled,
+  nextMonthButtonDisabled,
+}) => {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const monthOptions = months.map((month, index) => ({
+    label: month,
+    value: index
+  }));
+
+  const currentYear = getYear(date);
+  const yearOptions = Array.from({ length: 201 }, (_, i) => {
+    const year = currentYear - 100 + i;
+    return {
+      label: year.toString(),
+      value: year
+    };
+  });
+
+  return (
+    <div className="flex items-center justify-between mb-2">
+      <button
+        type="button"
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        className="p-1.5 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded"
+      >
+        <FaChevronLeft className="h-4 w-4 text-gray-400" />
+      </button>
+
+      <div className="flex items-center gap-2">
+        <div className="w-32">
+          <Dropdown
+            options={monthOptions}
+            selectedOption={months[getMonth(date)]}
+            onSelect={(option) => changeMonth(option.value)}
+            label=""
+          />
+        </div>
+        <div className="w-24">
+          <Dropdown
+            options={yearOptions}
+            selectedOption={currentYear.toString()}
+            onSelect={(option) => changeYear(option.value)}
+            label=""
+          />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        className="p-1.5 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors rounded"
+      >
+        <FaChevronRight className="h-4 w-4 text-gray-400" />
+      </button>
+    </div>
+  );
+};
 
 const CustomDatePicker = ({
   label,
   selectedDate,
   onChange,
-  dateDisplayFormat = "MMM dd',' yyyy HH'z'",
+  dateDisplayFormat = "MMM dd, yyyy",
   minDate,
   maxDate,
-  dateFormat,
-  pickerName = "StyledDatePicker",
+  className = "",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const calRef = useRef(null);
-  const buttonRef = useRef(null);
 
-  // Use outside click hook to close the date picker when clicking outside
-  useOutsideClick({
-    isOpen,
-    componentRef: calRef,
-    setIsOpen,
-  });
-
-  // Parse and set minDate and maxDate as UTC dates
-  const parsedMinDate = minDate
-    ? parseUTCDate(minDate, dateFormat)
-    : new Date(Date.UTC(1980, 0, 1));
-  const parsedMaxDate = maxDate
-    ? parseUTCDate(maxDate, dateFormat)
-    : addYears(new Date(Date.UTC(2024, 0, 1)), 1);
-
-  // Function to apply custom class to today
-  const dayClassName = (date) => {
-    const today = new Date();
-    if (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    ) {
-      return "highlight-today"; // Custom class for today's date
+  const handleClickOutside = (event) => {
+    if (calRef.current && !calRef.current.contains(event.target)) {
+      setIsOpen(false);
     }
-    return "";
-  };    
-  // Mapping of pickerName to components
-  const pickerComponents = {
-    StyledDatePicker,
-    AnotherStyledDatePicker,
   };
 
-  // Determine the component to use for the date picker
-  const PickerComponent = pickerComponents[pickerName] || StyledDatePicker;
+  React.useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = customStyles;
+    document.head.appendChild(styleSheet);
+
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
 
   return (
-    <div className="mb-6" ref={calRef}>
-      <p className="text-base font-bold mb-2">{label}</p>
-      <div className="datepicker-container relative">
+    <div className="mb-6"> {/* Added mb-6 for consistent spacing */}
+      {label && (
+        <h2 className="text-xl font-bold mb-4">{label}</h2> 
+      )}
+      <div className="relative" ref={calRef}>
         <button
-          ref={buttonRef}
-          onClick={() => setIsOpen((prev) => !prev)}
-          className="w-full px-2 py-1 border border-gray-300 rounded-sm bg-white text-left flex items-center justify-between"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full px-3 py-2 bg-white border border-gray-300 rounded-sm text-left 
+                   flex items-center justify-between hover:border-gray-400 
+                   focus:outline-none focus:ring-0
+                   transition-all duration-200"
         >
-          <span>
-            {selectedDate
-              ? format(toCurrentOffset(selectedDate), dateDisplayFormat)
+          <span className="text-gray-700">
+            {selectedDate 
+              ? format(new Date(selectedDate), dateDisplayFormat)
               : "Select date..."}
           </span>
-          <FaCalendarAlt className="datepicker-icon ml-2 text-gray-500" />
+          <FaCalendarAlt className="h-4 w-4 text-gray-400" />
         </button>
+        
         {isOpen && (
-          <PickerComponent
-            selected={toCurrentOffset(selectedDate)}
-            onChange={(value) => {
-              onChange(toDateOffset(value));
-              setIsOpen(false); // Close after selecting a date
-            }}
-            dateFormat={dateDisplayFormat}
-            minDate={toCurrentOffset(parsedMinDate)}
-            maxDate={toCurrentOffset(parsedMaxDate)}
-            renderCustomHeader={(params) => (
-              <CustomHeader
-                {...params}
-                minDate={parsedMinDate}
-                maxDate={parsedMaxDate}
-              />
-            )}
-            inline
-            dayClassName={dayClassName} // Apply custom styling to specific days
-          />
+          <div className="absolute left-0 right-0 z-50 mt-2">
+            <DatePicker
+              selected={selectedDate ? new Date(selectedDate) : null}
+              onChange={(date) => {
+                onChange(date);
+                setIsOpen(false);
+              }}
+              inline
+              minDate={minDate ? new Date(minDate) : null}
+              maxDate={maxDate ? new Date(maxDate) : null}
+              renderCustomHeader={CustomHeader}
+              calendarClassName="shadow-none bg-white"
+            />
+          </div>
         )}
       </div>
     </div>
