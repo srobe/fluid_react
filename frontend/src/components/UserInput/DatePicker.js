@@ -122,7 +122,7 @@ const CustomHeader = ({
   });
 
   return (
-    <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center justify-between">
       <button
         type="button"
         onClick={decreaseMonth}
@@ -132,8 +132,8 @@ const CustomHeader = ({
         <FaChevronLeft className="h-4 w-4 text-gray-400" />
       </button>
 
-      <div className="flex items-center gap-2">
-        <div className="w-32">
+      <div className="flex items-center gap-1">
+        <div>
           <Dropdown
             options={monthOptions}
             selectedOption={months[getMonth(date)]}
@@ -141,7 +141,7 @@ const CustomHeader = ({
             label=""
           />
         </div>
-        <div className="w-24">
+        <div>
           <Dropdown
             options={yearOptions}
             selectedOption={currentYear.toString()}
@@ -201,7 +201,7 @@ const CustomDatePicker = ({
   return (
     <div className="mb-6"> {/* Added mb-6 for consistent spacing */}
       {label && (
-        <h2 className="text-xl font-bold mb-4">{label}</h2> 
+        <h2 className="text-medium font-bold mb-4">{label}</h2> 
       )}
       <div className="relative" ref={calRef}>
         <button
