@@ -29,10 +29,10 @@
             "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
         {"label":"T2M",
             "var":"t2m",
-            "levels":[0]},
+            "levels":["0"]},
         {"label":"Precip & SLP",
             "var":"precip",
-            "levels":[0]},
+            "levels":["0"]},
         {"label":"Vorticity",
             "var":"vort",
             "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
@@ -41,7 +41,7 @@
             "levels":["10", "30", "50", "100", "200", "300", "500", "700", "850"]},
         {"label":"Basemap",
             "var":"bmap",
-            "levels":[0]}
+            "levels":["0"]}
     ],
     "selected": "tmpu",
     "type": "ButtonGroup"
@@ -106,5 +106,12 @@
     "all":[],
     "selected":"$urlInfo.stream",
     "type": "ButtonGroup"
+  },
+  "selected":{
+    "fields": "tmpu",
+    "levels": "850",
+    "regions": "nam",
+    "stream": "G5FPFC",
+    "initialTimes": "20241108H120000"
   }
 }

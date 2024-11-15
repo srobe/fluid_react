@@ -81,7 +81,7 @@
     "selected": "20240930",
     "format":{"display":"MMM dd',' yyyy",
                 "backend":"yyyyMMdd"},
-    "type": "CalendarSelect"
+    "type": "DatePicker"
   },
   "leadHours": {
     "label": "Analysis Time",

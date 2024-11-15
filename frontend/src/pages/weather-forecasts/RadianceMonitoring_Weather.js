@@ -1,7 +1,7 @@
 // src/pages/weather-forecasts/RadianceMonitoring_Weather.js
 
 import React, { useState, useCallback } from "react";
-import useFetchData from "../../hooks/useFetchData";
+import useFetchData from "../../hooks/useFetchData2";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
@@ -15,7 +15,7 @@ function WeatherForecasts() {
     setSelectedValues,
     setFlaskData,
     updateLevels,
-  } = useFetchData("/api/data", "/data/data5.json", { name: "data5.json", age: 30 });
+  } = useFetchData("/api/data", "/data/wxmaps2.json", { name: "wxmaps2.json", age: 30 });
 
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,6 +97,7 @@ function WeatherForecasts() {
             <p>No image available.</p>
           )}
         </div>
+        
       </main>
     </div>
   );
