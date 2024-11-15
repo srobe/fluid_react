@@ -85,7 +85,7 @@ These files will be created with the `./dev_init.sh` command. By default, the po
 
 - From the root directory, run:
   ```
-  source startapp.sh backend
+  ./startapp.sh backend
   ```
   This script will change directory to the backend, initiate the conda environment, and start the backend
 
@@ -94,7 +94,7 @@ These files will be created with the `./dev_init.sh` command. By default, the po
 - Open a new terminal 
 - From the root directory, run:
   ```
-  source startapp.sh frontend
+  ./startapp.sh frontend
   ```
   This script will change directory to the frontend and run `npm start`
 
