@@ -17,7 +17,7 @@ const ButtonGroup = ({
   );
 
   return (
-    <div className="button-group">
+    <div className="button-group mb-4">
       {label && <p className="text-base font-bold mb-2">{label}</p>}
       <div className="flex flex-wrap">
         {processedOptions.map((option, index)  => (

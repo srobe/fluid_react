@@ -20,17 +20,21 @@ const RadioButtonGroup = ({
       {label && <p className="text-base font-bold mb-2">{label}</p>}
       <div className="flex flex-wrap">
         {processedOptions.map((option, index) => (
-          <label key={index} className="radio-item p-2 m-1 flex items-center">
+          <div className="radio-item" key={index}>
             <input
               type="radio"
+              id={`radio-${option.var}`}
               name={label} // Use the group label as the radio group name
               value={option.var}
               checked={selectedOption && selectedOption.var === option.var}
               onChange={() => onSelect(option)}
-              className="mr-2"
+              className="hidden" // Hide the default radio button
             />
-            {option.label}
-          </label>
+            <label htmlFor={`radio-${option.var}`} className="flex items-center cursor-pointer">
+              <span className="custom-radio"></span>
+              {option.label}
+            </label>
+          </div>
         ))}
       </div>
     </div>

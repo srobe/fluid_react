@@ -1,10 +1,11 @@
 // src/pages/weather-forecasts/WeatherMaps_Weather.js
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
+import Dropdown from '../../components/UserInput/Dropdown';
 import "react-datepicker/dist/react-datepicker.css";
 
 function WeatherForecasts() {
@@ -17,7 +18,7 @@ function WeatherForecasts() {
     updateLevels,
   } = useFetchData("/api/data", "/data/wxmaps.json", { name: "wxmaps.json", age: 30 });
 
-  const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
+  const [imageSrc, setImageSrc] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = useCallback(async () => {
@@ -33,9 +34,26 @@ function WeatherForecasts() {
     }
   }, [selectedValues, flaskData.urlInfo]);
 
+  useEffect(() => {
+    if (flaskData && selectedValues) {
+      handleSubmit();
+    }
+  }, [flaskData, selectedValues, handleSubmit]);
+
+  const handleDownload = () => {
+    if (imageSrc) {
+      const link = document.createElement('a');
+      link.href = imageSrc;
+      link.download = 'weather-forecast.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
-      <aside className="md:w-1/3 lg:w-1/4 bg-gray-100 border border-black p-4 mr-8 rounded-sm mb-6 md:mb-0">
+      <aside className="md:w-1/3 lg:w-1/3 bg-gray-50 border border-[#A9A9A9] p-6 mr-8 rounded-sm mb-6 md:mb-0">
         {order.map((key) => renderComponent(key, flaskData[key], {
           setSelectedValues,
           updateLevels,
@@ -46,7 +64,7 @@ function WeatherForecasts() {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white py-1 rounded-sm hover:bg-blue-500"
+          className="w-full bg-blue-600 text-white text-base py-[8px] rounded-sm hover:bg-blue-500"
         >
           Generate graph
         </button>
@@ -58,45 +76,42 @@ function WeatherForecasts() {
             &lt; Weather Forecasts
           </a>
         </nav>
-        <h1 className="text-2xl font-bold mb-4">Weather Maps</h1>
-        <p className="text-gray-700 mb-6">
-          The Goddard Earth Observing System (GEOS) model is designed to study
-          various Earth Science questions by connecting different model components flexibly.
-        </p>
-
+        <h1 className="text-2xl font-bold mb-4">Weather Forecasts</h1>
+        <p className="mb-4">Generate and view weather forecast graphs based on selected parameters.</p>
         <div className="flex mb-8">
-          <select className="mr-4 px-2 py-1 border border-gray-300 rounded-sm">
-            <option>4k</option>
-            <option>5k</option>
-            <option>6k</option>
-          </select>
-          <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
-            Download imagery
+          <button onClick={handleDownload} className="bg-blue-600 text-white py-1 px-4 mr-2 rounded-sm hover:bg-blue-500">
+            Download Image
           </button>
+          <Dropdown
+            buttonClassName="bg-gray-600 text-white py-1 px-4 rounded-sm hover:bg-gray-500"
+            menuClassName="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-sm shadow-lg"
+            options={[
+              { label: 'Option 1', value: 'option1' },
+              { label: 'Option 2', value: 'option2' },
+              { label: 'Option 3', value: 'option3' },
+            ]}
+          />
         </div>
-
-        <div>
-          {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <Oval
-                height={80}
-                width={80}
-                color="#4fa94d"
-                ariaLabel="oval-loading"
-                secondaryColor="#4fa94d"
-                strokeWidth={2}
-                strokeWidthSecondary={2}
-              />
-            </div>
-            // <div className="flex justify-center items-center h-64">
-              // <p>Loading image...</p>
-            // </div>
-          ) : imageSrc ? (
-            <img src={imageSrc} alt="Generated Graph" />
-          ) : (
-            <p>No image available.</p>
-          )}
-        </div>
+        {isLoading ? (
+          <Oval
+            height={80}
+            width={80}
+            color="#4fa94d"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel='oval-loading'
+            secondaryColor="#4fa94d"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        ) : (
+          imageSrc && (
+            <>
+              <img src={imageSrc} alt="Generated graph" className="w-full mb-4 border border-black" />
+            </>
+          )
+        )}
       </main>
     </div>
   );

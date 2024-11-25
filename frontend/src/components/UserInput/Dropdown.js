@@ -4,7 +4,6 @@ import { useKeyboardNavigation, useOutsideClick } from "../../hooks"
 import { processOptions } from "../../utils";
 
 const Dropdown = ({
-  label = "",
   options = [],
   selectedOption = "",
   onSelect = () => {},
@@ -39,8 +38,7 @@ const Dropdown = ({
   });
 
   return (
-    <div className="mb-6" ref={dropdownRef}>
-      <p className="text-base font-bold mb-2">{label}</p>
+    <div ref={dropdownRef}>
       <div className="relative">
         <button
           ref={buttonRef}
