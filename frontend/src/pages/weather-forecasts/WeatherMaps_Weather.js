@@ -1,11 +1,10 @@
-// src/pages/weather-forecasts/WeatherMaps_Weather.js
-
 import React, { useState, useCallback, useEffect } from "react";
 import useFetchData from "../../hooks/useFetchData";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
 import Dropdown from '../../components/UserInput/Dropdown';
+import AnimationControls from '../../components/UserInput/AnimateControls';
 import "react-datepicker/dist/react-datepicker.css";
 
 function WeatherForecasts() {
@@ -20,19 +19,21 @@ function WeatherForecasts() {
 
   const [imageSrc, setImageSrc] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [animationFrames, setAnimationFrames] = useState([]);
+  const [currentFrame, setCurrentFrame] = useState(0);
 
   const handleSubmit = useCallback(async () => {
-    setIsLoading(true); // Set loading to true before fetching
+    setIsLoading(true);
     try {
       const img = await generateGraph(selectedValues, flaskData.urlInfo);
       setImageSrc(img);
     } catch (error) {
       console.error("Error generating graph:", error);
-      setImageSrc(null); // Optionally set to null or an error image
+      setImageSrc(null);
     } finally {
-      setIsLoading(false); // Set loading to false after fetching
+      setIsLoading(false);
     }
-  }, [selectedValues, flaskData.urlInfo]);
+  }, [selectedValues, flaskData?.urlInfo]);
 
   useEffect(() => {
     if (flaskData && selectedValues) {
@@ -51,8 +52,25 @@ function WeatherForecasts() {
     }
   };
 
+  const handleAnimation = async () => {
+    try {
+      // This is where you would fetch animation frames from your backend
+      // Example implementation:
+      const frames = await generateGraph(
+        { ...selectedValues, animation: true },
+        flaskData.urlInfo
+      );
+      setAnimationFrames(frames);
+      return frames;
+    } catch (error) {
+      console.error("Error generating animation:", error);
+      throw error;
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
+      {/* Sidebar */}
       <aside className="md:w-1/3 lg:w-1/3 bg-gray-50 border border-[#A9A9A9] p-6 mr-8 rounded-sm mb-6 md:mb-0">
         {order.map((key) => renderComponent(key, flaskData[key], {
           setSelectedValues,
@@ -70,16 +88,23 @@ function WeatherForecasts() {
         </button>
       </aside>
 
+      {/* Main Content */}
       <main className="md:w-2/3 lg:w-3/4 p-4">
         <nav className="mb-4">
           <a href="/weather-forecasts" className="text-blue-600 underline">
             &lt; Weather Forecasts
           </a>
         </nav>
+        
         <h1 className="text-2xl font-bold mb-4">Weather Forecasts</h1>
         <p className="mb-4">Generate and view weather forecast graphs based on selected parameters.</p>
+        
+        {/* Action Buttons */}
         <div className="flex mb-8">
-          <button onClick={handleDownload} className="bg-blue-600 text-white py-1 px-4 mr-2 rounded-sm hover:bg-blue-500">
+          <button 
+            onClick={handleDownload} 
+            className="bg-blue-600 text-white py-1 px-4 mr-2 rounded-sm hover:bg-blue-500"
+          >
             Download Image
           </button>
           <Dropdown
@@ -92,6 +117,8 @@ function WeatherForecasts() {
             ]}
           />
         </div>
+
+        {/* Loading State */}
         {isLoading ? (
           <Oval
             height={80}
@@ -107,9 +134,20 @@ function WeatherForecasts() {
           />
         ) : (
           imageSrc && (
-            <>
-              <img src={imageSrc} alt="Generated graph" className="w-full mb-4 border border-black" />
-            </>
+            <div>
+              {/* Image */}
+              <img 
+                src={animationFrames[currentFrame] || imageSrc} 
+                alt="Weather forecast" 
+                className="w-full border border-black" 
+              />
+              
+              {/* Animation Controls */}
+              <AnimationControls
+                onAnimate={handleAnimation}
+                onFrameChange={(frameIndex) => setCurrentFrame(frameIndex)}
+              />
+            </div>
           )
         )}
       </main>
@@ -118,4 +156,3 @@ function WeatherForecasts() {
 }
 
 export default WeatherForecasts;
-
