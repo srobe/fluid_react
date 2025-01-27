@@ -15,7 +15,7 @@ function WeatherForecasts() {
     setSelectedValues,
     setFlaskData,
     updateLevels,
-  } = useFetchData("/api/data", "/data/reanalysis.json", { name: "reanalysis.json", age: 30 });
+  } = useFetchData("/api/data", "/data/classic_merra2.json", { name: "classic_merra2.json", age: 30 });
 
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/assets/graph.png`);
   const [isLoading, setIsLoading] = useState(false);

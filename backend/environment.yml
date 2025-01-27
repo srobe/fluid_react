@@ -18,6 +18,7 @@ dependencies:
   - watchdog
   - requests
   - beautifulsoup4
+  - ruamel.yaml
 
 
 

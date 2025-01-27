@@ -44,7 +44,7 @@
             "levels":["0"]}
     ],
     "selected": "tmpu",
-    "type": "ButtonGroup"
+    "type": "DropdownWithSearch"
   },
   "regions": {
     "label": "Regions",
