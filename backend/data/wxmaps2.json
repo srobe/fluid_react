@@ -1,0 +1,106 @@
+{
+    "order": ["fields", "regions", "levels", "initialTimes", "leadHours"],
+    "urlInfo": {
+      "stream": "G5FPFC",
+      "instance": "wxmaps",
+      "url_theme": "",
+      "theme": "classic_public"
+    },
+    "fields": {
+      "label": "Fields",
+      "all": [
+        { "label": "Abs EPV", "var": "epv" },
+        { "label": "Temperature", "var": "tmpu" },
+        { "label": "Vert Velocity", "var": "vvel" },
+        { "label": "Humidity", "var": "humid" },
+        { "label": "T2M", "var": "t2m" },
+        { "label": "Precip & SLP", "var": "precip" },
+        { "label": "Vorticity", "var": "vort" },
+        { "label": "Wind Speed", "var": "wspd" },
+        { "label": "Basemap", "var": "bmap" }
+      ],
+      "type": "ButtonGroup"
+    },
+    "regions": {
+      "label": "Regions",
+      "all": [
+        { "label": "Africa", "var": "africa" },
+        { "label": "Australia", "var": "australia" },
+        { "label": "Global", "var": "global" },
+        { "label": "Mid Atlantic", "var": "midatl" },
+        { "label": "North America", "var": "nam" },
+        { "label": "North Polar", "var": "nps" },
+        { "label": "Pacific", "var": "pac" },
+        { "label": "South America", "var": "sam" },
+        { "label": "Seven Seas", "var": "sevenseas" },
+        { "label": "South Polar", "var": "sps" }
+      ],
+      "type": "DropdownWithSearch"
+    },
+    "levels": {
+      "label": "Levels",
+      "all": [],
+      "type": "ButtonGroup"
+    },
+    "initialTimes": {
+      "label": "Forecast Initial Time",
+      "hours": [0, 12],
+      "start": "$todayMinus2Weeks",
+      "end": "$today",
+      "format": {
+        "display": "MMM dd',' yyyy",
+        "backend": "yyyyMMdd'T'HH'0000'"
+      },
+      "type": "DatePicker"
+    },
+    "leadHours": {
+      "label": "Forecast Lead Hour",
+      "options": [],
+      "format": {
+        "var": "<03d>",
+        "date": "ddMMMyyyy HH'z'",
+        "all": "{var}h {formattedDate}"
+      },
+      "type": "DropdownWithSearch"
+    },
+    "streams": {
+      "label": "Plot Type",
+      "all": [
+        { "label": "G5FPFC", "var": "G5FPFC" },
+        { "label": "G5NR", "var": "G5NR" }
+      ],
+      "type": "ButtonGroup"
+    },
+    "dependencies": {
+      "levels": {
+        "dependsOn": "fields",
+        "mapping": {
+          "epv": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "tmpu": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "vvel": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "humid": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "t2m": ["0"],
+          "precip": ["0"],
+          "vort": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "wspd": ["10", "30", "50", "100", "200", "300", "500", "700", "850"],
+          "bmap": ["0"]
+        }
+      },
+      "leadHours": {
+        "dependsOn": "initialTimes",
+        "mapping": {
+          "0": [0, 3, 6, 9, 12, 15, 18, 21, 24],
+          "12": [0, 3, 6, 9, 12]
+        }
+      }
+    },
+    "selected": {
+      "fields": "tmpu",
+      "levels": "850",
+      "regions": "nam",
+      "streams": "$urlInfo.stream",
+      "initialTimes": "$today",
+      "leadHours": null
+    }
+  }
+  

@@ -1,0 +1,21 @@
+# bin_path: $app_path/$instance/bin
+bin_path: $backend/data/$instance
+config_path: $backend_config/share:$backend_config/share/themes:$backend_config/share/missions:$backend_config/share/special:$backend_config/share/examples
+shape_path: $shapes_path/maps
+logo_path: $backend_config/share/files
+# map_path: $app_path/wxmaps/static/plots/maps
+map_path: $cache_dir/plots/maps
+track_path: $merra2_dir/supplemental/climatestatistics/track
+colorbar: $backend_config/share/files/cbart.gs
+font: $backend_config/share/files/helr47w.ttf
+bfont: $backend_config/share/files/helr65w.ttf
+mfont: $backend_config/share/files/VeraMono.ttf
+toolkit: !!python/object/apply:toolkit.Toolkit []
+config: [wxmap]
+
+keymap:
+  shape_path: /data/maps
+  logo_path: /data/logos
+  colorbar: cbart.gs
+  font: Vera.ttf
+  mfont: VeraMono.ttf
