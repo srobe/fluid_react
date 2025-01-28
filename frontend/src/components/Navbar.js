@@ -34,13 +34,13 @@ const Navbar = () => {
           
           {/* Home */}
           <li className="relative group">
-            <Link to="/" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+            <Link to="/" className="flex items-center hover:text-blue-400 w-full md:w-auto p-2">
               Home 
             </Link>
           </li>
           {/* Weather Forecasts */}
           <li className="relative group">
-            <Link to="/weather-forecasts" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+            <Link to="/weather-forecasts" className="flex items-center hover:text-blue-400 w-full md:w-auto p-2">
               Weather Maps <FaCaretDown className="ml-1" />
             </Link>
             <ul className="hidden group-hover:block bg-black mt-1 p-4 space-y-2 w-full md:w-52 md:absolute md:bg-black md:p-4 md:space-y-2">
@@ -53,7 +53,7 @@ const Navbar = () => {
           
           {/* Aerosol & Gas Forecasts */}
           <li className="relative group">
-            <Link to="/aerosol-gas" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+            <Link to="/aerosol-gas" className="flex items-center hover:text-blue-400 w-full md:w-auto p-2">
               Aerosol & Gas Forecasts <FaCaretDown className="ml-1" />
             </Link>
             <ul className="hidden group-hover:block bg-black mt-1 p-4 space-y-2 w-full md:w-64 md:absolute md:bg-black md:p-4 md:space-y-2">
@@ -69,17 +69,17 @@ const Navbar = () => {
 
           {/* Seasonal Prediction */}
           <li>
-            <Link to="/seasonal-prediction" className="hover:text-blue-400 block md:inline-block">
+            <Link to="/seasonal-prediction" className="hover:text-blue-400 block md:inline-block p-2">
               Seasonal Prediction
             </Link>
           </li>
           
           {/* Reanalysis */}
           <li className="relative group">
-            <Link to="/reanalysis" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+            <Link to="/reanalysis" className="flex items-center hover:text-blue-400 w-full md:w-auto p-2">
               Reanalysis <FaCaretDown className="ml-1" />
             </Link>
-            <ul className="hidden group-hover:block bg-black mt-1 p-4 space-y-2 w-full md:w-48 md:absolute md:bg-black md:p-4 md:space-y-2">
+            <ul className="hidden group-hover:block bg-black mt-1 p-4 space-y-2 w-full md:w-48 md:absolute md:bg-black md:p-4 md:space-y-2 p-2">
               <li><a href="#" className="hover:text-blue-400 whitespace-nowrap">MERRA-2</a></li>
               <li><a href="#" className="hover:text-blue-400 whitespace-nowrap">Wx Maps</a></li>
               <li><a href="#" className="hover:text-blue-400 whitespace-nowrap">Chem Maps</a></li>
@@ -93,7 +93,7 @@ const Navbar = () => {
 
           {/* Mission Support */}
           <li className="relative group">
-            <Link to="/mission-support" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+            <Link to="/mission-support" className="flex items-center hover:text-blue-400 w-full md:w-auto p-2">
               Mission Support <FaCaretDown className="ml-1" />
             </Link>
             <ul className="hidden group-hover:block bg-black mt-1 p-4 space-y-2 w-full md:w-48 md:absolute md:bg-black md:p-4 md:space-y-2">
