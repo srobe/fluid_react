@@ -44,7 +44,7 @@ import SCOAPEII from './pages/mission-support/SCOAPE-II';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App w-full min-h-screen">
         <ScrollToTop />
         <Navbar />
         <Routes>
@@ -77,7 +77,7 @@ function App() {
           <Route path="/about" element={<About />} />
         </Routes>
         <Survey />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </Router>
   );

@@ -27,11 +27,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-black p-5 w-screen h-fit border-b border-white z-50 relative ">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-black p-5 flex flex-row w-full h-fit border-b justify-center border-white z-50 relative ">
+      <div className=" w-full flex justify-between items-center">
         
         {/* LOGO */}
-        <div className="flex items-center">
+        <div className="flex w-full items-center">
           <Link to='/'>
             <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-10 mr-3" />
           </Link>
@@ -45,16 +45,16 @@ const Navbar = () => {
         </div>
 
         {/* NAVIGATION LINKS */}
-        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white font-helvetica text-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white items-center font-helvetica text-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
           
           {/* Home */}
-          <li className="relative group ">
+          <li className="relative group w-fit">
             <Link to="/" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Home 
             </Link>
           </li>
           {/* Weather Forecasts */}
-          <li className="relative group w-fit" onMouseEnter={() => handleMouseEnter('weather')} onMouseLeave={handleMouseLeave}>
+          <li className="relative group w-fit text-nowrap" onMouseEnter={() => handleMouseEnter('weather')} onMouseLeave={handleMouseLeave}>
             <Link to="/weather-forecasts" className="flex items-center hover:text-blue-400 w-full md:w-auto ">
               Weather Maps <FaCaretDown className="ml-1 inline" />
             </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
           </li>
           
           {/* Aerosol & Gas Forecasts */}
-          <li className="relative group" onMouseEnter={() => handleMouseEnter('aerosol')} onMouseLeave={handleMouseLeave}>
+          <li className="relative group w-fit text-nowrap" onMouseEnter={() => handleMouseEnter('aerosol')} onMouseLeave={handleMouseLeave}>
             <Link to="/aerosol-gas" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Aerosol & Gas Forecasts <FaCaretDown className="ml-1" />
             </Link>
@@ -86,13 +86,13 @@ const Navbar = () => {
 
           {/* Seasonal Prediction */}
           <li>
-            <Link to="/seasonal-prediction" className="hover:text-blue-400 block md:inline-block">
+            <Link to="/seasonal-prediction" className="w-fit text-nowrap hover:text-blue-400 block md:inline-block">
               Seasonal Prediction
             </Link>
           </li>
           
           {/* Reanalysis */}
-          <li className="relative group" onMouseEnter={() => handleMouseEnter('reanalysis')} onMouseLeave={handleMouseLeave}>
+          <li className="relative group w-fit text-nowrap" onMouseEnter={() => handleMouseEnter('reanalysis')} onMouseLeave={handleMouseLeave}>
             <Link to="/reanalysis" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Reanalysis <FaCaretDown className="ml-1" />
             </Link>
@@ -109,7 +109,7 @@ const Navbar = () => {
           </li>
 
           {/* Mission Support */}
-          <li className="relative group" onMouseEnter={() => handleMouseEnter('mission')} onMouseLeave={handleMouseLeave}>
+          <li className="relative group w-fit text-nowrap" onMouseEnter={() => handleMouseEnter('mission')} onMouseLeave={handleMouseLeave}>
             <Link to="/mission-support" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Mission Support <FaCaretDown className="ml-1" />
             </Link>

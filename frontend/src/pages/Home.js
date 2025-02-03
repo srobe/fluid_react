@@ -68,10 +68,10 @@ const Home = () => {
   const backgroundImage = `${process.env.PUBLIC_URL}/assets/hero-background.png`;
 
   return ( 
-    <div className="relative w-full"> 
+    <div className="flex flex-col w-screen h-fit"> 
 
-      {/* HERO SECTION */}
-      <div 
+      HERO SECTION
+      {/* <div 
         className="relative h-50 bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
@@ -86,11 +86,11 @@ const Home = () => {
             <a href="#" className="text-white px-5 py-1 rounded-sm text-base font-normal border border-white hover:bg-white hover:text-black">How to use FLUID →</a>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* END HERO SECTION */}
 
       {/* AVAILABLE GRAPHS SECTION */}
-      <div className="container mx-auto w-screen py-16">
+      {/* <div className="container mx-auto w-screen py-16">
         <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
         <p className="text-lg mb-8 max-w-3xl">
           The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
@@ -107,7 +107,7 @@ const Home = () => {
             />
           ))}
         </div>
-      </div>
+      </div> */}
       {/* END AVAILABLE GRAPHS SECTION */}
     </div>
   );
