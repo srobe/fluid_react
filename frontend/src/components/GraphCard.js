@@ -18,7 +18,7 @@ const GraphCard = ({ image, title, description, items, link }) => {
           <div className="space-y-2">
             {items && items.length > 0 ? (
               items.map((item, index) => (
-                <Link key={index} to={item.link} className="text-gray-500 hover:text-blue-500 block">
+                <Link key={index} to={item.link} className="text-zinc-800 hover:text-blue-500 block">
                   {item.name}
                 </Link>
               ))

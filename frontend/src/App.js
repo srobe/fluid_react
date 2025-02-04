@@ -77,7 +77,7 @@ function App() {
           <Route path="/about" element={<About />} />
         </Routes>
         <Survey />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </Router>
   );

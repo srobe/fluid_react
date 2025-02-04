@@ -31,9 +31,9 @@ const Navbar = () => {
       <div className=" w-full flex justify-between items-center">
         
         {/* LOGO */}
-        <div className="flex w-full items-center">
+        <div className=" items-center">
           <Link to='/'>
-            <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-10 mr-3" />
+            <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-10 mr-3 shrink-0 w-auto object-contain" />
           </Link>
         </div>
 
@@ -45,7 +45,7 @@ const Navbar = () => {
         </div>
 
         {/* NAVIGATION LINKS */}
-        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white items-center font-helvetica text-sm ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white items-center font-helvetica sm:text-xs text-base ${mobileMenuOpen ? 'block' : 'hidden'}`}>
           
           {/* Home */}
           <li className="relative group w-fit">

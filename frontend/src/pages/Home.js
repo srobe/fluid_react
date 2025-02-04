@@ -70,13 +70,13 @@ const Home = () => {
   return ( 
     <div className="flex flex-col w-screen h-fit"> 
 
-      HERO SECTION
-      {/* <div 
+     
+      <div 
         className="relative h-50 bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative z-10 container mx-auto px-4 py-32">
+        <div className="relative z-10 container mx-auto p-5 ml-5 py-32">
           <h1 className="text-white text-4xl font-semibold mb-8">What is FLUID?</h1>
           <p className="text-white text-lg mb-16 max-w-3xl">
             The Global Modeling and Assimilation Office (GMAO) Framework for Live User-Invoked Data (FLUID) is a powerful tool designed to make it easier to analyze and visualize climate data. FLUID offers interactive applications that support the GMAO mission by providing quick and intuitive access to experimental and climatological data.
@@ -86,16 +86,21 @@ const Home = () => {
             <a href="#" className="text-white px-5 py-1 rounded-sm text-base font-normal border border-white hover:bg-white hover:text-black">How to use FLUID →</a>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* END HERO SECTION */}
 
       {/* AVAILABLE GRAPHS SECTION */}
-      {/* <div className="container mx-auto w-screen py-16">
-        <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
-        <p className="text-lg mb-8 max-w-3xl">
-          The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
-        </p>
-        <div className="flex flex-wrap -mx-4">
+      <div className="container flex flex-col justify-center items-center w-full p-7">
+
+        <div className='flex flex-col w-full ml-5'> 
+          <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
+          <p className="text-lg mb-8 max-w-3xl">
+            The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
+          </p>
+          
+        </div> 
+        
+        <div className="flex flex-wrap">
           {graphData.map((graph, index) => (
             <GraphCard
               key={index}
@@ -107,7 +112,7 @@ const Home = () => {
             />
           ))}
         </div>
-      </div> */}
+      </div>
       {/* END AVAILABLE GRAPHS SECTION */}
     </div>
   );
