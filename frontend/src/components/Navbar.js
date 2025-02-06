@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { FaCaretDown, FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import NasaLogo from '../assets/nasa-logo.png';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,7 +34,7 @@ const Navbar = () => {
         {/* LOGO */}
         <div className=" items-center">
           <Link to='/'>
-            <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-10 mr-3 shrink-0 w-auto object-contain" />
+            <img src={NasaLogo} alt="NASA Logo" className="h-10 mr-3 shrink-0 w-auto object-contain" />
           </Link>
         </div>
 
@@ -45,7 +46,7 @@ const Navbar = () => {
         </div>
 
         {/* NAVIGATION LINKS */}
-        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white items-center font-helvetica sm:text-xs text-base ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+        <ul className={`md:flex justify-end md:space-x-6 w-full h-full text-white items-center md:text-sm sm:text-xs font-helvetica  ${mobileMenuOpen ? 'block' : 'hidden'}`}>
           
           {/* Home */}
           <li className="relative group w-fit">
@@ -58,7 +59,7 @@ const Navbar = () => {
             <Link to="/weather-forecasts" className="flex items-center hover:text-blue-400 w-full md:w-auto ">
               Weather Maps <FaCaretDown className="ml-1 inline" />
             </Link>
-            <ul className={`bg-black mt-1 p-4 space-y-2 w-full md:w-52 md:absolute md:bg-black md:p-4 md:space-y-2
+            <ul className={`bg-black mt-1 p-6 space-y-2 w-full md:w-52 md:absolute md:bg-black  md:space-y-2
             transition-opacity duration-300 ease-in-out 
             ${hoveredMenu === 'weather' ? 'opacity-100' : 'opacity-0'}`}>
               <li><a href="/weather-forecasts/datagrams" className="hover:text-blue-400 whitespace-nowrap">Datagrams</a></li>
@@ -73,11 +74,11 @@ const Navbar = () => {
             <Link to="/aerosol-gas" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Aerosol & Gas Forecasts <FaCaretDown className="ml-1" />
             </Link>
-            <ul className={`bg-black mt-1 p-4 space-y-2 w-full md:w-64 md:absolute md:bg-black md:p-4 md:space-y-2 transition-opacity duration-300 ease-in-out ${hoveredMenu === 'aerosol' ? 'opacity-100' : 'opacity-0'}`}>
+            <ul className={`bg-black mt-1 p-6 space-y-2 w-full md:w-64 md:absolute md:bg-black md:space-y-2 transition-opacity duration-300 ease-in-out ${hoveredMenu === 'aerosol' ? 'opacity-100' : 'opacity-0'}`}>
               <li className="text-gray-400 whitespace-nowrap">Forward Processing</li>
-              <li><a href="/aerosol-gas/datagrams" className="hover:text-blue-400 whitespace-nowrap">Datagrams (Aerograms)</a></li>
-              <li><a href="/aerosol-gas/chem-maps" className="hover:text-blue-400 whitespace-nowrap">2D Chem (Atmospheric Composition)</a></li>
-              <li><a href="/aerosol-gas/chem-maps" className="hover:text-blue-400 whitespace-nowrap">3D Chem (Atmospheric Composition)</a></li>
+              <li><a href="/aerosol-gas/datagrams" className="hover:text-blue-400 pr-5  whitespace-nowrap">Datagrams (Aerograms)</a></li>
+              <li><a href="/aerosol-gas/chem-maps" className="hover:text-blue-400 pr-5 flex text-wrap whitespace-nowrap">2D Chem (Atmospheric Composition)</a></li>
+              <li><a href="/aerosol-gas/chem-maps" className="hover:text-blue-400 flex text-wrap whitespace-nowrap">3D Chem (Atmospheric Composition)</a></li>
               <li className="text-gray-400 whitespace-nowrap">Composition Forecast</li>
               <li><a href="/aerosol-gas/surface-concentrations" className="hover:text-blue-400 whitespace-nowrap">Surface Concentrations</a></li>
               <li><a href="/aerosol-gas/total-column" className="hover:text-blue-400 whitespace-nowrap">Total Column</a></li>
@@ -113,7 +114,7 @@ const Navbar = () => {
             <Link to="/mission-support" className="flex items-center hover:text-blue-400 w-full md:w-auto">
               Mission Support <FaCaretDown className="ml-1" />
             </Link>
-            <ul className={`bg-black mt-1 p-4 space-y-2 w-full md:w-48 md:absolute md:bg-black md:p-4 md:space-y-2 transition-opacity duration-300 ease-in-out ${hoveredMenu === 'mission' ? 'opacity-100' : 'opacity-0'}`}>
+            <ul className={`bg-black mt-1 p-6 space-y-2 w-full md:w-48 md:absolute md:bg-black md:space-y-2 transition-opacity duration-300 ease-in-out ${hoveredMenu === 'mission' ? 'opacity-100' : 'opacity-0'}`}>
               <li className="text-gray-400 whitespace-nowrap">Active</li>
               <li><a href="#" className="hover:text-blue-400 whitespace-nowrap">AGEST</a></li>
               <li><a href="#" className="hover:text-blue-400 whitespace-nowrap">BLUEFLUX</a></li>

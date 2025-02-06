@@ -1,9 +1,12 @@
 import GraphCard from "../components/GraphCard";
+import GraphImg from "../assets/graph.png";
+import BackgroundImg from "../assets/hero-background.png";
+
 
 const Home = () => {
   const graphData = [
     {
-      image: `${process.env.PUBLIC_URL}/assets/graph.png`,
+      image: GraphImg,
       title: 'Weather Forecasts',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
@@ -16,7 +19,7 @@ const Home = () => {
       link: '/weather-forecasts'
     },
     {
-      image: `${process.env.PUBLIC_URL}/assets/graph.png`,
+      image: GraphImg,
       title: 'Aerosol & Gas Forecasts',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
@@ -26,7 +29,7 @@ const Home = () => {
       link: '/aerosol-gas'
     },
     {
-      image: `${process.env.PUBLIC_URL}/assets/graph.png`,
+      image: GraphImg,
       title: 'Seasonal Prediction',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
@@ -37,7 +40,7 @@ const Home = () => {
       link: '/seasonal-prediction'
     },
     {
-      image: `${process.env.PUBLIC_URL}/assets/graph.png`,
+      image: GraphImg,
       title: 'Reanalysis',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
@@ -49,7 +52,7 @@ const Home = () => {
       link: '/reanalysis'
     },
     {
-      image: `${process.env.PUBLIC_URL}/assets/graph.png`,
+      image: GraphImg,
       title: 'Mission Support',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
@@ -65,20 +68,20 @@ const Home = () => {
     },
   ];
 
-  const backgroundImage = `${process.env.PUBLIC_URL}/assets/hero-background.png`;
+  const backgroundImage = BackgroundImg;
 
   return ( 
     <div className="flex flex-col w-screen h-fit"> 
 
      
       <div 
-        className="relative h-50 bg-cover bg-center"
+        className="relative flex-shrink-0 w-full h-50 bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 container mx-auto p-5 ml-5 py-32">
           <h1 className="text-white text-4xl font-semibold mb-8">What is FLUID?</h1>
-          <p className="text-white text-lg mb-16 max-w-3xl">
+          <p className="text-white text-base md:text-lg mb-16 max-w-3xl">
             The Global Modeling and Assimilation Office (GMAO) Framework for Live User-Invoked Data (FLUID) is a powerful tool designed to make it easier to analyze and visualize climate data. FLUID offers interactive applications that support the GMAO mission by providing quick and intuitive access to experimental and climatological data.
           </p>
           <div className="flex space-x-4">
@@ -90,9 +93,9 @@ const Home = () => {
       {/* END HERO SECTION */}
 
       {/* AVAILABLE GRAPHS SECTION */}
-      <div className="container flex flex-col justify-center items-center w-full p-7">
+      <div className=" flex flex-col justify-center items-center w-full p-7">
 
-        <div className='flex flex-col w-full ml-5'> 
+        <div className='flex flex-col w-full ml-7'> 
           <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
           <p className="text-lg mb-8 max-w-3xl">
             The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
