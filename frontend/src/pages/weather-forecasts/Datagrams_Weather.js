@@ -33,6 +33,9 @@ function WeatherForecasts() {
     }
   }, [selectedValues, flaskData.urlInfo]);
 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
       
@@ -65,16 +68,38 @@ function WeatherForecasts() {
           various Earth Science questions by connecting different model components flexibly.
         </p>
 
-        <div className="flex mb-8">
+        <div className="flex flex-row gap-3  mb-8">
           <select className="mr-4 px-2 py-1 border border-gray-300 rounded-sm">
             <option>4k</option>
             <option>5k</option>
             <option>6k</option>
           </select>
-          <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
+          <button id='download-imagery' className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
             Download imagery
           </button>
+          <button id='open-map' className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
+          onClick={() => setIsModalOpen(true)}>
+            Open Map
+          </button>
         </div>
+
+
+
+         {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-md shadow-lg w-1/2">
+            <h2 className="text-xl font-bold mb-4">Map Viewer</h2>
+            <p>This is where the map will be displayed.</p>
+            <button
+              className="mt-4 bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Close
+            </button>
+          </div>
+          </div>
+      )}
 
         <div>
           {isLoading ? (

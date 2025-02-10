@@ -64,7 +64,7 @@ const Navbar = () => {
             ${hoveredMenu === 'weather' ? 'opacity-100' : 'opacity-0'}`}>
               <li><a href="/weather-forecasts/datagrams" className="hover:text-blue-400 whitespace-nowrap">Datagrams</a></li>
               <li><a href="/weather-forecasts/weather-maps" className="hover:text-blue-400 whitespace-nowrap">WxMaps</a></li>
-              <li><a href="/weather-forecasts/observing-system-statistics" className="hover:text-blue-400 whitespace-nowrap">Observing System Statistics</a></li>
+              <li><a href="/weather-forecasts/observing-system-statistics" className="hover:text-blue-400 text-wrap whitespace-nowrap">Observing System Statistics</a></li>
               <li><a href="/weather-forecasts/radiance-monitoring" className="hover:text-blue-400 whitespace-nowrap">Radiance Monitoring</a></li>
             </ul>
           </li>

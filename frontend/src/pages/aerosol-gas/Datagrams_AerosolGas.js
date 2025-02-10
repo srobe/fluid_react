@@ -64,7 +64,7 @@ function WeatherForecasts() {
           various Earth Science questions by connecting different model components flexibly.
         </p>
 
-        <div className="flex mb-8">
+        <div className="flex flex-row mb-8">
           <select className="mr-4 px-2 py-1 border border-gray-300 rounded-sm">
             <option>4k</option>
             <option>5k</option>
