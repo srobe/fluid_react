@@ -95,11 +95,12 @@ const Home = () => {
       {/* AVAILABLE GRAPHS SECTION */}
       <div className=" flex flex-col justify-center items-center w-full p-7">
 
-        <div className='flex flex-col w-full ml-7'> 
+        <div className='flex flex-col w-full pl-7'> 
           <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
           <p className="text-lg mb-8 max-w-3xl">
             The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
           </p>
+          <p className="border-b border-gray-200"></p>
           
         </div> 
         

@@ -34,7 +34,7 @@ function WeatherForecasts() {
   }, [selectedValues, flaskData.urlInfo]);
 
   return (
-    <div className="flex flex-col md:flex-row container mx-auto py-10 px-4">
+    <div className="flex flex-col md:flex-row h-screen container mx-auto py-10 px-4">
       <aside className="md:w-1/3 lg:w-1/4 bg-gray-100 border border-black p-4 mr-8 rounded-sm mb-6 md:mb-0">
         {order.map((key) => renderComponent(key, flaskData[key], {
           setSelectedValues,
