@@ -107,9 +107,10 @@ const Home = () => {
           {graphData.map((graph, index) => (
             <GraphCard
               key={index}
-              image={graph.image}
               title={graph.title}
               description={graph.description}
+              image={graph.image}
+              
               items={graph.items}
               link={graph.link}
             />

@@ -8,7 +8,11 @@ import ScrollToTop from './components/ScrollToTop';
 
 import Home from './pages/Home';
 
-import About from './pages/About'
+import About from './pages/About';
+
+
+
+
 
 import WeatherForecasts from './pages/weather-forecasts/WeatherForecasts';
 import WeatherMaps_Weather from './pages/weather-forecasts/WeatherMaps_Weather';

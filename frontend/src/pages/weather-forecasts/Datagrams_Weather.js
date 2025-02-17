@@ -1,11 +1,13 @@
 // src/pages/weather-forecasts/Datagrams_Weather.js
 
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import useFetchData from "../../hooks/useFetchData";
 import generateGraph from "../../hooks/generateGraph";
 import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
 import "react-datepicker/dist/react-datepicker.css";
+import MapViewer from "../../components/MapViewer";
+
 
 function WeatherForecasts() {
   const {
@@ -85,21 +87,21 @@ function WeatherForecasts() {
 
 
 
-         {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-md shadow-lg w-1/2">
-            <h2 className="text-xl font-bold mb-4">Map Viewer</h2>
-            <p>This is where the map will be displayed.</p>
-            <button
-              className="mt-4 bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
-              onClick={() => setIsModalOpen(false)}
-            >
-              Close
-            </button>
+         {/* Modal and React Leaflet Map Viewer */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-md shadow-lg w-1/2">
+              <h2 className="text-xl font-bold mb-4">Map Viewer</h2>
+              <MapViewer />  {/* Embed the map component here */}
+              <button
+                className="mt-4 bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Close
+              </button>
+            </div>
           </div>
-          </div>
-      )}
+        )}
 
         <div>
           {isLoading ? (

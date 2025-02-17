@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 /* Font settings */
 @font-face {
   font-family: 'Helvetica';
