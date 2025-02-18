@@ -12,7 +12,7 @@ const GraphCard = ({ image, title, description, items, link }) => {
         </Link>
         <div className="pt-4">
           <Link to={link}>
-            <h2 className="text-xl font-bold mb-2">{title}</h2>
+            <h2 className="text-l font-bold mb-2">{title}</h2>
           </Link>
           <p className="text-gray-700 mb-4 pb-4 border-b border-gray-200">{description}</p>
           <div className="space-y-2">

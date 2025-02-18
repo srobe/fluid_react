@@ -70,7 +70,7 @@ const SearchModal = () => {
   
   const searchByCategoryOrRecent = (term) => {
     setSearchQuery(term.replace(/"/g, ''));
-    // Here you would call your search API with the term
+    // Call search API with term
     console.log('Searching for:', term);
   };
   

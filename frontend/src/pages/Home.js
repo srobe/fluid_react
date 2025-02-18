@@ -91,8 +91,8 @@ const Home = () => {
 
       {/* AVAILABLE GRAPHS SECTION */}
       <div className="container mx-auto py-16">
-        <h2 className="text-2xl font-bold mb-4">Available Graphs</h2>
-        <p className="text-lg mb-8 max-w-3xl">
+        <h2 className="text-xl font-bold mb-4">Available Graphs</h2>
+        <p className="text-m mb-8 max-w-3xl">
           The Goddard Earth Observing System (GEOS) model is designed to study various Earth Science questions by connecting different model components flexibly.
         </p>
         <div className="flex flex-wrap -mx-4">
