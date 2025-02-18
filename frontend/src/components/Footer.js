@@ -1,31 +1,75 @@
 // src/components/Footer.js
 
 import React from 'react';
-import { FaEnvelope } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-10">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-between">
-          <div className="w-full lg:w-1/2 mb-6 lg:mb-0">
-            <h2 className="text-base font-bold mb-4">About</h2>
-            <p className="mb-2">Global Modeling and Assimilation Office (GMAO)</p>
-            <p>Framework for Live-User Invoked Data (FLUID)</p>
+    <footer className="bg-black text-white">
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="flex flex-col md:flex-row md:justify-between">
+          {/* Left Side - Logo & Description */}
+          <div className="mb-8 md:mb-0 md:w-1/2 pr-8">
+            <div className="flex items-center mb-4 space-x-2 mb-12">
+              <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-8" />
+              <img src={`${process.env.PUBLIC_URL}/assets/ESD-logo.png`} alt="ESD Logo" className="h-8" />
+            </div>
+            <h2 className="text-xl font-semibold mb-4">Global Modeling and Assimilation Office</h2>
+            <p className="text-gray-400 leading-relaxed">
+              The purpose of FLUID is to provide applications for interactive analysis and visualizations of experimental,
+              climatological data in support of the GMAO mission.
+            </p>
+            
+            <Link to="/feedback" className="inline-block mt-6 border border-white text-white px-6 py-2 hover:bg-white hover:text-gray-900 transition-colors">
+              Feedback Form
+            </Link>
           </div>
-          <div className="w-full lg:w-1/2">
-            <h2 className="text-base font-bold mb-4">Contact</h2>
-            <p className="flex items-center mb-2">
-              <FaEnvelope className="mr-2" />
-              Web Curator: Callum Wayman
-            </p>
-            <p className="flex items-center">
-              <FaEnvelope className="mr-2" />
-              NASA Official: Alexey Shiklomanov
-            </p>
+          
+          {/* Right Side - About & Contact */}
+          <div className="md:w-1/3">
+            <div className="mb-8">
+              <h3 className="text-gray-400 uppercase text-sm tracking-wider mb-4">ABOUT</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link to="https://fluid.nccs.nasa.gov/about/" className="text-whitehover:text-blue-400 hover:text-blue-400 transition-colors">
+                    Global Modeling and Assimilation (GMAO)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="https://fluid.nccs.nasa.gov/about/" className="text-white hover:text-blue-400 transition-colors">
+                    Framework for Live-User Invoked Data (FLUID)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="https://www.nasa.gov/privacy/" className="text-white hover:text-blue-400 transition-colors">
+                    Private Policy
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-gray-400 uppercase text-sm tracking-wider mb-4">CONTACT</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link to="alexey.shiklomanov@nasa.gov" className="text-white hover:text-blue-400 transition-colors">
+                    NASA Official: Alexey Shiklomanov
+                  </Link>
+                </li>
+                <li>
+                  <Link to="callum.r.wayman@nasa.gov" className="text-white hover:text-blue-400 transition-colors">
+                    Web Curator: Callum Wayman
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+      
+      {/* Blue Bar */}
+      <div className="h-1 bg-blue-300"></div>
     </footer>
   );
 };
