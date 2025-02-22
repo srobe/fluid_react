@@ -7,7 +7,8 @@ import { renderComponent } from "../../components";
 import { Oval } from 'react-loader-spinner';
 import "react-datepicker/dist/react-datepicker.css";
 import MapViewer from "../../components/MapViewer";
-
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css'; // Ensure Leaflet CSS is imported
 
 function WeatherForecasts() {
   const {
@@ -37,6 +38,9 @@ function WeatherForecasts() {
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const position = [38.9072, -77.0369]; // Default center (Washington, D.C.)
+
 
   return (
     <div className="flex flex-col md:flex-row h-screen container mx-auto py-10 px-4">
@@ -79,12 +83,14 @@ function WeatherForecasts() {
           <button id='download-imagery' className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
             Download imagery
           </button>
-          <button id='open-map' className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
-          onClick={() => setIsModalOpen(true)}>
+          <button id='open-map' className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
+           {/* onClick={() => setIsModalOpen(true)} */}
             Open Map
           </button>
         </div>
 
+        <div className="fixed inset-0  flex items-center justify-center">
+           
 
 
          {/* Modal and React Leaflet Map Viewer */}
@@ -92,7 +98,7 @@ function WeatherForecasts() {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-md shadow-lg w-1/2">
               <h2 className="text-xl font-bold mb-4">Map Viewer</h2>
-              <MapViewer />  {/* Embed the map component here */}
+                {/* <MapViewer />  Embed the map component here */}
               <button
                 className="mt-4 bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
                 onClick={() => setIsModalOpen(false)}
@@ -102,6 +108,7 @@ function WeatherForecasts() {
             </div>
           </div>
         )}
+        </div>
 
         <div>
           {isLoading ? (

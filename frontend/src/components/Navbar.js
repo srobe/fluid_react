@@ -29,12 +29,12 @@ const Navbar = () => {
 
   return (
     <nav className="bg-black p-5 w-screen h-fit border-b border-white z-50 relative ">
-      <div className="flex justify-between items-center w-full px-6">
+      <div className="container mx-auto flex justify-between items-center">
         
         {/* LOGO */}
         <div className="flex items-center">
           <Link to='/'>
-            <img src={NasaLogo} alt="NASA Logo" className="max-h-12 w-auto object-contain"/>
+            <img src= {NasaLogo} alt="NASA Logo" className="h-10 mr-3" />
           </Link>
         </div>
 
