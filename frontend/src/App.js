@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Survey from './components/Survey';
 import ScrollToTop from './components/ScrollToTop';
 
 import Home from './pages/Home';
@@ -74,7 +73,6 @@ function App() {
               <Route path="/mission-support/SCOAPE-II" element={<SCOAPEII />} />
           <Route path="/about" element={<About />} />
         </Routes>
-        <Survey />
         <Footer />
       </div>
     </Router>
