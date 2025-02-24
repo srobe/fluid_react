@@ -7,18 +7,25 @@ const GraphCard = ({ image, title, description, items, link }) => {
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 p-4">
       <div className="bg-white rounded-sm overflow-hidden">
-        <Link to={link}>
-          <img src={image} alt={title} className="w-full h-70 object-cover border border-black" />
-        </Link>
-        <div className="pt-4">
+        {/* Title and Description */}
+        <div className="pt-4 px-4">
           <Link to={link}>
             <h2 className="text-xl font-bold mb-2">{title}</h2>
           </Link>
-          <p className="text-gray-700 mb-4 pb-4 border-b border-gray-200">{description}</p>
-          <div className="space-y-2">
+          <p className="text-gray-700 mb-4 pb-4 ">{description}</p>
+        </div>
+
+        {/* Image */}
+        <Link to={link}>
+          <img src={image} alt={title} className="w-full h-70 object-cover border border-black" />
+        </Link>
+
+        {/* Links */}
+        <div className=" p-4">
+          <div className="border-t border-gray-200 space-y-2 pt-3 ">
             {items && items.length > 0 ? (
               items.map((item, index) => (
-                <Link key={index} to={item.link} className="text-gray-500 hover:text-blue-500 block">
+                <Link key={index} to={item.link} className="text-zinc-800 hover:text-blue-500 block">
                   {item.name}
                 </Link>
               ))

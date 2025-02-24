@@ -17,7 +17,6 @@ import RadianceMonitoring_Weather from './pages/weather-forecasts/RadianceMonito
 import Datagrams_Weather from './pages/weather-forecasts/Datagrams_Weather';
 
 import SeasonalPrediction from './pages/seasonal-prediction/SeasonalPrediction';
-import Datagrams_Seasonal from './pages/seasonal-prediction/Datagrams_Seasonal';
 import SurfaceConcentrations_Seasonal from './pages/seasonal-prediction/SurfaceConcentrations_Seasonal';
 import TotalColumns_Seasonal from './pages/seasonal-prediction/TotalColumns_Seasonal';
 
@@ -55,7 +54,6 @@ function App() {
               <Route path="/weather-forecasts/radiance-monitoring" element={<RadianceMonitoring_Weather />} />
               <Route path="/weather-forecasts/datagrams" element={<Datagrams_Weather />} />
             <Route path="/seasonal-prediction" element={<SeasonalPrediction />} />
-              <Route path="/seasonal-prediction/datagrams" element={<Datagrams_Seasonal />} />
               <Route path="/seasonal-prediction/surface-concentrations" element={<SurfaceConcentrations_Seasonal />} />
               <Route path="/seasonal-prediction/total-columns" element={<TotalColumns_Seasonal />} />
             <Route path="/reanalysis" element={<Reanalysis />} />
