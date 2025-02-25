@@ -9,26 +9,6 @@ import Home from './pages/Home';
 
 import About from './pages/About'
 
-import WeatherForecasts from './pages/weather-forecasts/WeatherForecasts';
-import WeatherMaps_Weather from './pages/weather-forecasts/WeatherMaps_Weather';
-import ObservingSystemStatistics_Weather from './pages/weather-forecasts/ObservingSystemStatistics_Weather';
-import RadianceMonitoring_Weather from './pages/weather-forecasts/RadianceMonitoring_Weather';
-import Datagrams_Weather from './pages/weather-forecasts/Datagrams_Weather';
-
-import SeasonalPrediction from './pages/seasonal-prediction/SeasonalPrediction';
-import SurfaceConcentrations_Seasonal from './pages/seasonal-prediction/SurfaceConcentrations_Seasonal';
-import TotalColumns_Seasonal from './pages/seasonal-prediction/TotalColumns_Seasonal';
-
-import Reanalysis from './pages/reanalysis/Reanalysis';
-import Anomalies_Reanalysis from './pages/reanalysis/Anomalies_Reanalysis';
-import ChemMaps_Reanalysis from './pages/reanalysis/ChemMaps_Reanalysis';
-import ClimateStatistics_Reanalysis from './pages/reanalysis/ClimateStatistics_Reanalysis'
-import WeatherMaps_Reanalysis from './pages/reanalysis/WeatherMaps_Reanalysis';
-
-import AerosolGas from './pages/aerosol-gas/AerosolGasForecasts';
-import Datagrams_AerosolGas from './pages/aerosol-gas/Datagrams_AerosolGas';
-import SpatialMaps_AerosolGas from './pages/aerosol-gas/SpatialMaps_AerosolGas';
-
 import MissionSupport from './pages/mission-support/MissionSupport';
 import ARCSIX from './pages/mission-support/ARCSIX';
 import BLUEFLUX from './pages/mission-support/BLUEFLUX';
@@ -37,6 +17,14 @@ import SARP from './pages/mission-support/SARP';
 import SARPEAST from './pages/mission-support/SARP-EAST';
 import SARPWEST from './pages/mission-support/SARP-WEST';
 import SCOAPEII from './pages/mission-support/SCOAPE-II';
+
+import * as CF from './pages/CF';
+import * as Carbon from './pages/Carbon';
+import * as MERRA2 from './pages/MERRA2';
+import * as FP from './pages/GEOS-FP';
+import * as S2Sv2 from './pages/S2Sv2';
+// import * as Missions from './pages/Missions';
+
 
 
 function App() {
@@ -47,22 +35,47 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-            <Route path="/weather-forecasts" element={<WeatherForecasts />} />
-              <Route path="/weather-forecasts/weather-maps" element={<WeatherMaps_Weather />} />
-              <Route path="/weather-forecasts/observing-system-statistics" element={<ObservingSystemStatistics_Weather />} />
-              <Route path="/weather-forecasts/radiance-monitoring" element={<RadianceMonitoring_Weather />} />
-              <Route path="/weather-forecasts/datagrams" element={<Datagrams_Weather />} />
-            <Route path="/seasonal-prediction" element={<SeasonalPrediction />} />
-              <Route path="/seasonal-prediction/surface-concentrations" element={<SurfaceConcentrations_Seasonal />} />
-              <Route path="/seasonal-prediction/total-columns" element={<TotalColumns_Seasonal />} />
-            <Route path="/reanalysis" element={<Reanalysis />} />
-              <Route path="/reanalysis/anomalies" element={<Anomalies_Reanalysis />} />
-              <Route path="/reanalysis/chem-maps" element={<ChemMaps_Reanalysis />} />
-              <Route path="/reanalysis/climate-statistics" element={<ClimateStatistics_Reanalysis />} />
-              <Route path="/reanalysis/weather-maps" element={<WeatherMaps_Reanalysis />} />
-            <Route path="/aerosol-gas" element={<AerosolGas />} />
-              <Route path="/aerosol-gas/datagrams" element={<Datagrams_AerosolGas />} />
-              <Route path="/aerosol-gas/spatial-maps" element={<SpatialMaps_AerosolGas />} />
+
+            <Route path="/cf" element={<CF.Landing />} />
+              <Route path = "/cf/cf-datagrams" element={<CF.Datagrams />} />
+              <Route path = "/cf/total-column-maps" element={<CF.ColumnMaps />} />
+              <Route path = "/cf/surface-maps" element={<CF.SurfaceMaps />} />
+            <Route path="/aerosol-gas" element={<CF.Landing />} />
+              <Route path="/aerosol-gas/cf-datagrams" element={<CF.Datagrams />} />
+              <Route path="/aerosol-gas/cf-total-column-maps" element={<CF.ColumnMaps />} />
+              <Route path="/aerosol-gas/cf-surface-maps" element={<CF.SurfaceMaps />} />
+
+            <Route path="/carbon" element={<Carbon.Landing />} />
+              <Route path = "/carbon/carbon-datagrams" element={<Carbon.Datagrams />} />
+              <Route path = "/carbon/total-column-maps" element={<Carbon.ColumnMaps />} />
+              <Route path = "/carbon/surface-maps" element={<Carbon.SurfaceMaps />} />
+              <Route path = "/reanalysis/carbon-datagrams" element={<Carbon.Datagrams />} />
+              <Route path = "/reanalysis/carbon-total-column-maps" element={<Carbon.ColumnMaps />} />
+              <Route path = "/reanalysis/carbon-surface-maps" element={<Carbon.SurfaceMaps />} />
+
+            <Route path="/merra2" element={<MERRA2.Landing />} />
+              <Route path = "/merra2/weather-maps" element={<MERRA2.WeatherMaps />} />
+              <Route path = "/merra2/chem-maps" element={<MERRA2.ChemMaps />} />
+              <Route path = "/merra2/anomalies-maps" element={<MERRA2.Anomalies />} />
+              <Route path = "/merra2/climate-statistics-maps" element={<MERRA2.ClimateStats />} />
+              <Route path = "/reanalysis/merra2-weather-maps" element={<MERRA2.WeatherMaps />} />
+              <Route path = "/reanalysis/merra2-chem-maps" element={<MERRA2.ChemMaps />} />
+              <Route path = "/reanalysis/merra2-anomalies-maps" element={<MERRA2.Anomalies />} />
+              <Route path = "/reanalysis/merra2-climate-statistics-maps" element={<MERRA2.ClimateStats />} />
+
+            <Route path="/seasonal-prediction" element={<S2Sv2.Landing />} /> 
+            <Route path="/s2sv2" element={<S2Sv2.Landing />} /> 
+              <Route path = "/s2sv2/maps" element={<S2Sv2.ClimateMaps />} />
+
+            <Route path="/geos-fp" element={<FP.Landing />} />
+              <Route path = "/geos-fp/weather-maps" element={<FP.WeatherMaps />} />
+              <Route path = "/geos-fp/chem-maps-2d" element={<FP.ChemMaps2D />} />
+              <Route path = "/geos-fp/chem-maps-3d" element={<FP.ChemMaps3D />} />
+              <Route path = "/geos-fp/fp-datagrams" element={<FP.Datagrams />} />
+              <Route path="/aerosol-gas/fp-datagrams" element={<FP.Datagrams />} />
+              <Route path="/aerosol-gas/fp-chem-maps-2d" element={<FP.ChemMaps2D />} />
+              <Route path="/aerosol-gas/fp-chem-maps-3d" element={<FP.ChemMaps3D />} />
+
             <Route path="/mission-support" element={<MissionSupport />} />
               <Route path="/mission-support/ARCSIX" element={<ARCSIX />} />
               <Route path="/mission-support/BLUEFLUX" element={<BLUEFLUX />} />

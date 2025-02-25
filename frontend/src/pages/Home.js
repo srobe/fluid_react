@@ -9,21 +9,21 @@ const Home = () => {
       title: 'Weather Forecasts',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
-        { name: 'Datagrams', link: '/weather-forecasts/datagrams' },
-        { name: 'Weather Maps', link: '/weather-forecasts/weather-maps' },
-        { name: 'Observing System Statistics', link: '/weather-forecasts/observing-system-statistics' },
-        { name: 'Radiance Monitoring', link: '/weather-forecasts/radiance-monitoring' },
-        { name: 'Observation Impacts', link: '/weather-forecasts/observation-impacts' },
+        { name: 'Datagrams', link: '/geos-fp/fp-datagrams' },
+        { name: 'Weather Maps', link: '/geos-fp/weather-maps' },
+        { name: 'Observing System Statistics', link: '/geos-fp/observing-system-statistics' },
+        { name: 'Radiance Monitoring', link: '/geos-fp/radiance-monitoring' },
+        { name: 'Observation Impacts', link: '/geos-fp/observation-impacts' },
       ],
-      link: '/weather-forecasts'
+      link: '/geos-fp'
     },
     {
       image: GraphImg,
       title: 'Aerosol & Gas Forecasts',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
-        { name: 'Forward Processing (FP)', link: '/aerosol-gas/datagrams' },
-        { name: 'Composition Forecast (CF)', link: '/aerosol-gas/spatial-maps' },
+        { name: 'Forward Processing (FP)', link: '/aerosol-gas/fp-datagrams' },
+        { name: 'Composition Forecast (CF)', link: '/aerosol-gas/cf-surface-maps' },
       ],
       link: '/aerosol-gas'
     },
@@ -32,9 +32,8 @@ const Home = () => {
       title: 'Seasonal Prediction',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
-        { name: 'Datagrams', link: '/seasonal-prediction/datagrams' },
-        { name: 'Surface Concentrations', link: '/seasonal-prediction/surface-concentrations' },
-        { name: 'Total Columns', link: '/seasonal-prediction/total-columns' },
+        { name: 'Surface Concentrations', link: '/s2sv2/maps' },
+        { name: 'Total Columns', link: '/s2sv2/maps' },
       ],
       link: '/seasonal-prediction'
     },
@@ -43,10 +42,10 @@ const Home = () => {
       title: 'Reanalysis',
       description: 'The Goddard Earth Observing System model is designed to study various Earth Science questions.',
       items: [
-        { name: 'Anomalies', link: '/reanalysis/anomalies' },
-        { name: 'Chem Maps', link: '/reanalysis/chem-maps' },
-        { name: 'Climate Statistics', link: '/reanalysis/climate-statistics' },
-        { name: 'Weather Maps', link: '/reanalysis/weather-maps' },
+        { name: 'Anomalies', link: '/reanalysis/merra2-anomalies' },
+        { name: 'Chem Maps', link: '/reanalysis/merra2-chem-maps' },
+        { name: 'Climate Statistics', link: '/reanalysis/merra2-climate-statistics-maps' },
+        { name: 'Weather Maps', link: '/reanalysis/merra2-weather-maps' },
       ],
       link: '/reanalysis'
     },

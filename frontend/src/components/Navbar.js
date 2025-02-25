@@ -62,33 +62,34 @@ const Navbar = () => {
     {
       category: "REANALYSIS: MERRA-2",
       links: [
-        { name: "Datagrams (Aerograms)", path: "/reanalysis/datagrams" },
-        { name: "2D Chem (Atmospheric Composition)", path: "/reanalysis/2d-chem" },
-        { name: "3D Chem (Atmospheric Composition)", path: "/reanalysis/3d-chem" },
-        { name: "WxMaps", path: "/reanalysis/wx-maps" }
+        { name: "Weather Maps", path: "/merra2/weather-maps" },
+        { name: "Chem Maps", path: "/merra2/chem-maps" },
+        { name: "Anomalies", path: "/merra2/anomalies-maps" },
+        { name: "Climate Statistics", path: "/merra2/climate-statistics-maps" }
       ]
     },
     {
       category: "REANALYSIS: CARBON",
       links: [
-        { name: "Datagrams", path: "/reanalysis/carbon/datagrams" },
-        { name: "Surface Concentration", path: "/reanalysis/carbon/surface-concentration" },
-        { name: "Total Column", path: "/reanalysis/carbon/total-column" }
-      ]
-    },
-    {
-      category: "AEROSOL & GAS: FORWARD PROCESSING",
-      links: [
-        { name: "Datagrams", path: "/aerosol-gas/datagrams" },
-        { name: "WxMaps", path: "/aerosol-gas/wx-maps" },
-        { name: "WxMaps", path: "/aerosol-gas/wx-maps-alternative" }
+        { name: "Datagrams", path: "/carbon/carbon-datagrams" },
+        { name: "Surface Concentration", path: "/carbon/surface-maps" },
+        { name: "Total Column", path: "/carbon/total-column" }
       ]
     },
     {
       category: "AEROSOL & GAS: COMPOSITION FORECASTING",
       links: [
-        { name: "Observing System Statistics", path: "/aerosol-gas/observing-system-statistics" },
-        { name: "Observing System Statistics", path: "/aerosol-gas/observing-system-statistics-alternative" }
+        { name: "Datagrams", path: "/cf/cf-datagrams" },
+        { name: "Total Column", path: "/cf/total-column-maps" },
+        { name: "Surface Concentration", path: "/cf/surface-maps" }
+      ]
+    },
+    {
+      category: "AEROSOL & GAS: FORWARD PROCESSING",
+      links: [
+        { name: "Aerosol Datagrams", path: "/aerosol-gas/fp-datagrams" },
+        { name: "2-D Chem Maps", path: "/aerosol-gas/fp-chem-maps-2d" },
+        { name: "3-D Chem Maps", path: "/aerosol-gas/fp-chem-maps-3d" }
       ]
     }
   ];
