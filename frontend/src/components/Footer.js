@@ -2,18 +2,20 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NasaLogo from '../assets/nasa-logo.png';
+import ESDLogo from '../assets/ESD-logo.png';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-black h-full text-white">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-16">
         <div className="flex flex-col md:flex-row md:justify-between">
           {/* Left Side - Logo & Description */}
           <div className="mb-8 md:mb-0 md:w-1/2 pr-8">
-            <div className="flex items-center mb-4 space-x-2 mb-12">
-              <img src={`${process.env.PUBLIC_URL}/assets/nasa-logo.png`} alt="NASA Logo" className="h-8" />
-              <img src={`${process.env.PUBLIC_URL}/assets/ESD-logo.png`} alt="ESD Logo" className="h-8" />
+            <div className="flex flex-row gap-4 h-fit items-center mb-4">
+              <img src={NasaLogo} alt="NASA Logo" className="h-12" />
+              <img src={ESDLogo} alt="ESD Logo" className="h-8" />
             </div>
             <h2 className="text-xl font-semibold mb-4">Global Modeling and Assimilation Office</h2>
             <p className="text-gray-400 leading-relaxed">
@@ -69,7 +71,7 @@ const Footer = () => {
       </div>
       
       {/* Blue Bar */}
-      <div className="h-1 bg-blue-300"></div>
+      {/* <div className="h-1 bg-blue-300"></div> */}
     </footer>
   );
 };

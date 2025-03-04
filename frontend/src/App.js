@@ -20,7 +20,7 @@ import SCOAPEII from './pages/mission-support/SCOAPE-II';
 
 import * as CF from './pages/CF';
 import * as Carbon from './pages/Carbon';
-import * as MERRA2 from './pages/MERRA2';
+import * as MERRA2 from './pages/Merra2';
 import * as FP from './pages/GEOS-FP';
 import * as S2Sv2 from './pages/S2Sv2';
 // import * as Missions from './pages/Missions';
