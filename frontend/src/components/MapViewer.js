@@ -9,7 +9,7 @@ import 'leaflet/dist/leaflet.css';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// Sample locations data - this would be replaced with data loaded from JSON
+// dummy location data
 const defaultLocations = {
   dc: {
     name: 'NASA Headquarters',
