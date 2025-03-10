@@ -130,11 +130,15 @@ const DatagramsTemplate = ({
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal and Map View */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-3xl max-h-[90vh] overflow-auto">
-            <div className="flex justify-between items-center mb-4">
+          
+          {/* Map viewer popup */}
+          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto">
+            
+            
+            <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Map Viewer</h2>
               <button
                 className="text-gray-500 hover:text-gray-700"
@@ -142,7 +146,21 @@ const DatagramsTemplate = ({
               >
                 ✕
               </button>
+             
             </div>
+
+            {/* Buttons to Filter Locations on Map */}
+            <div className='flex  flex-row gap-3'>
+              <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
+                  Washington DC
+                </button>
+                <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
+                  Kennedy Space Center, Florida
+                </button>
+              </div>
+
+
+
             <MapViewer />
             <div className="mt-4 text-right">
               <button
