@@ -16,6 +16,7 @@ const DatagramsTemplate = ({
   title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false, 
+  mapLocationsUrl = null, // Add this prop to support JSON locations
 }) => {
 
   const {
@@ -30,6 +31,7 @@ const DatagramsTemplate = ({
   const [imageSrc, setImageSrc] = useState(GraphImg);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mapLocation, setMapLocation] = useState('goddard');
 
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -43,6 +45,11 @@ const DatagramsTemplate = ({
       setIsLoading(false);
     }
   }, [selectedValues, flaskData.urlInfo]);
+
+  // Function to change map location
+  const changeMapLocation = (location) => {
+    setMapLocation(location);
+  };
 
   return (
     <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
@@ -137,7 +144,6 @@ const DatagramsTemplate = ({
           {/* Map viewer popup */}
           <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto">
             
-            
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Map Viewer</h2>
               <button
@@ -146,22 +152,32 @@ const DatagramsTemplate = ({
               >
                 ✕
               </button>
-             
             </div>
 
             {/* Buttons to Filter Locations on Map */}
-            <div className='flex  flex-row gap-3'>
-              <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
-                  Washington DC
-                </button>
-                <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
-                  Kennedy Space Center, Florida
-                </button>
-              </div>
+            {/* <div className='flex flex-row gap-3'>
+              <button 
+                id="dc-button" 
+                className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
+                onClick={() => changeMapLocation('dc')}
+              >
+                Washington DC
+              </button>
+              <button 
+                id='florida-button' 
+                className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
+                onClick={() => changeMapLocation('florida')}
+              >
+                Kennedy Space Center, Florida
+              </button>
+            </div> */}
 
-
-
-            <MapViewer />
+            {/* MapViewer loads locations from JSON if URL is provided */}
+            <MapViewer 
+              selectedLocation={mapLocation}
+              locationsDataUrl={mapLocationsUrl} 
+            />
+            
             <div className="mt-4 text-right">
               <button
                 className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
