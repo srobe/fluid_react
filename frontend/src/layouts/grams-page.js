@@ -142,57 +142,28 @@ const DatagramsTemplate = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           
           {/* Map viewer popup */}
-          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto">
+          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto relative">
+            {/* X button positioned at the top right corner of the popup */}
+            <button
+              className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✕
+            </button>
             
-            <div className="flex justify-between items-center">
-
-
-              <div className="flex flex-col gap-2">
-                  <h2 className="text-xl font-bold">Map Viewer</h2>
-                  <h3>
-                    Click the location of interest to view the datagram Once desired location is selected, 
-                    click the pin on the map which will open a button to view the datagram.
-
-
-                  </h3>
-
-              </div>
-
-              
+            <div className="flex flex-col gap-2 mt-4">
+              <h2 className="text-xl font-bold">Map Viewer</h2>
+              <h3>
+                Click the location of interest to view the datagram Once desired location is selected, 
+                click the pin on the map which will open a button to view the datagram.
+              </h3>
             </div>
-
-            {/* Buttons to Filter Locations on Map */}
-            {/* <div className='flex flex-row gap-3'>
-              <button 
-                id="dc-button" 
-                className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
-                onClick={() => changeMapLocation('dc')}
-              >
-                Washington DC
-              </button>
-              <button 
-                id='florida-button' 
-                className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
-                onClick={() => changeMapLocation('florida')}
-              >
-                Kennedy Space Center, Florida
-              </button>
-            </div> */}
 
             {/* MapViewer loads locations from JSON if URL is provided */}
             <MapViewer 
               selectedLocation={mapLocation}
               locationsDataUrl={mapLocationsUrl} 
             />
-            
-            <div className="mt-4 text-right">
-              <button
-                className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
-                onClick={() => setIsModalOpen(false)}
-              >
-                Close
-              </button>
-            </div>
           </div>
         </div>
       )}
