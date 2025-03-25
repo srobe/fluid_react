@@ -17,6 +17,7 @@ import SARP from './pages/mission-support/SARP';
 import SARPEAST from './pages/mission-support/SARP-EAST';
 import SARPWEST from './pages/mission-support/SARP-WEST';
 import SCOAPEII from './pages/mission-support/SCOAPE-II';
+import DatagramViewer from './components/DatagramViewer';
 
 import * as CF from './pages/CF';
 import * as Carbon from './pages/Carbon';
@@ -35,6 +36,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+
+
+          <Route path="/datagram-viewer" element={<DatagramViewer />} />
+
 
             <Route path="/cf" element={<CF.Landing />} />
               <Route path = "/cf/cf-datagrams" element={<CF.Datagrams />} />

@@ -145,13 +145,20 @@ const DatagramsTemplate = ({
           <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto">
             
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Map Viewer</h2>
-              <button
-                className="text-gray-500 hover:text-gray-700"
-                onClick={() => setIsModalOpen(false)}
-              >
-                ✕
-              </button>
+
+
+              <div className="flex flex-col gap-2">
+                  <h2 className="text-xl font-bold">Map Viewer</h2>
+                  <h3>
+                    Click the location of interest to view the datagram Once desired location is selected, 
+                    click the pin on the map which will open a button to view the datagram.
+
+
+                  </h3>
+
+              </div>
+
+              
             </div>
 
             {/* Buttons to Filter Locations on Map */}
