@@ -16,6 +16,7 @@ const DatagramsTemplate = ({
   title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false, 
+  mapLocationsUrl = null, // Add this prop to support JSON locations
 }) => {
 
   const {
@@ -30,6 +31,7 @@ const DatagramsTemplate = ({
   const [imageSrc, setImageSrc] = useState(GraphImg);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mapLocation, setMapLocation] = useState('goddard');
 
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -43,6 +45,11 @@ const DatagramsTemplate = ({
       setIsLoading(false);
     }
   }, [selectedValues, flaskData.urlInfo]);
+
+  // Function to change map location
+  const changeMapLocation = (location) => {
+    setMapLocation(location);
+  };
 
   return (
     <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
@@ -130,28 +137,33 @@ const DatagramsTemplate = ({
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal and Map View */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-3xl max-h-[90vh] overflow-auto">
-            <div className="flex justify-between items-center mb-4">
+          
+          {/* Map viewer popup */}
+          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto relative">
+            {/* X button positioned at the top right corner of the popup */}
+            <button
+              className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"
+              onClick={() => setIsModalOpen(false)}
+            >
+              ✕
+            </button>
+            
+            <div className="flex flex-col gap-2 mt-4">
               <h2 className="text-xl font-bold">Map Viewer</h2>
-              <button
-                className="text-gray-500 hover:text-gray-700"
-                onClick={() => setIsModalOpen(false)}
-              >
-                ✕
-              </button>
+              <h3>
+                Click the location of interest to view the datagram Once desired location is selected, 
+                click the pin on the map which will open a button to view the datagram.
+              </h3>
             </div>
-            <MapViewer />
-            <div className="mt-4 text-right">
-              <button
-                className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-400"
-                onClick={() => setIsModalOpen(false)}
-              >
-                Close
-              </button>
-            </div>
+
+            {/* MapViewer loads locations from JSON if URL is provided */}
+            <MapViewer 
+              selectedLocation={mapLocation}
+              locationsDataUrl={mapLocationsUrl} 
+            />
           </div>
         </div>
       )}
