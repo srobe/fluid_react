@@ -151,8 +151,8 @@ const DatagramsTemplate = ({
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           
-          {/* Map viewer popup */}
-          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto relative">
+          {/* Map viewer popup - with equal spacing on all sides */}
+          <div className="bg-white p-6 mx-11 my-11 rounded-md shadow-lg w-[150vh] flex flex-col gap-5 h-[85vh] overflow-hidden relative">
             {/* X button positioned at the top right corner of the popup */}
             <button
               className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"
@@ -161,8 +161,26 @@ const DatagramsTemplate = ({
               ✕
             </button>
             
-            <div className="flex flex-col gap-2 mt-4">
-              <h2 className="text-xl font-bold">Map Viewer</h2>
+            <div className="flex flex-col gap-4 mt-4">
+              <div className="flex justify-center gap-7 items-center">
+                <h2 className="text-xl text-nowrap font-bold">Location Select</h2>
+                
+                {/* Rounded search bar */}
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    placeholder="Search locations..."
+                    className="pl-10 pr-4 py-2 w-full rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     "
+                  />
+                  <div className="absolute left-3 top-2.5 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
               <h3>
                 Click the location of interest to view the datagram Once desired location is selected, 
                 click the pin on the map which will open a button to view the datagram.

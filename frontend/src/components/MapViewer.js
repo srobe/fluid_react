@@ -125,7 +125,7 @@ const MapViewer = ({
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="map-container w-full">
+    <div className="map-container w-full h-full mb-3">
       <div className="mb-4 flex space-x-2 flex-wrap">
         {Object.keys(locations).map(key => (
           <button 
@@ -142,7 +142,7 @@ const MapViewer = ({
         center={position} 
         zoom={zoom} 
         scrollWheelZoom={true} 
-        style={{ height: '400px', width: '100%' }}
+        style={{ height: '550px', width: '100%' }}
         ref={mapRef}
       >
         <TileLayer
