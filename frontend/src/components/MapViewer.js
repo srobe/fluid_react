@@ -160,7 +160,7 @@ const MapViewer = ({
                   {location.description}
                 </div>
                 <button 
-                  className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500 text-center"
+                  className="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-lg  hover:scale-105 duration-200 transition text-center"
                   onClick={(e) => {
                     e.preventDefault(); // ✅ Prevent bubbling issues
                     e.stopPropagation(); // ✅ Prevent interference from map events
