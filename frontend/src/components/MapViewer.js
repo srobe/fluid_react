@@ -8,24 +8,30 @@ import 'leaflet/dist/leaflet.css';
 // Fix for Leaflet's default icon path issues with webpack
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import DCGraphImg from '../assets/dc-graph.png';
+import FLGraphImg from '../assets/fl-graph.png';
+import GraphImg from '../assets/graph.png';
 
 // dummy location data
 const defaultLocations = {
   dc: {
     name: 'NASA Headquarters',
     coordinates: [38.8830, -77.0161],
-    description: 'NASA Headquarters in Washington DC'
+    description: 'NASA Headquarters in Washington DC',
+    datagramImage: DCGraphImg, // Fixed - just use the filename string
   },
   florida: {
     name: 'Kennedy Space Center',
     coordinates: [28.5857, -80.6509],
-    description: 'Kennedy Space Center, Florida'
+    description: 'Kennedy Space Center, Florida',
+    datagramImage: FLGraphImg,
   },
   goddard: {
     name: 'NASA Goddard',
     coordinates: [38.9915, -76.8523],
-    description: 'NASA Goddard Space Flight Center'
-  }
+    description: 'NASA Goddard Space Flight Center',
+    datagramImage: GraphImg,
+}
 };
 
 // Component to handle map view changes
@@ -37,7 +43,11 @@ const ChangeMapView = ({ center, zoom }) => {
   return null;
 };
 
-const MapViewer = ({ selectedLocation = "goddard", locationsDataUrl = null }) => {
+const MapViewer = ({ 
+  selectedLocation = "goddard", 
+  locationsDataUrl = null,
+  onViewDatagram = () => {} // Add callback function for viewing datagrams
+}) => {
   const [activeLocation, setActiveLocation] = useState(selectedLocation);
   const [locations, setLocations] = useState(defaultLocations);
   const [position, setPosition] = useState(defaultLocations[selectedLocation]?.coordinates || [38.9915, -76.8523]);
@@ -102,11 +112,20 @@ const MapViewer = ({ selectedLocation = "goddard", locationsDataUrl = null }) =>
     }
   };
 
+  // Function to handle viewing a datagram
+  const handleViewDatagram = (image) => {
+    // Call the parent component's function with the image path
+    console.log("Sending image to parent:", image); // Debugging log
+    if (onViewDatagram) {
+      onViewDatagram(image);  // ✅ Ensure it properly updates the parent state
+    }
+  };
+
   if (isLoading) return <div>Loading map data...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="map-container">
+    <div className="map-container w-full">
       <div className="mb-4 flex space-x-2 flex-wrap">
         {Object.keys(locations).map(key => (
           <button 
@@ -135,8 +154,22 @@ const MapViewer = ({ selectedLocation = "goddard", locationsDataUrl = null }) =>
         {Object.entries(locations).map(([key, location]) => (
           <Marker key={key} position={location.coordinates}>
             <Popup>
-              <strong>{location.name}</strong><br />
-              {location.description}
+              <div className="flex flex-col gap-2">
+                <div>
+                  <strong>{location.name}</strong><br />
+                  {location.description}
+                </div>
+                <button 
+                  className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500 text-center"
+                  onClick={(e) => {
+                    e.preventDefault(); // ✅ Prevent bubbling issues
+                    e.stopPropagation(); // ✅ Prevent interference from map events
+                    handleViewDatagram(location.datagramImage);
+                  }}
+                >
+                  View Datagram
+                </button>
+              </div>
             </Popup>
           </Marker>
         ))}

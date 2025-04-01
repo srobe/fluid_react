@@ -51,6 +51,16 @@ const DatagramsTemplate = ({
     setMapLocation(location);
   };
 
+
+   // Function to handle viewing a datagram from the map
+   const handleViewDatagram = useCallback((datagramImage) => {
+    console.log("Viewing datagram:", datagramImage);
+    setImageSrc(datagramImage);
+    setIsModalOpen(false);
+
+  }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
       <div className="flex flex-col md:flex-row flex-1 p-6 gap-8">
@@ -163,6 +173,7 @@ const DatagramsTemplate = ({
             <MapViewer 
               selectedLocation={mapLocation}
               locationsDataUrl={mapLocationsUrl} 
+              onViewDatagram={handleViewDatagram}
             />
           </div>
         </div>
