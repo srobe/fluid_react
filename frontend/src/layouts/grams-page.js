@@ -66,9 +66,60 @@ const DatagramsTemplate = ({
       <div className="flex flex-col md:flex-row flex-1 p-6 gap-8">
         
         {/* Sidebar Controls */}
-        <div className="w-full md:w-1/3 lg:w-1/4">
+        <div className="w-full md:w-1/3 lg:w-1/4 pt-7">
           <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
             <div className="flex flex-col h-full">
+              {/* Dropdown selectors */}
+              <div className="mb-6 space-y-4">
+                {/* Fields Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Fields</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Field</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="precipitation">Precipitation</option>
+                    <option value="wind">Wind Speed</option>
+                    <option value="pressure">Pressure</option>
+                  </select>
+                </div>
+                
+                {/* Regions Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Regions</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Region</option>
+                    <option value="north_america">North America</option>
+                    <option value="europe">Europe</option>
+                    <option value="asia">Asia</option>
+                    <option value="global">Global</option>
+                  </select>
+                </div>
+                
+                {/* Forecast Initial Time Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Forecast Initial Time</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Initial Time</option>
+                    <option value="00z">00Z</option>
+                    <option value="06z">06Z</option>
+                    <option value="12z">12Z</option>
+                    <option value="18z">18Z</option>
+                  </select>
+                </div>
+                
+                {/* Forecast Lead Hour Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Forecast Lead Hour</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Lead Hour</option>
+                    <option value="024">24 hours</option>
+                    <option value="048">48 hours</option>
+                    <option value="072">72 hours</option>
+                    <option value="120">120 hours</option>
+                  </select>
+                </div>
+              </div>
+              
               {/* Generate Graph Button at the top */}
               <button
                 onClick={handleSubmit}
@@ -123,7 +174,7 @@ const DatagramsTemplate = ({
           )}
 
           {/* Visualization Area */}
-          <div className="mb-16 w-full overflow-hidden">
+          <div className="mb-16 w-fit border flex p-10 justify-center items-center border-black rounded-md  bg-white shadow-md overflow-hidden">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <Oval
@@ -138,7 +189,11 @@ const DatagramsTemplate = ({
               </div>
             ) : imageSrc ? (
               <div className="max-w-full">
-                <img src={imageSrc} alt="Generated Graph" className="max-w-full h-auto" />
+                <img 
+                  src={imageSrc} 
+                  alt="Generated Graph" 
+                  className="max-w-full h-auto shadow-lg rounded-md"
+                />
               </div>
             ) : (
               <p>No image available.</p>
