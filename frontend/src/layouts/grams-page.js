@@ -99,11 +99,6 @@ const DatagramsTemplate = ({
               
 
 
-
-
-
-
-
               {/* Dropdown selectors */}
               <div className="mb-6 space-y-4">
                 {/* Fields Dropdown */}
