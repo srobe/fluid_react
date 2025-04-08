@@ -91,8 +91,19 @@ const DatagramsTemplate = ({
         
         {/* Sidebar Controls */}
         <div className="w-full md:w-1/3 lg:w-1/4 pt-7">
+          
+          
           <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
             <div className="flex flex-col h-full">
+                <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
+              
+
+
+
+
+
+
+
               {/* Dropdown selectors */}
               <div className="mb-6 space-y-4">
                 {/* Fields Dropdown */}

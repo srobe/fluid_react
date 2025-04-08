@@ -100,6 +100,8 @@ const WeatherMapsTemplate = ({
           
           <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
             <div className="flex flex-col h-full">
+
+              <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
               {/* Form Components */}
              
              
