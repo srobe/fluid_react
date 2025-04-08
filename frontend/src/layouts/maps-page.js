@@ -16,7 +16,44 @@ const WeatherMapsTemplate = ({
   title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false,
-  mapLocationsUrl = null, // Add this prop to support JSON locations
+  mapLocationsUrl = null,
+  // Add custom field options with defaults
+  fieldOptions = [
+    { value: "temperature", label: "Temperature" },
+    { value: "precipitation", label: "Precipitation" },
+    { value: "wind", label: "Wind Speed" },
+    { value: "pressure", label: "Pressure" }
+  ],
+  regionOptions = [
+    { value: "north_america", label: "North America" },
+    { value: "europe", label: "Europe" },
+    { value: "asia", label: "Asia" },
+    { value: "global", label: "Global" }
+  ],
+  
+  airOptions = [
+    { value: "abs-epv", label: "Abs EPV" },
+    { value: "temperature", label: "Temperature" },
+    { value: "humidity", label: "Humidity" },
+    { value: "vert-velocity", label: "Vert Velocity" },
+    { value: "wind-speed", label: "Wind Speed" },
+    { value: "vorticity", label: "Vorticity" },
+    { value: "winds", label: "Winds" },
+  ],
+
+  analysisDateOptions = [
+    { value: "may", label: "2024-May-31" },
+    { value: "june", label: "2024-June-25" },
+    { value: "september", label: "2024-September-15" },
+    
+  ],
+  analysisTimeOptions = [
+    { value: "00z", label: "00Z" },
+    { value: "06z", label: "06Z" },
+    { value: "12z", label: "12Z" },
+    { value: "18z", label: "18Z" }
+  ],
+
 }) => {
 
   const {
@@ -32,6 +69,7 @@ const WeatherMapsTemplate = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mapLocation, setMapLocation] = useState('goddard');
+  const [showCycloneTracks, setShowCycloneTracks] = useState(false);
 
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -66,53 +104,85 @@ const WeatherMapsTemplate = ({
              
              
               <div className="mb-6 space-y-4">
-                {/* Fields Dropdown */}
+                
                 <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Fields</label>
+                  <label className="block text-sm font-medium text-gray-700">Single Level</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Field</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="precipitation">Precipitation</option>
-                    <option value="wind">Wind Speed</option>
-                    <option value="pressure">Pressure</option>
+                    <option value="">Select Level</option>
+                    {fieldOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Upper Air</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Upper Air</option>
+                    {airOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
                 
-                {/* Regions Dropdown */}
+             
                 <div className="space-y-1">
                   <label className="block text-sm font-medium text-gray-700">Regions</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Region</option>
-                    <option value="north_america">North America</option>
-                    <option value="europe">Europe</option>
-                    <option value="asia">Asia</option>
-                    <option value="global">Global</option>
+                    {regionOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
                 
-                {/* Forecast Initial Time Dropdown */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Forecast Initial Time</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Initial Time</option>
-                    <option value="00z">00Z</option>
-                    <option value="06z">06Z</option>
-                    <option value="12z">12Z</option>
-                    <option value="18z">18Z</option>
-                  </select>
-                </div>
                 
-                {/* Forecast Lead Hour Dropdown */}
+              
+                
+               
                 <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Forecast Lead Hour</label>
+                  <label className="block text-sm font-medium text-gray-700">Analysis Date</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Lead Hour</option>
-                    <option value="024">24 hours</option>
-                    <option value="048">48 hours</option>
-                    <option value="072">72 hours</option>
-                    <option value="120">120 hours</option>
+                    <option value="">Select Analysis Date</option>
+                    {analysisDateOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
+
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Analysis Time</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Analysis Time</option>
+                    {analysisTimeOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Tropical Cyclone Tracks Toggle Switch */}
+                <div className="flex items-center justify-between gap-5 pt-2">
+
+                  <div className='flex flex-col gap-1'>
+                      <label className="text-sm font-medium text-gray-700">Tropical Cyclone Tracks</label>
+                      <label className="text-sm font-light text-gray-700">Available for: 1980 to 2021</label>
+
+                  </div>
+                  
+                  <div 
+                    className={`relative inline-block w-12 h-6 transition-colors duration-200 ease-in-out rounded-full cursor-pointer ${
+                      showCycloneTracks ? 'bg-blue-600' : 'bg-gray-300'
+                    }`}
+                    onClick={() => setShowCycloneTracks(prev => !prev)}
+                  >
+                    <span 
+                      className={`absolute left-1 top-1 w-4 h-4 transition-transform duration-200 ease-in-out transform bg-white rounded-full ${
+                        showCycloneTracks ? 'translate-x-6' : 'translate-x-0'
+                      }`}
+                    />
+                  </div>
+                </div>
+
               </div>
 
                {/* Generate Graph Button at the bottom */}

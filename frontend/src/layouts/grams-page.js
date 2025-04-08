@@ -16,7 +16,31 @@ const DatagramsTemplate = ({
   title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false, 
-  mapLocationsUrl = null, // Add this prop to support JSON locations
+  mapLocationsUrl = null,
+  fieldOptions = [
+    { value: "temperature", label: "Temperature" },
+    { value: "precipitation", label: "Precipitation" },
+    { value: "wind", label: "Wind Speed" },
+    { value: "pressure", label: "Pressure" }
+  ],
+  regionOptions = [
+    { value: "north_america", label: "North America" },
+    { value: "europe", label: "Europe" },
+    { value: "asia", label: "Asia" },
+    { value: "global", label: "Global" }
+  ],
+  initialTimeOptions = [
+    { value: "00z", label: "00Z" },
+    { value: "06z", label: "06Z" },
+    { value: "12z", label: "12Z" },
+    { value: "18z", label: "18Z" }
+  ],
+  leadHourOptions = [
+    { value: "024", label: "24 hours" },
+    { value: "048", label: "48 hours" },
+    { value: "072", label: "72 hours" },
+    { value: "120", label: "120 hours" }
+  ],
 }) => {
 
   const {
@@ -76,10 +100,9 @@ const DatagramsTemplate = ({
                   <label className="block text-sm font-medium text-gray-700">Fields</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Field</option>
-                    <option value="temperature">Temperature</option>
-                    <option value="precipitation">Precipitation</option>
-                    <option value="wind">Wind Speed</option>
-                    <option value="pressure">Pressure</option>
+                    {fieldOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
                 
@@ -88,10 +111,9 @@ const DatagramsTemplate = ({
                   <label className="block text-sm font-medium text-gray-700">Regions</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Region</option>
-                    <option value="north_america">North America</option>
-                    <option value="europe">Europe</option>
-                    <option value="asia">Asia</option>
-                    <option value="global">Global</option>
+                    {regionOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
                 
@@ -100,10 +122,9 @@ const DatagramsTemplate = ({
                   <label className="block text-sm font-medium text-gray-700">Forecast Initial Time</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Initial Time</option>
-                    <option value="00z">00Z</option>
-                    <option value="06z">06Z</option>
-                    <option value="12z">12Z</option>
-                    <option value="18z">18Z</option>
+                    {initialTimeOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
                 
@@ -112,10 +133,9 @@ const DatagramsTemplate = ({
                   <label className="block text-sm font-medium text-gray-700">Forecast Lead Hour</label>
                   <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Select Lead Hour</option>
-                    <option value="024">24 hours</option>
-                    <option value="048">48 hours</option>
-                    <option value="072">72 hours</option>
-                    <option value="120">120 hours</option>
+                    {leadHourOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
