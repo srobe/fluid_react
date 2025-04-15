@@ -19,20 +19,35 @@ const defaultLocations = {
     coordinates: [38.8830, -77.0161],
     description: 'NASA Headquarters in Washington DC',
     datagramImage: DCGraphImg, // Fixed - just use the filename string
+    category: 'megacities'
   },
   florida: {
     name: 'Kennedy Space Center',
     coordinates: [28.5857, -80.6509],
     description: 'Kennedy Space Center, Florida',
     datagramImage: FLGraphImg,
+    category: 'megacities'
   },
   goddard: {
     name: 'NASA Goddard',
     coordinates: [38.9915, -76.8523],
     description: 'NASA Goddard Space Flight Center',
     datagramImage: GraphImg,
-}
+    category: 'megacities'
+  }
 };
+
+// Location categories with "All" category at the beginning
+const categories = [
+  { id: 'all', label: 'All' },
+  { id: 'megacities', label: 'Megacities' },
+  { id: 'national', label: 'National' },
+  { id: 'world', label: 'World' },
+  { id: 'aeronet', label: 'AERONET' },
+  { id: 'campaigns', label: 'Active Campaigns' },
+  { id: 'tccon', label: 'TCCON' },
+  { id: 'obspack', label: 'NOAA OBSPACK' }
+];
 
 // Component to handle map view changes
 const ChangeMapView = ({ center, zoom }) => {
@@ -54,6 +69,7 @@ const MapViewer = ({
   const [zoom, setZoom] = useState(13);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const mapRef = useRef(null);
 
   // Set up the default icon for Leaflet markers
@@ -120,21 +136,47 @@ const MapViewer = ({
       onViewDatagram(image);  // ✅ Ensure it properly updates the parent state
     }
   };
+  
+  // Get locations by category
+  const getLocationsByCategory = (category) => {
+    // For "all" category, return all locations
+    if (category === 'all') {
+      return Object.entries(locations);
+    }
+    
+    // Otherwise filter by the specific category
+    return Object.entries(locations).filter(([_, location]) => 
+      location.category === category || 
+      (!location.category && category === 'megacities') // Default uncategorized locations to megacities
+    );
+  };
 
   if (isLoading) return <div>Loading map data...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
     <div className="map-container w-full h-full mb-3">
-      <div className="mb-4 flex space-x-2 flex-wrap">
-        {Object.keys(locations).map(key => (
-          <button 
-            key={key}
-            className={`px-3 py-1 rounded-sm mb-2 ${activeLocation === key ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-            onClick={() => changeLocation(key)}
-          >
-            {locations[key].name}
-          </button>
+      {/* Dropdown category selectors in flex row */}
+      <div className="mb-4 flex flex-wrap gap-4">
+        {categories.map(category => (
+          <div key={category.id}>
+            <select 
+              className="w-44 bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => {
+                if (e.target.value) {
+                  changeLocation(e.target.value);
+                }
+              }}
+              value={activeLocation && locations[activeLocation]?.category === category.id ? activeLocation : ""}
+            >
+              <option value="">{category.label}</option>
+              {getLocationsByCategory(category.id).map(([key, location]) => (
+                <option key={key} value={key}>
+                  {location.name}
+                </option>
+              ))}
+            </select>
+          </div>
         ))}
       </div>
       
