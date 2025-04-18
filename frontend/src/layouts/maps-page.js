@@ -6,6 +6,7 @@ import generateGraph from "../hooks/generateGraph";
 import { renderComponent } from "../components";
 import { Oval } from "react-loader-spinner";
 import GraphImg from "../assets/graph.png";
+import { Link } from 'react-router-dom';
 import MapViewer from "../components/MapViewer";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -98,7 +99,17 @@ const WeatherMapsTemplate = ({
         <div className="w-full md:w-1/3 lg:w-1/4">
           
           
-          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
+          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full relative">
+            {/* Glossary help icon */}
+            <div className="absolute top-3 right-3 group">
+              <Link to="/glossary" className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 hover:bg-gray-500 transition-colors duration-200">
+                <span className="text-white text-sm font-bold">?</span>
+                <div className="absolute right-0 top-8 scale-0 group-hover:scale-100 transition-transform origin-top bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  View Glossary
+                </div>
+              </Link>
+            </div>
+            
             <div className="flex flex-col h-full">
 
               <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
