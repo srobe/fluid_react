@@ -228,6 +228,11 @@ const Navbar = () => {
             About
           </Link>
 
+          {/* Glossary - Add this link to desktop navigation */}
+          <Link to="/glossary" className="text-white text-sm font-semibold hover:text-gray-200 pr-8">
+            Glossary
+          </Link>
+
           {/* Search Button */}
           <SearchModal />
         </div>
@@ -331,6 +336,10 @@ const Navbar = () => {
 
             <Link to="/about" className="block text-white py-2">
               About
+            </Link>
+
+            <Link to="/glossary" className="block text-white py-2">
+              Glossary
             </Link>
 
             <button className="flex items-center text-white py-2">

@@ -233,7 +233,7 @@ const DatagramsTemplate = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           
           {/* Map viewer popup - with equal spacing on all sides */}
-          <div className="bg-white p-6 mx-11 my-11 rounded-md shadow-lg w-[150vh] flex flex-col gap-5 h-[85vh] overflow-hidden relative">
+          <div className="bg-white p-6 mx-11 my-11 rounded-md shadow-lg w-[200vh] overflow-y-auto flex flex-col gap-5 h-[90vh] relative">
             {/* X button positioned at the top right corner of the popup */}
             <button
               className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"

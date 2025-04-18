@@ -9,6 +9,8 @@ import Home from './pages/Home';
 
 import About from './pages/About'
 
+import Glossary from './components/Glossary';
+
 import MissionSupport from './pages/mission-support/MissionSupport';
 import ARCSIX from './pages/mission-support/ARCSIX';
 import BLUEFLUX from './pages/mission-support/BLUEFLUX';
@@ -36,7 +38,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-
+          <Route path="/glossary" element={<Glossary />} />
 
           <Route path="/datagram-viewer" element={<DatagramViewer />} />
 

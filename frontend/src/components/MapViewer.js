@@ -155,9 +155,9 @@ const MapViewer = ({
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="map-container w-full h-full mb-3">
+    <div className="map-container w-full h-full mb-12">
       {/* Dropdown category selectors in flex row */}
-      <div className="mb-4 flex flex-wrap gap-4">
+      <div className="mb-4 flex flex-wrap  gap-4">
         {categories.map(category => (
           <div key={category.id}>
             <select 
@@ -180,45 +180,47 @@ const MapViewer = ({
         ))}
       </div>
       
-      <MapContainer 
-        center={position} 
-        zoom={zoom} 
-        scrollWheelZoom={true} 
-        style={{ height: '550px', width: '100%' }}
-        ref={mapRef}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        
-        {/* Display markers for each location */}
-        {Object.entries(locations).map(([key, location]) => (
-          <Marker key={key} position={location.coordinates}>
-            <Popup>
-              <div className="flex flex-col gap-2">
-                <div>
-                  <strong>{location.name}</strong><br />
-                  {location.description}
+      <div className="mb-12"> {/* Added wrapper div with bottom margin */}
+        <MapContainer 
+          center={position} 
+          zoom={zoom} 
+          scrollWheelZoom={true} 
+          style={{ height: '550px', width: '100%', marginBottom: '30px' }}  
+          ref={mapRef}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          
+          {/* Display markers for each location */}
+          {Object.entries(locations).map(([key, location]) => (
+            <Marker key={key} position={location.coordinates}>
+              <Popup>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <strong>{location.name}</strong><br />
+                    {location.description}
+                  </div>
+                  <button 
+                    className="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-lg  hover:scale-105 duration-200 transition text-center"
+                    onClick={(e) => {
+                      e.preventDefault(); // ✅ Prevent bubbling issues
+                      e.stopPropagation(); // ✅ Prevent interference from map events
+                      handleViewDatagram(location.datagramImage);
+                    }}
+                  >
+                    View Datagram
+                  </button>
                 </div>
-                <button 
-                  className="bg-blue-600 text-white px-3 py-1 rounded-lg shadow-lg  hover:scale-105 duration-200 transition text-center"
-                  onClick={(e) => {
-                    e.preventDefault(); // ✅ Prevent bubbling issues
-                    e.stopPropagation(); // ✅ Prevent interference from map events
-                    handleViewDatagram(location.datagramImage);
-                  }}
-                >
-                  View Datagram
-                </button>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-        
-        {/* Component to update the map view when position changes */}
-        <ChangeMapView center={position} zoom={zoom} />
-      </MapContainer>
+              </Popup>
+            </Marker>
+          ))}
+          
+          {/* Component to update the map view when position changes */}
+          <ChangeMapView center={position} zoom={zoom} />
+        </MapContainer>
+      </div>
     </div>
   );
 };
