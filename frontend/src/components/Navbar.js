@@ -121,6 +121,13 @@ const Navbar = () => {
             </ul>
           </li>
 
+          {/* Glossary */}
+          <li className="relative group">
+            <Link to="/glossary" className="flex items-center hover:text-blue-400 w-full md:w-auto">
+              Glossary
+            </Link>
+          </li>
+
         </ul>
       </div>
     </nav>
