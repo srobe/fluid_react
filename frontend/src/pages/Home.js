@@ -83,7 +83,7 @@ const Home = () => {
             The Global Modeling and Assimilation Office (GMAO) Framework for Live User-Invoked Data (FLUID) is a powerful tool designed to make it easier to analyze and visualize climate data. FLUID offers interactive applications that support the GMAO mission by providing quick and intuitive access to experimental and climatological data.
           </p>
           <p className="text-white text-sm mb-8 bg-black p-3 rounded-lg w-fit border shadow-lg border-white">
-            To use keyboard navigation, use the tab key to navigation through the page. 
+            To use keyboard navigation, use the tab key to navigate through the page. 
             <br></br>
             Use the enter key to select a link or button.
             
