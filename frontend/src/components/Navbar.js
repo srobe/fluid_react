@@ -11,10 +11,19 @@ const Navbar = () => {
   const [missionMenuOpen, setMissionMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [currentFocus, setCurrentFocus] = useState(null);
   const timeoutRef = useRef(null);
 
   const productMenuRef = useRef(null);
   const missionMenuRef = useRef(null);
+  const productButtonRef = useRef(null);
+  const missionButtonRef = useRef(null);
+  const aboutLinkRef = useRef(null);
+  const glossaryLinkRef = useRef(null);
+  const searchButtonRef = useRef(null);
+  const firstProductItemRef = useRef(null);
+  const firstMissionItemRef = useRef(null);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -32,6 +41,171 @@ const Navbar = () => {
     }, 300); // Adjust the delay as needed
   };
 
+  const handleKeyDown = (e, type) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (type === 'products') {
+        setProductMenuOpen(!productMenuOpen);
+        setMissionMenuOpen(false);
+        if (!productMenuOpen) {
+          // Focus first item in menu when opening
+          setTimeout(() => {
+            firstProductItemRef.current?.focus();
+          }, 10);
+        } else {
+          // Return focus to button when closing
+          productButtonRef.current?.focus();
+        }
+      } else if (type === 'mission') {
+        setMissionMenuOpen(!missionMenuOpen);
+        setProductMenuOpen(false);
+        if (!missionMenuOpen) {
+          // Focus first item in menu when opening
+          setTimeout(() => {
+            firstMissionItemRef.current?.focus();
+          }, 10);
+        } else {
+          // Return focus to button when closing
+          missionButtonRef.current?.focus();
+        }
+      }
+    } else if (e.key === 'Escape') {
+      if (productMenuOpen) {
+        setProductMenuOpen(false);
+        productButtonRef.current?.focus();
+      } else if (missionMenuOpen) {
+        setMissionMenuOpen(false);
+        missionButtonRef.current?.focus();
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if ((type === 'products' && !productMenuOpen) || (type === 'mission' && !missionMenuOpen)) {
+        // Open menu on arrow down
+        if (type === 'products') {
+          setProductMenuOpen(true);
+          setMissionMenuOpen(false);
+          setTimeout(() => {
+            firstProductItemRef.current?.focus();
+          }, 10);
+        } else if (type === 'mission') {
+          setMissionMenuOpen(true);
+          setProductMenuOpen(false);
+          setTimeout(() => {
+            firstMissionItemRef.current?.focus();
+          }, 10);
+        }
+      }
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (type === 'products') {
+        missionButtonRef.current?.focus();
+      } else if (type === 'mission') {
+        aboutLinkRef.current?.focus();
+      } else if (type === 'about') {
+        glossaryLinkRef.current?.focus();
+      } else if (type === 'glossary') {
+        searchButtonRef.current?.focus();
+      }
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (type === 'mission') {
+        productButtonRef.current?.focus();
+      } else if (type === 'about') {
+        missionButtonRef.current?.focus();
+      } else if (type === 'glossary') {
+        aboutLinkRef.current?.focus();
+      } else if (type === 'search') {
+        glossaryLinkRef.current?.focus();
+      }
+    } else if (e.key === 'Tab') {
+      // Close menus when tabbing outside
+      if (productMenuOpen || missionMenuOpen) {
+        setTimeout(() => {
+          const activeElement = document.activeElement;
+          if (productMenuOpen && !productMenuRef.current?.contains(activeElement)) {
+            setProductMenuOpen(false);
+          }
+          if (missionMenuOpen && !missionMenuRef.current?.contains(activeElement)) {
+            setMissionMenuOpen(false);
+          }
+        }, 10);
+      }
+    }
+  };
+
+  // Handle menu item navigation
+  const handleMenuItemKeyDown = (e, menuType, index, links, category) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextItem = e.target.nextElementSibling;
+      if (nextItem) {
+        nextItem.focus();
+      } else {
+        // Move to the next category's first item
+        const currentCategoryIndex = menuType === 'products' 
+          ? productItems.findIndex(item => item.category === category)
+          : missionItems.findIndex(item => item.category === category);
+        
+        const nextCategory = menuType === 'products' 
+          ? productItems[currentCategoryIndex + 1]
+          : missionItems[currentCategoryIndex + 1];
+          
+        if (nextCategory) {
+          const nextCategoryFirstItem = document.querySelector(`[data-category="${nextCategory.category}"] a`);
+          nextCategoryFirstItem?.focus();
+        }
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevItem = e.target.previousElementSibling;
+      if (prevItem && prevItem.tagName === 'A') {
+        prevItem.focus();
+      } else {
+        // Move to previous category's last item
+        const currentCategoryIndex = menuType === 'products' 
+          ? productItems.findIndex(item => item.category === category)
+          : missionItems.findIndex(item => item.category === category);
+        
+        const prevCategory = menuType === 'products' 
+          ? productItems[currentCategoryIndex - 1]
+          : missionItems[currentCategoryIndex - 1];
+          
+        if (prevCategory) {
+          const prevCategoryItems = document.querySelectorAll(`[data-category="${prevCategory.category}"] a`);
+          const lastItem = prevCategoryItems[prevCategoryItems.length - 1];
+          lastItem?.focus();
+        } else {
+          // Focus back on the menu button if at the top
+          if (menuType === 'products') {
+            productButtonRef.current?.focus();
+          } else {
+            missionButtonRef.current?.focus();
+          }
+        }
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      if (menuType === 'products') {
+        setProductMenuOpen(false);
+        productButtonRef.current?.focus();
+      } else {
+        setMissionMenuOpen(false);
+        missionButtonRef.current?.focus();
+      }
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      // Focus the first item of the current category
+      const firstItemInCategory = document.querySelector(`[data-category="${category}"] a`);
+      firstItemInCategory?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      // Focus the last item of the current category
+      const itemsInCategory = document.querySelectorAll(`[data-category="${category}"] a`);
+      const lastItem = itemsInCategory[itemsInCategory.length - 1];
+      lastItem?.focus();
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (productMenuRef.current && !productMenuRef.current.contains(event.target)) {
@@ -47,6 +221,21 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);  
+
+  // Set up refs when menus change
+  useEffect(() => {
+    if (productMenuOpen) {
+      // Save reference to first focusable item
+      const firstItem = document.querySelector('[data-menu="products"] a');
+      if (firstItem) firstProductItemRef.current = firstItem;
+    }
+    
+    if (missionMenuOpen) {
+      // Save reference to first focusable item
+      const firstItem = document.querySelector('[data-menu="mission"] a');
+      if (firstItem) firstMissionItemRef.current = firstItem;
+    }
+  }, [productMenuOpen, missionMenuOpen]);
 
   const productItems = [
     {
@@ -94,7 +283,6 @@ const Navbar = () => {
     }
   ];
 
-  // Mission Support items simplified (based on original code)
   const missionItems = [
     {
       category: "ACTIVE",
@@ -113,7 +301,6 @@ const Navbar = () => {
         { name: "ACE-ENA", path: "/mission-support/ace-ena" },
         { name: "AEOLUS-CALVAL", path: "/mission-support/aeolus-calval" },
         { name: "ASIA-AQ", path: "/mission-support/asia-aq" },
-        // ... more missions (truncated for brevity)
       ]
     }
   ];
@@ -134,11 +321,15 @@ const Navbar = () => {
           {/* Products Dropdown */}
           <div className="relative" ref={productMenuRef}>
             <button 
+              ref={productButtonRef}
               onClick={() => {
                 setProductMenuOpen(!productMenuOpen);
                 setMissionMenuOpen(false);
               }}
+              onKeyDown={(e) => handleKeyDown(e, 'products')}
               className="text-white text-sm font-semibold hover:text-gray-300 flex items-center pr-8"
+              aria-expanded={productMenuOpen}
+              aria-haspopup="true"
             >
               Products
               <svg 
@@ -151,11 +342,16 @@ const Navbar = () => {
               </svg>
             </button>
             {productMenuOpen && (
-              <div className="fixed left-0 right-0 bg-black mt-6 border-b shadow-xl z-50">
+              <div 
+                className="fixed left-0 right-0 bg-black mt-6 border-b shadow-xl z-50"
+                data-menu="products"
+                role="menu"
+                aria-labelledby="products-menu"
+              >
                 <div className="container mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-2 p-6">
                     {productItems.map((category, idx) => (
-                      <div key={idx} className="mb-4">
+                      <div key={idx} className="mb-4" data-category={category.category}>
                         <h3 className="text-sm text-gray-400 mb-3">{category.category}</h3>
                         <ul className="space-y-2">
                           {category.links.map((link, linkIdx) => (
@@ -163,6 +359,10 @@ const Navbar = () => {
                               <Link 
                                 to={link.path} 
                                 className="text-white hover:text-blue-400 text-sm"
+                                onKeyDown={(e) => handleMenuItemKeyDown(e, 'products', linkIdx, category.links, category.category)}
+                                role="menuitem"
+                                tabIndex={0}
+                                ref={idx === 0 && linkIdx === 0 ? firstProductItemRef : null}
                               >
                                 {link.name}
                               </Link>
@@ -180,11 +380,15 @@ const Navbar = () => {
           {/* Mission Support Dropdown */}
           <div className="relative" ref={missionMenuRef}>
             <button 
+              ref={missionButtonRef}
               onClick={() => {
                 setMissionMenuOpen(!missionMenuOpen);
                 setProductMenuOpen(false);
               }}
+              onKeyDown={(e) => handleKeyDown(e, 'mission')}
               className="text-white text-sm font-semibold hover:text-gray-300 flex items-center pr-8"
+              aria-expanded={missionMenuOpen}
+              aria-haspopup="true"
             >
               Mission Support
               <svg 
@@ -197,11 +401,16 @@ const Navbar = () => {
               </svg>
             </button>
             {missionMenuOpen && (
-              <div className="fixed left-0 right-0 mt-6 bg-black border-b shadow-xl z-50">
+              <div 
+                className="fixed left-0 right-0 mt-6 bg-black border-b shadow-xl z-50"
+                data-menu="mission"
+                role="menu"
+                aria-labelledby="mission-menu"
+              >
                 <div className="container mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-6 gap-4 p-6">
                     {missionItems.map((category, idx) => (
-                      <div key={idx} className="mb-4">
+                      <div key={idx} className="mb-4" data-category={category.category}>
                         <h3 className="text-sm text-gray-400 mb-3">{category.category}</h3>
                         <ul className="space-y-2">
                           {category.links.map((link, linkIdx) => (
@@ -209,6 +418,10 @@ const Navbar = () => {
                               <Link 
                                 to={link.path} 
                                 className="text-white hover:text-blue-400 text-sm"
+                                onKeyDown={(e) => handleMenuItemKeyDown(e, 'mission', linkIdx, category.links, category.category)}
+                                role="menuitem"
+                                tabIndex={0}
+                                ref={idx === 0 && linkIdx === 0 ? firstMissionItemRef : null}
                               >
                                 {link.name}
                               </Link>
@@ -224,17 +437,29 @@ const Navbar = () => {
           </div>
 
           {/* About */}
-          <Link to="/about" className="text-white text-sm font-semibold hover:text-gray-200 pr-8">
+          <Link 
+            to="/about" 
+            className="text-white text-sm font-semibold hover:text-gray-200 pr-8"
+            ref={aboutLinkRef}
+            onKeyDown={(e) => handleKeyDown(e, 'about')}
+          >
             About
           </Link>
 
-          {/* Glossary - Add this link to desktop navigation */}
-          <Link to="/glossary" className="text-white text-sm font-semibold hover:text-gray-200 pr-8">
+          {/* Glossary */}
+          <Link 
+            to="/glossary" 
+            className="text-white text-sm font-semibold hover:text-gray-200 pr-8"
+            ref={glossaryLinkRef}
+            onKeyDown={(e) => handleKeyDown(e, 'glossary')}
+          >
             Glossary
           </Link>
 
           {/* Search Button */}
-          <SearchModal />
+          <div ref={searchButtonRef} onKeyDown={(e) => handleKeyDown(e, 'search')}>
+            <SearchModal />
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
