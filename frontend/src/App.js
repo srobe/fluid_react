@@ -6,8 +6,8 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 
 import Home from './pages/Home';
-
-import About from './pages/About'
+import About from './pages/About';
+import Glossary from './pages/Glossary';
 
 import Glossary from './components/Glossary';
 
@@ -92,6 +92,7 @@ function App() {
               <Route path="/mission-support/SARP-WEST" element={<SARPWEST />} />
               <Route path="/mission-support/SCOAPE-II" element={<SCOAPEII />} />
           <Route path="/about" element={<About />} />
+          <Route path="/glossary" element={<Glossary />} />
         </Routes>
         <Footer />
       </div>
