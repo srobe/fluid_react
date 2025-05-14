@@ -60,8 +60,8 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="callum.r.wayman@nasa.gov" className="text-white hover:text-blue-400 transition-colors">
-                    Web Curator: Callum Wayman
+                  <Link to="sandra.roberts@nasa.gov" className="text-white hover:text-blue-400 transition-colors">
+                    Web Curator: Sandra Roberts
                   </Link>
                 </li>
               </ul>
