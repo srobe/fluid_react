@@ -8,6 +8,16 @@
   src: local('Helvetica'), local('Helvetica Neue');
 }
 
+@layer components {
+  .nav-btn {
+    @apply text-white text-sm font-semibold hover:text-blue-300 flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400;
+  }
+
+  .nav-link {
+    @apply text-white hover:text-blue-400 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400;
+  }
+}
+
 /* added to account for the white space forming on right side of screen */
 html, body {
   overflow-x: hidden;
@@ -277,3 +287,4 @@ html, body {
   font-weight: bold;
   color: #333; /* Color for selected item */
 }
+
