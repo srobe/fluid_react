@@ -8,6 +8,11 @@
   src: local('Helvetica'), local('Helvetica Neue');
 }
 
+/* added to account for the white space forming on right side of screen */
+html, body {
+  overflow-x: hidden;
+}
+
 .font-helvetica {
   font-family: 'Helvetica', sans-serif;
 }
