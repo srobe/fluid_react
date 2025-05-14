@@ -8,15 +8,40 @@ import { Oval } from 'react-loader-spinner';
 import "react-datepicker/dist/react-datepicker.css";
 import MapViewer from "../components/MapViewer";
 import GraphImg from "../assets/graph.png";
+import { Link } from 'react-router-dom';
 
 const DatagramsTemplate = ({
   dataEndpoint = "/api/data",
   configFilePath = "/data/wxmaps.json",
   backLink = { url: "/weather-forecasts", text: "< Weather Forecasts" },
-  title = "Weather Maps",
+  title = "Datagrams",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false, 
-  mapLocationsUrl = null, // Add this prop to support JSON locations
+  mapLocationsUrl = null,
+  fieldOptions = [
+    { value: "temperature", label: "Temperature" },
+    { value: "precipitation", label: "Precipitation" },
+    { value: "wind", label: "Wind Speed" },
+    { value: "pressure", label: "Pressure" }
+  ],
+  regionOptions = [
+    { value: "north_america", label: "North America" },
+    { value: "europe", label: "Europe" },
+    { value: "asia", label: "Asia" },
+    { value: "global", label: "Global" }
+  ],
+  initialTimeOptions = [
+    { value: "00z", label: "00Z" },
+    { value: "06z", label: "06Z" },
+    { value: "12z", label: "12Z" },
+    { value: "18z", label: "18Z" }
+  ],
+  leadHourOptions = [
+    { value: "024", label: "24 hours" },
+    { value: "048", label: "48 hours" },
+    { value: "072", label: "72 hours" },
+    { value: "120", label: "120 hours" }
+  ],
 }) => {
 
   const {
@@ -51,14 +76,87 @@ const DatagramsTemplate = ({
     setMapLocation(location);
   };
 
+
+   // Function to handle viewing a datagram from the map
+   const handleViewDatagram = useCallback((datagramImage) => {
+    console.log("Viewing datagram:", datagramImage);
+    setImageSrc(datagramImage);
+    setIsModalOpen(false);
+
+  }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
       <div className="flex flex-col md:flex-row flex-1 p-6 gap-8">
         
         {/* Sidebar Controls */}
-        <div className="w-full md:w-1/3 lg:w-1/4">
-          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
+        <div className="w-full md:w-1/3 lg:w-1/4 pt-7">
+          
+          
+          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full relative">
+            {/* Glossary help icon */}
+            <div className="absolute top-3 right-3 group">
+              <Link to="/glossary" className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 hover:bg-gray-500 transition-colors duration-200">
+                <span className="text-white text-sm font-bold">?</span>
+                <div className="absolute right-0 top-8 scale-0 group-hover:scale-100 transition-transform origin-top bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  View Glossary
+                </div>
+              </Link>
+            </div>
+            
             <div className="flex flex-col h-full">
+                <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
+              
+
+
+              {/* Dropdown selectors */}
+              <div className="mb-6 space-y-4">
+                {/* Fields Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Fields</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Field</option>
+                    {fieldOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {/* Regions Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Regions</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Region</option>
+                    {regionOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {/* Forecast Initial Time Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Forecast Initial Time</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Initial Time</option>
+                    {initialTimeOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {/* Forecast Lead Hour Dropdown */}
+                <div className="space-y-1">
+                  <label className="block text-sm font-medium text-gray-700">Forecast Lead Hour</label>
+                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Select Lead Hour</option>
+                    {leadHourOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
               {/* Generate Graph Button at the top */}
               <button
                 onClick={handleSubmit}
@@ -113,7 +211,7 @@ const DatagramsTemplate = ({
           )}
 
           {/* Visualization Area */}
-          <div className="mb-16 w-full overflow-hidden">
+          <div className="mb-16 w-fit border flex p-10 justify-center items-center border-black rounded-md  bg-white shadow-md overflow-hidden">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <Oval
@@ -128,7 +226,11 @@ const DatagramsTemplate = ({
               </div>
             ) : imageSrc ? (
               <div className="max-w-full">
-                <img src={imageSrc} alt="Generated Graph" className="max-w-full h-auto" />
+                <img 
+                  src={imageSrc} 
+                  alt="Generated Graph" 
+                  className="max-w-full h-auto shadow-lg rounded-md"
+                />
               </div>
             ) : (
               <p>No image available.</p>
@@ -141,8 +243,8 @@ const DatagramsTemplate = ({
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           
-          {/* Map viewer popup */}
-          <div className="bg-white p-6 rounded-md shadow-lg w-full flex flex-col gap-5 max-w-3xl max-h-[90vh] overflow-auto relative">
+          {/* Map viewer popup - with equal spacing on all sides */}
+          <div className="bg-white p-6 mx-11 my-11 rounded-md shadow-lg w-[200vh] overflow-y-auto flex flex-col gap-5 h-[90vh] relative">
             {/* X button positioned at the top right corner of the popup */}
             <button
               className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"
@@ -151,8 +253,26 @@ const DatagramsTemplate = ({
               ✕
             </button>
             
-            <div className="flex flex-col gap-2 mt-4">
-              <h2 className="text-xl font-bold">Map Viewer</h2>
+            <div className="flex flex-col gap-4 mt-4">
+              <div className="flex justify-center gap-7 items-center">
+                <h2 className="text-xl text-nowrap font-bold">Location Select</h2>
+                
+                {/* Rounded search bar */}
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    placeholder="Search locations..."
+                    className="pl-10 pr-4 py-2 w-full rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     "
+                  />
+                  <div className="absolute left-3 top-2.5 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
               <h3>
                 Click the location of interest to view the datagram Once desired location is selected, 
                 click the pin on the map which will open a button to view the datagram.
@@ -163,6 +283,7 @@ const DatagramsTemplate = ({
             <MapViewer 
               selectedLocation={mapLocation}
               locationsDataUrl={mapLocationsUrl} 
+              onViewDatagram={handleViewDatagram}
             />
           </div>
         </div>

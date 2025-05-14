@@ -79,9 +79,17 @@ const Home = () => {
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 container mx-auto p-5 ml-5 py-32">
           <h1 className="text-white text-4xl font-semibold mb-8">What is FLUID?</h1>
-          <p className="text-white text-base md:text-lg mb-16 max-w-3xl">
+          <p className="text-white text-base md:text-lg mb-8 max-w-3xl">
             The Global Modeling and Assimilation Office (GMAO) Framework for Live User-Invoked Data (FLUID) is a powerful tool designed to make it easier to analyze and visualize climate data. FLUID offers interactive applications that support the GMAO mission by providing quick and intuitive access to experimental and climatological data.
           </p>
+          <p className="text-white text-sm mb-8 bg-black p-3 rounded-lg w-fit border shadow-lg border-white">
+            To use keyboard navigation, use the tab key to navigate through the page. 
+            <br></br>
+            Use the enter key to select a link or button.
+            
+          </p>
+
+        
           <div className="flex space-x-4">
             <a href="/about" className="bg-blue-600 text-white px-5 py-1 rounded-sm text-base font-normal hover:bg-blue-500">Learn more</a>
             <a href="#" className="text-white px-5 py-1 rounded-sm text-base font-normal border border-white hover:bg-white hover:text-black">How to use FLUID →</a>
