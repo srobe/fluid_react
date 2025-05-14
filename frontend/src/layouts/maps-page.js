@@ -6,9 +6,6 @@ import generateGraph from "../hooks/generateGraph";
 import { renderComponent } from "../components";
 import { Oval } from "react-loader-spinner";
 import GraphImg from "../assets/graph.png";
-import { Link } from 'react-router-dom';
-import MapViewer from "../components/MapViewer";
-import "react-datepicker/dist/react-datepicker.css";
 
 const WeatherMapsTemplate = ({
   dataEndpoint = "/api/data",
@@ -16,47 +13,10 @@ const WeatherMapsTemplate = ({
   backLink = { url: "/weather-forecasts", text: "< Weather Forecasts" },
   title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
-  showDownloadSection = false,
-  mapLocationsUrl = null,
-  // Add custom field options with defaults
-  fieldOptions = [
-    { value: "temperature", label: "Temperature" },
-    { value: "precipitation", label: "Precipitation" },
-    { value: "wind", label: "Wind Speed" },
-    { value: "pressure", label: "Pressure" }
-  ],
-  regionOptions = [
-    { value: "north_america", label: "North America" },
-    { value: "europe", label: "Europe" },
-    { value: "asia", label: "Asia" },
-    { value: "global", label: "Global" }
-  ],
-  
-  airOptions = [
-    { value: "abs-epv", label: "Abs EPV" },
-    { value: "temperature", label: "Temperature" },
-    { value: "humidity", label: "Humidity" },
-    { value: "vert-velocity", label: "Vert Velocity" },
-    { value: "wind-speed", label: "Wind Speed" },
-    { value: "vorticity", label: "Vorticity" },
-    { value: "winds", label: "Winds" },
-  ],
-
-  analysisDateOptions = [
-    { value: "may", label: "2024-May-31" },
-    { value: "june", label: "2024-June-25" },
-    { value: "september", label: "2024-September-15" },
-    
-  ],
-  analysisTimeOptions = [
-    { value: "00z", label: "00Z" },
-    { value: "06z", label: "06Z" },
-    { value: "12z", label: "12Z" },
-    { value: "18z", label: "18Z" }
-  ],
-
+  showDownloadSection = false, 
 }) => {
 
+  // Reuse the same logic, but allow each page to override the config file path
   const {
     flaskData,
     selectedValues,
@@ -64,13 +24,11 @@ const WeatherMapsTemplate = ({
     setSelectedValues,
     setFlaskData,
     updateLevels,
-  } = useFetchData(dataEndpoint, configFilePath, { name: configFilePath, age: 30 });
+  } = useFetchData(dataEndpoint, configFilePath, { name: configFilePath});
 
+  // Same logic for handling the generated image
   const [imageSrc, setImageSrc] = useState(GraphImg);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mapLocation, setMapLocation] = useState('goddard');
-  const [showCycloneTracks, setShowCycloneTracks] = useState(false);
 
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -85,128 +43,18 @@ const WeatherMapsTemplate = ({
     }
   }, [selectedValues, flaskData.urlInfo]);
 
-  const handleViewDatagram = useCallback((datagramImage) => {
-    console.log("Viewing datagram:", datagramImage);
-    setImageSrc(datagramImage);
-    setIsModalOpen(false);
-  }, []);
-
   return (
     <div className="flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
       <div className="flex flex-col md:flex-row flex-1 p-6 gap-8">
         
         {/* Sidebar Controls */}
         <div className="w-full md:w-1/3 lg:w-1/4">
-          
-          
-          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full relative">
-            {/* Glossary help icon */}
-            <div className="absolute top-3 right-3 group">
-              <Link to="/glossary" className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 hover:bg-gray-500 transition-colors duration-200">
-                <span className="text-white text-sm font-bold">?</span>
-                <div className="absolute right-0 top-8 scale-0 group-hover:scale-100 transition-transform origin-top bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
-                  View Glossary
-                </div>
-              </Link>
-            </div>
-            
+          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
             <div className="flex flex-col h-full">
+              {/* Generate Graph Button at the top */}
 
-              <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
+              
               {/* Form Components */}
-             
-             
-              <div className="mb-6 space-y-4">
-                
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Single Level</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Level</option>
-                    {fieldOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Upper Air</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Upper Air</option>
-                    {airOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-             
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Regions</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Region</option>
-                    {regionOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                
-              
-                
-               
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Analysis Date</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Analysis Date</option>
-                    {analysisDateOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Analysis Time</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Analysis Time</option>
-                    {analysisTimeOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Tropical Cyclone Tracks Toggle Switch */}
-                <div className="flex items-center justify-between gap-5 pt-2">
-
-                  <div className='flex flex-col gap-1'>
-                      <label className="text-sm font-medium text-gray-700">Tropical Cyclone Tracks</label>
-                      <label className="text-sm font-light text-gray-700">Available for: 1980 to 2021</label>
-
-                  </div>
-                  
-                  <div 
-                    className={`relative inline-block w-12 h-6 transition-colors duration-200 ease-in-out rounded-full cursor-pointer ${
-                      showCycloneTracks ? 'bg-blue-600' : 'bg-gray-300'
-                    }`}
-                    onClick={() => setShowCycloneTracks(prev => !prev)}
-                  >
-                    <span 
-                      className={`absolute left-1 top-1 w-4 h-4 transition-transform duration-200 ease-in-out transform bg-white rounded-full ${
-                        showCycloneTracks ? 'translate-x-6' : 'translate-x-0'
-                      }`}
-                    />
-                  </div>
-                </div>
-
-              </div>
-
-               {/* Generate Graph Button at the bottom */}
-               <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 text-white py-1 mt-4 rounded-sm hover:bg-blue-500"
-              >
-                Generate graph
-              </button>
-              
-              {/* Original form components */}
               <div className="flex-1 overflow-y-auto">
                 {order.map((key) => renderComponent(key, flaskData[key], {
                   setSelectedValues,
@@ -215,9 +63,14 @@ const WeatherMapsTemplate = ({
                   setFlaskData,
                   flaskData,
                 }))}
+                <button
+                onClick={handleSubmit}
+                className="w-full bg-blue-600 text-white py-1 mb-4 rounded-sm hover:bg-blue-500"
+              >
+                Generate graph
+              </button>
               </div>
-              
-             
+
             </div>
           </div>
         </div>
@@ -233,7 +86,7 @@ const WeatherMapsTemplate = ({
             <p className="text-gray-700">{description}</p>
           </div>
 
-          {/* Download Controls with Map Button */}
+          {/* Download Controls (optional) */}
           {showDownloadSection && (
             <div className="flex flex-wrap gap-3 mb-8">
               <select className="px-2 py-1 border border-gray-300 rounded-sm">
@@ -244,17 +97,11 @@ const WeatherMapsTemplate = ({
               <button className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500">
                 Download imagery
               </button>
-              <button
-                className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-500"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Open Map
-              </button>
             </div>
           )}
 
           {/* Visualization Area */}
-          <div className="mb-16 w-full border flex p-10 justify-center items-center border-black rounded-md bg-white shadow-md overflow-hidden">
+          <div className="mb-16 w-full overflow-hidden">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <Oval
@@ -269,11 +116,7 @@ const WeatherMapsTemplate = ({
               </div>
             ) : imageSrc ? (
               <div className="max-w-full">
-                <img 
-                  src={imageSrc} 
-                  alt="Generated Graph" 
-                  className="max-w-full h-auto shadow-lg rounded-md"
-                />
+                <img src={imageSrc} alt="Generated Graph" className="max-w-full h-auto" />
               </div>
             ) : (
               <p>No image available.</p>
@@ -281,55 +124,6 @@ const WeatherMapsTemplate = ({
           </div>
         </div>
       </div>
-
-      {/* Modal and Map View */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          
-          {/* Map viewer popup - with equal spacing on all sides */}
-          <div className="bg-white p-6 mx-11 my-11 rounded-md shadow-lg w-[200vh] overflow-y-auto flex flex-col gap-5 h-[90vh] relative">
-            {/* X button positioned at the top right corner of the popup */}
-            <button
-              className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 focus:outline-none"
-              onClick={() => setIsModalOpen(false)}
-            >
-              ✕
-            </button>
-            
-            <div className="flex flex-col gap-4 mt-4">
-              <div className="flex justify-center gap-7 items-center">
-                <h2 className="text-xl text-nowrap font-bold">Location Select</h2>
-                
-                {/* Rounded search bar */}
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    placeholder="Search locations..."
-                    className="pl-10 pr-4 py-2 w-full rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                  <div className="absolute left-3 top-2.5 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <h3>
-                Click the location of interest to view the datagram Once desired location is selected, 
-                click the pin on the map which will open a button to view the datagram.
-              </h3>
-            </div>
-
-            {/* MapViewer loads locations from JSON if URL is provided */}
-            <MapViewer 
-              selectedLocation={mapLocation}
-              locationsDataUrl={mapLocationsUrl} 
-              onViewDatagram={handleViewDatagram}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

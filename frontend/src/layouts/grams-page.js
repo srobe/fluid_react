@@ -14,34 +14,10 @@ const DatagramsTemplate = ({
   dataEndpoint = "/api/data",
   configFilePath = "/data/wxmaps.json",
   backLink = { url: "/weather-forecasts", text: "< Weather Forecasts" },
-  title = "Datagrams",
+  title = "Weather Maps",
   description = "The Goddard Earth Observing System (GEOS) ...",
   showDownloadSection = false, 
-  mapLocationsUrl = null,
-  fieldOptions = [
-    { value: "temperature", label: "Temperature" },
-    { value: "precipitation", label: "Precipitation" },
-    { value: "wind", label: "Wind Speed" },
-    { value: "pressure", label: "Pressure" }
-  ],
-  regionOptions = [
-    { value: "north_america", label: "North America" },
-    { value: "europe", label: "Europe" },
-    { value: "asia", label: "Asia" },
-    { value: "global", label: "Global" }
-  ],
-  initialTimeOptions = [
-    { value: "00z", label: "00Z" },
-    { value: "06z", label: "06Z" },
-    { value: "12z", label: "12Z" },
-    { value: "18z", label: "18Z" }
-  ],
-  leadHourOptions = [
-    { value: "024", label: "24 hours" },
-    { value: "048", label: "48 hours" },
-    { value: "072", label: "72 hours" },
-    { value: "120", label: "120 hours" }
-  ],
+  mapLocationsUrl = null, // Add this prop to support JSON locations
 }) => {
 
   const {
@@ -51,7 +27,7 @@ const DatagramsTemplate = ({
     setSelectedValues,
     setFlaskData,
     updateLevels,
-  } = useFetchData(dataEndpoint, configFilePath, { name: configFilePath, age: 30 });
+  } = useFetchData(dataEndpoint, configFilePath, { name: configFilePath});
 
   const [imageSrc, setImageSrc] = useState(GraphImg);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +52,6 @@ const DatagramsTemplate = ({
     setMapLocation(location);
   };
 
-
    // Function to handle viewing a datagram from the map
    const handleViewDatagram = useCallback((datagramImage) => {
     console.log("Viewing datagram:", datagramImage);
@@ -91,79 +66,9 @@ const DatagramsTemplate = ({
       <div className="flex flex-col md:flex-row flex-1 p-6 gap-8">
         
         {/* Sidebar Controls */}
-        <div className="w-full md:w-1/3 lg:w-1/4 pt-7">
-          
-          
-          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full relative">
-            {/* Glossary help icon */}
-            <div className="absolute top-3 right-3 group">
-              <Link to="/glossary" className="flex items-center justify-center w-6 h-6 rounded-full bg-gray-400 hover:bg-gray-500 transition-colors duration-200">
-                <span className="text-white text-sm font-bold">?</span>
-                <div className="absolute right-0 top-8 scale-0 group-hover:scale-100 transition-transform origin-top bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
-                  View Glossary
-                </div>
-              </Link>
-            </div>
-            
+        <div className="w-full md:w-1/3 lg:w-1/4">
+          <div className="bg-gray-100 border border-black p-4 rounded-sm sticky top-24 h-full">
             <div className="flex flex-col h-full">
-                <h3 className='font-bold text-black text-xl mb-5 text-center'> Select your Fields</h3>
-              
-
-
-              {/* Dropdown selectors */}
-              <div className="mb-6 space-y-4">
-                {/* Fields Dropdown */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Fields</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Field</option>
-                    {fieldOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                {/* Regions Dropdown */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Regions</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Region</option>
-                    {regionOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                {/* Forecast Initial Time Dropdown */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Forecast Initial Time</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Initial Time</option>
-                    {initialTimeOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                {/* Forecast Lead Hour Dropdown */}
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Forecast Lead Hour</label>
-                  <select className="w-full bg-white border border-gray-300 rounded-sm px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Select Lead Hour</option>
-                    {leadHourOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              
-              {/* Generate Graph Button at the top */}
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-blue-600 text-white py-1 mb-4 rounded-sm hover:bg-blue-500"
-              >
-                Generate graph
-              </button>
               
               {/* Form Components */}
               <div className="flex-1 overflow-y-auto">
@@ -174,6 +79,13 @@ const DatagramsTemplate = ({
                   setFlaskData,
                   flaskData,
                 }))}
+
+              <button
+                onClick={handleSubmit}
+                className="w-full bg-blue-600 text-white py-1 mb-4 rounded-sm hover:bg-blue-500"
+              >
+                Generate graph
+              </button>
               </div>
             </div>
           </div>
@@ -211,7 +123,7 @@ const DatagramsTemplate = ({
           )}
 
           {/* Visualization Area */}
-          <div className="mb-16 w-fit border flex p-10 justify-center items-center border-black rounded-md  bg-white shadow-md overflow-hidden">
+          <div className="mb-16 w-full overflow-hidden">
             {isLoading ? (
               <div className="flex justify-center items-center h-64">
                 <Oval
@@ -226,11 +138,7 @@ const DatagramsTemplate = ({
               </div>
             ) : imageSrc ? (
               <div className="max-w-full">
-                <img 
-                  src={imageSrc} 
-                  alt="Generated Graph" 
-                  className="max-w-full h-auto shadow-lg rounded-md"
-                />
+                <img src={imageSrc} alt="Generated Graph" className="max-w-full h-auto" />
               </div>
             ) : (
               <p>No image available.</p>

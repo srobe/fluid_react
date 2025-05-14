@@ -9,8 +9,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Glossary from './pages/Glossary';
 
-import Glossary from './components/Glossary';
-
 import MissionSupport from './pages/mission-support/MissionSupport';
 import ARCSIX from './pages/mission-support/ARCSIX';
 import BLUEFLUX from './pages/mission-support/BLUEFLUX';
